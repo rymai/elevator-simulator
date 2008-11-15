@@ -7,24 +7,27 @@ import controllers.MainController;
 import strategies.Strategy;
 import strategies.elevators.Linear;
 import views.ElevatorView;
-import views.JPanelElevatorView;
 
-public class Elevator extends Observable {
+public class Elevator extends Observable implements Runnable {
 	
 	private static final int TO_TOP = 1;
 	private static final int TO_BOTTOM = -1;
-
-	// Pointeur vers son controlleur
-	protected MainController controller;
+	private static int SLEEPING_DURATION = 1000;
 	
+
+	// Pointeur to his controller
+	protected MainController controller;
+	protected Building building;
 	protected ElevatorView view;
 	
 	protected Strategy strategy;
 	
-	protected float speed_per_round = 1f;
+	protected float speed_per_round = 0.5f;
 	
 	// C'est mieux si l'identifier est unique.
 	protected String identifier;
+	
+	private boolean running = false;
 	
 	// Nombre de personnes max pouvant entrer (entre en compte dans le comportement des usagers,
 	// un usager simple d'esprit montera meme si l'ascenseur ˆ atteint sa limite)
@@ -43,6 +46,8 @@ public class Elevator extends Observable {
 	
 	// Booleen indiquant si l'ascenseur se dirige vers le haut
 	public boolean goingToTop;
+	
+	private Thread theThread;
 	
 	/**
 	 * This array has a length equal to the number of floor of the elevator's building
@@ -63,6 +68,7 @@ public class Elevator extends Observable {
 	
 	public void constructor(MainController controller, int max_weight, int alert_weight, Strategy strategy) {
 		this.controller = controller;
+		this.building = controller.getBuilding();
 		this.maxWeight = max_weight;
 		this.alertWeight = alert_weight;
 		this.strategy = strategy;
@@ -72,11 +78,14 @@ public class Elevator extends Observable {
 		for (int i = 0; i < controller.getBuilding().getFloorCount(); i++) {
 			askedFloors.add(i, 0);
 		}
-//		this.view = new JPanelElevatorView(controller,aa);
+		theThread = new Thread(this);
 	}
 	
 	// All is doing here
 	public void acts() {
+		// Repaint the elevator
+		getView().refresh();
+		
 		Console.debug("Ascenseur "+identifier+" arrive a la position: "+currentPosition);
 //		Console.debug("strategy : "+strategy.getClass().toString());
 		strategy.acts(this);
@@ -119,6 +128,7 @@ public class Elevator extends Observable {
 
 	public boolean call(int floor) {
 		askedFloors.set(floor, askedFloors.get(floor)+1);
+		Console.debug("Demande etage "+floor+" : "+askedFloors.get(floor));
 		return true;
 	}
 	
@@ -263,6 +273,37 @@ public class Elevator extends Observable {
 
 	public ElevatorView getView() {
 		return view;
+	}
+	
+	public void setRunning(boolean running) {
+		this.running = running;
+		if(running && !theThread.isAlive()) {
+			System.out.println("Demarrage du thread.");
+			theThread.start();
+		}
+		else if(!running && theThread.isAlive()) {
+			try {
+				theThread.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean isRunning() {
+		return running;
+	}
+	
+	public void run() {
+		while (isRunning()) {			
+			Console.debug("...");
+			acts();
+//			displayPassengersPerFloor(floor_count);
+			try {
+				java.util.concurrent.TimeUnit.MILLISECONDS.sleep(SLEEPING_DURATION);
+			} catch (InterruptedException ex) {
+			}
+		}
 	}
 	
 }

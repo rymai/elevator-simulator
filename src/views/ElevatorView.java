@@ -5,9 +5,9 @@ import models.Elevator;
 import controllers.MainController;
 
 public abstract class ElevatorView {
-	private MainController controller = null;
-	private Elevator elevator;
-	private Building building;
+	protected MainController controller = null;
+	protected Elevator elevator;
+	protected Building building;
 	protected int identifier;
 	
 	public ElevatorView(MainController controller, Elevator elevator, Building building, int identifier){		
@@ -27,5 +27,9 @@ public abstract class ElevatorView {
 	public abstract Object getElevator();
 
 	public abstract void moveBy(int x, int y);
+
+	public abstract void refresh();
+
+	public abstract void move(float currentPosition);
 	
 }

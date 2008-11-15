@@ -42,8 +42,9 @@ public abstract class Passenger implements Observer {
 	}
 
 	private void askForElevator() {
+		System.out.print("Passenger.askForElevator ");
 		elevatorCalled = elevator.call(currentFloor);
-		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+")");
+		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
 	}
 	
 	public boolean isArrived() {

@@ -24,5 +24,7 @@ public abstract class BuildingView {
 	public Building getBuilding() {
 		return building;
 	}
+
+	public abstract void refresh();
 	
 }

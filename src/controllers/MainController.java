@@ -12,7 +12,6 @@ import views.*;
 // MainController est construit sur le modele du design pattern Singleton
 // En effet, il ne peut y avoir qu'une seule instance de ce controleur a la fois.
 public class MainController {
-
 	private static MainController INSTANCE = null;
 
 	// Models objects
@@ -98,24 +97,13 @@ public class MainController {
 			p.acts();
 		}
 
-//		Thread thread = new Thread();
-//		thread.start();
-//		while (true) {
-//			Console.debug("...");
-//			for (Elevator e : elevators) {
-//				e.acts();
-//			}
-//			displayPassengersPerFloor(floor_count);
-//			try {
-//				thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		for (Elevator e : elevators) {
+			e.setRunning(true);
+		}		
 	}
 
 	private void displayPassengersPerFloor(int floor_count) {
-		/**
+		/**/
 		ArrayList<Passenger> passengers_per_floor = new ArrayList<Passenger>();
 		ArrayList<Passenger> temp_passengers = new ArrayList<Passenger>();
 		temp_passengers = (ArrayList<Passenger>) passengers.clone();
@@ -156,5 +144,21 @@ public class MainController {
 	public Building getBuilding() {
 		return building;
 	}
+
+//	public void run() {
+//		while (isRunning()) {
+//			Console.debug("...");
+//			for (Elevator e : elevators) {
+//				e.acts();
+//				e.getView().refresh();
+//				building.getView().refresh();
+//			}
+////			displayPassengersPerFloor(floor_count);
+//			try {
+//				java.util.concurrent.TimeUnit.MILLISECONDS.sleep(sleeping_duration);
+//			} catch (InterruptedException ex) {
+//			}
+//		}
+//	}
 
 }

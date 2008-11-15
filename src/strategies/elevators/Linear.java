@@ -6,15 +6,28 @@ import strategies.Strategy;
 
 public class Linear extends Strategy {
 
+	private int stopTime;
+	
+	public Linear() {
+		stopTime = 0;
+	}
+	
 	public void acts(Elevator elevator) {
 //		Console.debug("Strategy Linear");
 //		Console.debug("A du boulot ? : "+!elevator.noCallAtAll());
 		if(!elevator.noCallAtAll()) {
 			// On est arrivé a un étage, on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
-			if(elevator.isAtAFloor() && elevator.isThereCallsAtThisFloor()) {
+			if(elevator.isAtAFloor() && elevator.isThereCallsAtThisFloor() && stopTime < 3) {
 				Console.debug("Arret a l'etage "+elevator.getCurrentFloor());
 				elevator.resetCurrentFloor();
 				elevator.setChangedAndNotifiyObservers();
+				Console.debug("stopTime : "+stopTime);
+				stopTime++;
+			}
+			else {
+				stopTime = 0;
+				// The elevator moves
+				elevator.setCurrentPosition(elevator.getCurrentPosition()+elevator.getStep()*elevator.getSpeedPerRound());
 			}
 
 //			Console.debug("Dois redescendre ? : "+(elevator.getGoingToTop() && elevator.atTop()));
@@ -31,9 +44,7 @@ public class Linear extends Strategy {
 					Console.debug("Je vire un passager... |"+elevator.getPassengerCount()+"|");
 				} while(elevator.isBlocked());
 			}
-
-			// The elevator moves
-			elevator.setCurrentPosition(elevator.getCurrentPosition()+elevator.getStep()*elevator.getSpeedPerRound());
+			
 			Console.debug("|"+elevator.getPassengerCount()+"|");
 
 			// DEBUG

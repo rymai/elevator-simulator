@@ -79,6 +79,7 @@ public class Person extends Passenger {
 							this.inTheElevator = elevator.takePassenger(this);
 							// La personne a reussi a forcer et a monter
 							if(inTheElevator) {
+								// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
 								elevatorCalled = elevator.call(wantedFloor);
 								Console.debug("Boulet monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
 							}
@@ -92,13 +93,13 @@ public class Person extends Passenger {
 					else {
 						this.inTheElevator = elevator.takePassenger(this);
 						if(inTheElevator) {
+							// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
 							elevatorCalled = elevator.call(wantedFloor);
 							Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
 						}
 					}
 				}
-				// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
-				elevator.call(currentFloor);
+				
 			}
 			// Deja dans l'ascenseur
 			else {
