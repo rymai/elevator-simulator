@@ -2,7 +2,6 @@ package views;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -10,49 +9,43 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import main.Console;
 import models.Building;
-import models.Elevator;
 import controllers.MainController;
 
 public class JFrameBuildingView extends BuildingView implements ActionListener {
 
 	private JFrame window;
 	private ArrayList<ElevatorView> elevatorViews;
-	private static int LARGEUR_FENETRE = 1000;
-	private static int HAUTEUR_FENETRE = 700;
+	private static int FRAME_WIDTH = 1000;
+	private static int FRAME_HEIGHT = 700;
 	
 	public JFrameBuildingView(MainController controller, Building building) {
 		super(controller, building);
 		this.window = new JFrame("Batiment");
-				
-		JButton boutonMonter = new JButton("Monter");
-		boutonMonter.addActionListener(this);
 		
-		JButton boutonDescendre = new JButton("Descendre");
-		boutonDescendre.addActionListener(this);
-		
-		window.add(boutonMonter);
-		window.add(boutonDescendre);
-		window.setSize(LARGEUR_FENETRE,HAUTEUR_FENETRE);
+		window.setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		window.setLocationByPlatform(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBackground(Color.CYAN);
-//		window.setResizable(false);
+		window.setResizable(false);
 		window.validate();
-		
+		// 1 row, x cols (x is the number of elevators)		
 		GridLayout laGrille = new GridLayout(1, building.getElevatorCount());
 		window.setLayout(laGrille);
 		
-//		insertiontAscenseurs(window);
+		JButton boutonMonter = new JButton("Monter");
+		boutonMonter.addActionListener(this);
+		window.add(boutonMonter);
+		
+		JButton boutonDescendre = new JButton("Descendre");
+		boutonDescendre.addActionListener(this);
+		window.add(boutonDescendre);
 		
 		Insets insets = window.getInsets(); 
-		LARGEUR_FENETRE = window.getWidth()+insets.left+insets.right;
-		HAUTEUR_FENETRE = window.getHeight()+insets.bottom+insets.top;
+		FRAME_WIDTH = window.getWidth()+insets.left+insets.right;
+		FRAME_HEIGHT = window.getHeight()+insets.bottom+insets.top;
 		window.setSize(window.getWidth(), window.getHeight());
 	}
 	
@@ -107,8 +100,7 @@ public class JFrameBuildingView extends BuildingView implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("actionPerformed : " + e.getSource());
 	}
 
 }

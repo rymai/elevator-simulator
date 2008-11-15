@@ -23,7 +23,7 @@ public class MainController {
 	// Views objects lists
 	//	public static BuildingView buildingView = null;
 	//	public static ArrayList<ElevatorView> elevatorViews = null;
-	public static ArrayList<PassengerView> passengerViews = null;
+//	public static ArrayList<PassengerView> passengerViews = null;
 
 	/**
 	 * La présence d'un constructeur privé supprime
@@ -41,7 +41,7 @@ public class MainController {
 		if (INSTANCE == null) {
 			INSTANCE = new MainController();
 			//			elevatorViews = new ArrayList<ElevatorView>();
-			passengerViews = new ArrayList<PassengerView>();
+//			passengerViews = new ArrayList<PassengerView>();
 		}
 		return INSTANCE;
 	}
@@ -63,9 +63,10 @@ public class MainController {
 			elevator.setIdentifier(Integer.toString(i));
 			elevators.add(elevator);
 		}
+		// Add elevators to the building
 		building.setElevators(elevators);
 
-		// Constructs the persons
+		// Constructs the passengers (only persons for now)
 		passengers = new ArrayList<Passenger>(person_count);
 		int elevator_index, sex, mass, qi, current_floor, wanted_floor;
 		for (int i = 0; i < person_count; i++) {
