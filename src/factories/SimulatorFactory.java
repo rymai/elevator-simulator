@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import strategies.Strategy;
 import strategies.elevators.Linear;
+import views.BuildingView;
+import views.ElevatorView;
+import views.JFrameBuildingView;
+import views.JPanelElevatorView;
 import controllers.MainController;
 import main.Console;
 import models.*;
@@ -37,6 +41,14 @@ public class SimulatorFactory {
 		if(type.equals("LINEAR"))
 			strategy = new Linear();
 		return new Elevator(controller, max_person, strategy);
+	}
+
+	public BuildingView getBuildingView(MainController controller, Building building) {
+		return new JFrameBuildingView(controller, building);
+	}
+
+	public ElevatorView getElevatorView(MainController controller, Elevator elevator, Building building, int identifier) {
+		return new JPanelElevatorView(controller, elevator, building, identifier);
 	}
 	
 }

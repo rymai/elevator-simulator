@@ -82,13 +82,15 @@ public class MainController {
 		}
 
 		// Creating the building view
-		building.setView(new JFrameBuildingView(INSTANCE, building));
+		building.setView(sf.getBuildingView(INSTANCE, building));
 		building.getView().display();
 		
 		// Creating a view for each elevator
+		Elevator temp_elevator;
 		for (int i = 0; i < elevators.size(); i++) {
-			elevators.get(i).setView(new JPanelElevatorView(INSTANCE, elevators.get(i), building, i));
-			elevators.get(i).getView().display();
+			temp_elevator = elevators.get(i);
+			temp_elevator.setView(sf.getElevatorView(INSTANCE, temp_elevator, building, i));
+			temp_elevator.getView().display();
 		}
 
 		// Actions
@@ -96,24 +98,24 @@ public class MainController {
 			p.acts();
 		}
 
-		Thread thread = new Thread();
-		thread.start();
-		while (true) {
-			Console.debug("...");
-			for (Elevator e : elevators) {
-				e.acts();
-			}
-			displayPassengersPerFloor(floor_count);
-			try {
-				thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		Thread thread = new Thread();
+//		thread.start();
+//		while (true) {
+//			Console.debug("...");
+//			for (Elevator e : elevators) {
+//				e.acts();
+//			}
+//			displayPassengersPerFloor(floor_count);
+//			try {
+//				thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	private void displayPassengersPerFloor(int floor_count) {
+		/**
 		ArrayList<Passenger> passengers_per_floor = new ArrayList<Passenger>();
 		ArrayList<Passenger> temp_passengers = new ArrayList<Passenger>();
 		temp_passengers = (ArrayList<Passenger>) passengers.clone();
@@ -148,6 +150,7 @@ public class MainController {
 			}
 			Console.debug("|"+mectons+"|("+e.getCurrentWeight()+" kg) Elevator "+e.getIdentifier());
 		}
+		/**/
 	}
 
 	public Building getBuilding() {

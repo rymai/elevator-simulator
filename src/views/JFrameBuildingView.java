@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import main.Console;
 import models.Building;
 import controllers.MainController;
@@ -30,23 +32,16 @@ public class JFrameBuildingView extends BuildingView implements ActionListener {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBackground(Color.CYAN);
 		window.setResizable(false);
-		window.validate();
-		// 1 row, x cols (x is the number of elevators)		
-		GridLayout laGrille = new GridLayout(1, building.getElevatorCount());
-		window.setLayout(laGrille);
-		
-		JButton boutonMonter = new JButton("Monter");
-		boutonMonter.addActionListener(this);
-		window.add(boutonMonter);
-		
-		JButton boutonDescendre = new JButton("Descendre");
-		boutonDescendre.addActionListener(this);
-		window.add(boutonDescendre);
+//		window.validate();
 		
 		Insets insets = window.getInsets(); 
 		FRAME_WIDTH = window.getWidth()+insets.left+insets.right;
 		FRAME_HEIGHT = window.getHeight()+insets.bottom+insets.top;
 		window.setSize(window.getWidth(), window.getHeight());
+		System.out.println(window.getLayout().toString());
+		
+		// 1 row, x cols (x is the number of elevators)		
+		window.setLayout(new GridLayout(1, building.getElevatorCount()));
 	}
 	
 //	public void insertElevatorsView(ArrayList<Elevator> elevators) {
