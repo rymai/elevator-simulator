@@ -1,11 +1,14 @@
 package main;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
 import controllers.MainController;
 
 import views.*;
+import views.graphics.JFrameConfigView;
 import models.*;
 
 public class Launcher extends JFrame {
@@ -22,6 +25,8 @@ public class Launcher extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Logger.global.setLevel(Level.ALL);
+		
 		listeAscenseurs = new ArrayList<Elevator>();
 		
 		controller = MainController.getInstance();

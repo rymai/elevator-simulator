@@ -1,22 +1,20 @@
 package factories;
 
 import java.util.ArrayList;
-
-import strategies.Strategy;
+import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
 import views.BuildingView;
 import views.ElevatorView;
-import views.JFrameBuildingView;
-import views.JPanelElevatorView;
+import views.graphics.JFrameBuildingView;
+import views.graphics.JPanelElevatorView;
 import controllers.MainController;
-import main.Console;
 import models.*;
 
 public class SimulatorFactory {
 	
-	public Building getBuilding(int floor_count, ArrayList<Elevator> elevatorList, MainController controller) {
+	public Building getBuilding(int floor_count, ArrayList<Elevator> elevator_list, ArrayList<Passenger> passengers_list, MainController controller) {
 //		Console.debug("Creation d'un batiment avec "+floorCount+" etages et "+elevatorList.size()+" ascenseurs.");
-		return new Building(floor_count, elevatorList, controller);
+		return new Building(floor_count, elevator_list, passengers_list, controller);
 	}
 	
 	public Building getBuilding(int floor_count, MainController controller) {
@@ -37,7 +35,7 @@ public class SimulatorFactory {
 
 	public Elevator getElevator(MainController controller, String type, int max_person) {
 //		Console.debug("Creation d'un ascenseur de type "+type);
-		Strategy strategy = null;
+		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
 			strategy = new Linear();
 		return new Elevator(controller, max_person, strategy);
@@ -47,8 +45,8 @@ public class SimulatorFactory {
 		return new JFrameBuildingView(controller, building);
 	}
 
-	public ElevatorView getElevatorView(MainController controller, Elevator elevator, Building building, int identifier) {
-		return new JPanelElevatorView(controller, elevator, building, identifier);
+	public ElevatorView getElevatorView(Elevator elevator, int identifier) {
+		return new JPanelElevatorView(elevator, identifier);
 	}
 	
 }

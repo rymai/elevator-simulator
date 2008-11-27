@@ -80,11 +80,14 @@ public class Person extends Passenger {
 							// La personne a reussi a forcer et a monter
 							if(inTheElevator) {
 								// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
-								elevatorCalled = elevator.call(wantedFloor);
+								actsAfterEnteredTheElevator();
 								Console.debug("Boulet monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
 							}
-							else
+							else {
 								Console.debug("Je n'ai pas pu monter dans ascenseur "+elevator.getIdentifier()+"! Je suis un gros boulet!");
+								actsAfterBeRejectedFromElevator();
+							}
+								
 						}
 						else
 							Console.debug("L'ascenseur "+elevator.getIdentifier()+" est en alerte, je ne monte pas...");
@@ -94,23 +97,25 @@ public class Person extends Passenger {
 						this.inTheElevator = elevator.takePassenger(this);
 						if(inTheElevator) {
 							// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
-							elevatorCalled = elevator.call(wantedFloor);
+							actsAfterEnteredTheElevator();
 							Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
+						}
+						else {
+							actsAfterBeRejectedFromElevator();
 						}
 					}
 				}
-				
 			}
 			// Deja dans l'ascenseur
 			else {
-				currentFloor = (int) elevator.getCurrentFloor(); // Update current floor
+				currentFloor = elevator.getCurrentFloor(); // Update current floor
 				// Arrive a son etage de destination
 				if(itsMyDestinationFloor()) {
 					this.inTheElevator = false;
 					elevator.releasePassenger(this);
-					Console.debug("Je sors ici! |"+elevator.getPassengerCount()+"|");
+//					Console.debug("Je sors ici! |"+elevator.getPassengerCount()+"|");
 					// L'etage desire est mis a une valeur qui indique que la personne est arrivee
-//					this.wantedFloor = Integer.MAX_VALUE;
+					this.wantedFloor = Integer.MAX_VALUE;
 				}
 			}
 		}
@@ -127,6 +132,18 @@ public class Person extends Passenger {
 	@Override
 	public int getPersonCount() {
 		return 1;
+	}
+
+	@Override
+	public void actsAfterEnteredTheElevator() {
+		elevatorCalled = false;
+		acts();
+	}
+	
+	@Override
+	public void actsAfterBeRejectedFromElevator() {
+		elevatorCalled = false;
+		acts();
 	}
 	
 }

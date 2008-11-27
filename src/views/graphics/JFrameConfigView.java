@@ -1,18 +1,19 @@
-package views;
+package views.graphics;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import observers.*;
 
-public class JFrameConfigView extends JFrame {
+public class JFrameConfigView extends JFrame implements InterfaceSwing {
 
 	private static final long serialVersionUID = 8164118974463460991L;
 	private static final String POLICE = "Monaco";
-	private static final int MIN_FLOOR_COUNT = 1;
-	private static final int MAX_FLOOR_COUNT = 16;
+	private static final int MIN_FLOOR_COUNT = 2;
+	public static final int MAX_FLOOR_COUNT = 16;
 	private static final int MIN_ELEVATOR_COUNT = 1;
-	private static final int MAX_ELEVATOR_COUNT = 10;
+	public static final int MAX_ELEVATOR_COUNT = 10;
 	private static final int MIN_PERSON_COUNT = 1;
 	private static final int MAX_PERSON_COUNT = 100;
 	private static final int MIN_GROUP_COUNT = 0;
@@ -150,7 +151,9 @@ public class JFrameConfigView extends JFrame {
 	public int get_group_count() {
 		return jslider_group_count.getValue();
 	}
-	
-	
+
+	public Component getComponent() {
+		return jpanel_principal;
+	}
 	
 }

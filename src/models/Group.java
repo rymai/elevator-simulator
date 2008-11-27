@@ -52,4 +52,16 @@ public class Group extends Passenger {
 	public int getPersonCount() {
 		return persons.size();
 	}
+
+	@Override
+	public void actsAfterBeRejectedFromElevator() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actsAfterEnteredTheElevator() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -2,19 +2,15 @@ package views;
 
 import controllers.MainController;
 
-public abstract class PassengerView {
-	private MainController controller = null;
+public abstract class PassengerView implements InterfaceView {
 	
-	public PassengerView(MainController controller){
-		super();
-		
-		this.controller = controller;
-	}
-	
+	protected MainController controller = null;
 	public final MainController getController(){
 		return controller;
 	}
 	
-	public abstract void display();
-	public abstract void close();
+	public PassengerView(MainController controller){		
+		this.controller = controller;
+	}
+	
 }

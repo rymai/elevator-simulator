@@ -1,5 +1,5 @@
 package views;
 
-public class GroupView {
+public abstract class GroupView implements InterfaceView {
 
 }

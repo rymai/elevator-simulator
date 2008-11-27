@@ -36,15 +36,16 @@ public abstract class Passenger implements Observer {
 	}
 
 	public void acts() {
-		if(!elevatorCalled) {
+		if(!elevatorCalled && !isArrived()) {
 			askForElevator();
 		}
 	}
 
 	private void askForElevator() {
-		System.out.print("Passenger.askForElevator ");
-		elevatorCalled = elevator.call(currentFloor);
-		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
+		if(inTheElevator)
+			elevatorCalled = elevator.call(wantedFloor);
+		else
+			elevatorCalled = elevator.call(currentFloor);
 	}
 	
 	public boolean isArrived() {
@@ -62,5 +63,8 @@ public abstract class Passenger implements Observer {
 	public Elevator getElevator() {
 		return elevator;
 	}
+
+	public abstract void actsAfterEnteredTheElevator();
+	public abstract void actsAfterBeRejectedFromElevator();
 
 }

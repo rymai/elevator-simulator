@@ -2,51 +2,77 @@ package strategies.elevators;
 
 import main.Console;
 import models.Elevator;
-import strategies.Strategy;
+import models.Passenger;
+import strategies.ElevatorStrategy;
 
-public class Linear extends Strategy {
+public class Linear implements ElevatorStrategy {
+	
+	private Elevator elevator;
+	
+	private boolean hasAlreadyTakeAPerson = false;
+	
+	private int stopTime = 0;
+	public void incrementStopTime() {
+		this.stopTime++;
+	}
 
-	private int stopTime;
+	private int stoppedTime = 0;
 	
 	public Linear() {
-		stopTime = 0;
 	}
 	
-	public void acts(Elevator elevator) {
-//		Console.debug("Strategy Linear");
-//		Console.debug("A du boulot ? : "+!elevator.noCallAtAll());
+	public Linear(Elevator elevator) {
+		this.elevator = elevator;
+	}
+
+	public void setElevator(Elevator elevator) {
+		this.elevator = elevator;
+	}
+	
+	public void acts() {
+		Console.debug("\tStrategy Linear");
+		
 		if(!elevator.noCallAtAll()) {
+			Console.debug_variable("\tstopTime", stopTime);
+			Console.debug_variable("\tstoppedTime", stoppedTime);
 			// On est arrivé a un étage, on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
-			if(elevator.isAtAFloor() && elevator.isThereCallsAtThisFloor() && stopTime < 3) {
-				Console.debug("Arret a l'etage "+elevator.getCurrentFloor());
-				elevator.resetCurrentFloor();
+			if(elevator.isThereCallsAtThisFloor()) {
+				Console.debug("\tStop => "+elevator.getCurrentFloor());
+				elevator.resetCurrentFloorCalls();
 				elevator.setChangedAndNotifiyObservers();
-				Console.debug("stopTime : "+stopTime);
-				stopTime++;
+				elevator.getView().refresh();
+				elevator.getView().refreshFloor(elevator.getCurrentFloor());
+				hasAlreadyTakeAPerson = false;
+				if(stoppedTime >= stopTime) leaveThisFloor();
 			}
 			else {
-				stopTime = 0;
-				// The elevator moves
-				elevator.setCurrentPosition(elevator.getCurrentPosition()+elevator.getStep()*elevator.getSpeedPerRound());
+				leaveThisFloor();
 			}
-
-//			Console.debug("Dois redescendre ? : "+(elevator.getGoingToTop() && elevator.atTop()));
-//			Console.debug("Dois remonter ? : "+(!elevator.getGoingToTop() && elevator.atBottom()));
-//			Console.debug("Aucun appel sur la voie ? : "+elevator.noCallOnTheWay());
-			if((elevator.getGoingToTop() && elevator.atTop()) || (!elevator.getGoingToTop() && elevator.atBottom()) || elevator.noCallOnTheWay()) {
+			stoppedTime++;
+//			if(elevator.goingToTop() && elevator.atTop()) Console.debug("\tDois redescendre");
+//			else if(!elevator.goingToTop() && elevator.atBottom()) Console.debug("\tDois remonter");
+//			else Console.debug("\tPeut encore avancer");
+//			Console.debug("\tAppels sur la voie ? : "+!elevator.noCallOnTheWay());
+//			Console.debug("\tMonte ? : "+elevator.goingToTop());
+//			Console.debug("\tEn haut ? : "+elevator.atTop());
+//			Console.debug("\tEn bas ? : "+elevator.atBottom());
+			
+			if((elevator.goingToTop() && elevator.atTop())
+				|| (!elevator.goingToTop() && elevator.atBottom())
+				|| elevator.noCallOnTheWay()) {
 				elevator.changeDirection(); // Changement de sens!
 			}
 
 			if(elevator.isBlocked()) {
-				Console.debug("L'ascenseur "+elevator.getIdentifier()+" est bloqué à l'étage "+elevator.getCurrentFloor());
+				Console.debug("\tBlocked => "+elevator.getCurrentFloor());
 				do {
-					elevator.releasePassenger(elevator.getLastPassenger());
-					Console.debug("Je vire un passager... |"+elevator.getPassengerCount()+"|");
+					Passenger p = elevator.releasePassenger(elevator.getLastPassenger());
+					p.actsAfterBeRejectedFromElevator();
+					Console.debug("\tPassenger => "+p.getClass()+" : Out");
 				} while(elevator.isBlocked());
+				leaveThisFloor();
 			}
 			
-			Console.debug("|"+elevator.getPassengerCount()+"|");
-
 			// DEBUG
 			Console.debug("Demande pour l'ascenseur "+elevator.getIdentifier()+" :");
 			String demande = "";
@@ -58,6 +84,40 @@ public class Linear extends Strategy {
 			Console.debug("");
 			// DEBUG
 		}
+		else {
+			elevator.setRunning(false);
+		}
+	}
+
+	private void leaveThisFloor() {
+		stopTime = 0;
+		stoppedTime = 0;
+		// The elevator moves
+		if(!elevator.noCallAtAll()) elevator.moves();
+	}
+
+	public boolean takePassenger(Passenger passenger) {
+		if(!hasAlreadyTakeAPerson && (elevator.getPassengerCount() < elevator.getMaxPersons())) {
+			
+			elevator.getPassengers().add(passenger);
+			elevator.addToCurrentWeight(passenger.getTotalMass());
+			incrementStopTime();
+			Console.debug("Un passager monte. "+stoppedTime+"/"+stopTime);
+			hasAlreadyTakeAPerson = true;
+			return true;
+		}
+		else return false;
+	}
+
+	public Passenger releasePassenger(Passenger passenger) {
+		int index = elevator.getPassengers().indexOf(passenger);
+		if(index != -1) {
+			elevator.getPassengers().remove(index);
+			elevator.removeOfCurrentWeight(passenger.getTotalMass());
+			incrementStopTime();
+		}
+		else passenger = null;
+		return passenger;
 	}
 	
 }

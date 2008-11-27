@@ -1,28 +1,26 @@
 package controllers;
 
 import java.util.ArrayList;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import factories.SimulatorFactory;
 import main.Console;
 import models.*;
-import views.*;
 
-// MainController est construit sur le modele du design pattern Singleton
-// En effet, il ne peut y avoir qu'une seule instance de ce controleur a la fois.
+/**
+ *  MainController est construit sur le modele du design pattern Singleton
+ *  En effet, il ne peut y avoir qu'une seule instance de ce controleur a la fois.
+ *  
+ * @author remy
+ *
+ */
 public class MainController {
+	
 	private static MainController INSTANCE = null;
 
-	// Models objects
+	// Le point d'acces a tous les modele (le batiment a acces direct aux elevators et aux passagers)
 	public static Building building = null;
-	public static ArrayList<Elevator> elevators = null;
-	public static ArrayList<Passenger> passengers = null;
-
-	// Views objects lists
-	//	public static BuildingView buildingView = null;
-	//	public static ArrayList<ElevatorView> elevatorViews = null;
-//	public static ArrayList<PassengerView> passengerViews = null;
+	public Building getBuilding() {
+		return building;
+	}
 
 	/**
 	 * La présence d'un constructeur privé supprime
@@ -34,13 +32,11 @@ public class MainController {
 	 * Le mot-clé synchronized sur la méthode de création
 	 * empêche toute instanciation multiple même par
 	 * différents threads.
-	 * Retourne l'instance du singleton.
+	 * @return L'unique instance du singleton.
 	 */
 	public synchronized static MainController getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new MainController();
-			//			elevatorViews = new ArrayList<ElevatorView>();
-//			passengerViews = new ArrayList<PassengerView>();
 		}
 		return INSTANCE;
 	}
@@ -55,7 +51,7 @@ public class MainController {
 		building = sf.getBuilding(floor_count, INSTANCE);
 
 		// Constructs the elevators
-		elevators = new ArrayList<Elevator>(elevator_count);
+		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
 		for (int i = 0; i < elevator_count; i++) {
 			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
@@ -66,7 +62,7 @@ public class MainController {
 		building.setElevators(elevators);
 
 		// Constructs the passengers (only persons for now)
-		passengers = new ArrayList<Passenger>(person_count);
+		ArrayList<Passenger> passengers = new ArrayList<Passenger>(person_count);
 		int elevator_index, sex, mass, qi, current_floor, wanted_floor;
 		for (int i = 0; i < person_count; i++) {
 			elevator_index = (int)(Math.random()*elevators.size());
@@ -79,6 +75,8 @@ public class MainController {
 			} while (wanted_floor == current_floor);
 			passengers.add(sf.getPerson(current_floor, wanted_floor, sex, mass, qi, INSTANCE, elevators.get(elevator_index)));
 		}
+		// Add passengers to the building
+		building.setPassengers(passengers);
 
 		// Creating the building view
 		building.setView(sf.getBuildingView(INSTANCE, building));
@@ -88,7 +86,7 @@ public class MainController {
 		Elevator temp_elevator;
 		for (int i = 0; i < elevators.size(); i++) {
 			temp_elevator = elevators.get(i);
-			temp_elevator.setView(sf.getElevatorView(INSTANCE, temp_elevator, building, i));
+			temp_elevator.setView(sf.getElevatorView(temp_elevator, i));
 			temp_elevator.getView().display();
 		}
 
@@ -106,7 +104,7 @@ public class MainController {
 		/**/
 		ArrayList<Passenger> passengers_per_floor = new ArrayList<Passenger>();
 		ArrayList<Passenger> temp_passengers = new ArrayList<Passenger>();
-		temp_passengers = (ArrayList<Passenger>) passengers.clone();
+		temp_passengers = (ArrayList<Passenger>) building.getPassengers().clone();
 
 		Passenger p;
 		String mectons = "";
@@ -132,7 +130,7 @@ public class MainController {
 		Console.debug("");
 
 		mectons = "";
-		for (Elevator e : elevators) {
+		for (Elevator e : building.getElevators()) {
 			for(Passenger q : e.getPassengers()) {
 				mectons += q.isArrived() ? "A " : "W ";
 			}
@@ -140,25 +138,5 @@ public class MainController {
 		}
 		/**/
 	}
-
-	public Building getBuilding() {
-		return building;
-	}
-
-//	public void run() {
-//		while (isRunning()) {
-//			Console.debug("...");
-//			for (Elevator e : elevators) {
-//				e.acts();
-//				e.getView().refresh();
-//				building.getView().refresh();
-//			}
-////			displayPassengersPerFloor(floor_count);
-//			try {
-//				java.util.concurrent.TimeUnit.MILLISECONDS.sleep(sleeping_duration);
-//			} catch (InterruptedException ex) {
-//			}
-//		}
-//	}
 
 }

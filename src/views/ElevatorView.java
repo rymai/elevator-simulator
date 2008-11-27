@@ -1,35 +1,20 @@
 package views;
 
-import models.Building;
 import models.Elevator;
-import controllers.MainController;
 
-public abstract class ElevatorView {
-	protected MainController controller = null;
-	protected Elevator elevator;
-	protected Building building;
+public abstract class ElevatorView implements InterfaceView {
+	
+	protected Elevator elevator = null;
 	protected int identifier;
 	
-	public ElevatorView(MainController controller, Elevator elevator, Building building, int identifier){		
-		this.controller = controller;
+	public ElevatorView(Elevator elevator, int identifier){		
 		this.elevator = elevator;
-		this.building = building;
 		this.identifier = identifier;
 	}
-	
-	public final MainController getController(){
-		return controller;
-	}
-	
-	public abstract void display();
-	public abstract void close();
-	
-	public abstract Object getElevator();
+		
+//	public abstract Object getElevator();
+	public abstract void move(float new_y_position);
 
-	public abstract void moveBy(int x, int y);
-
-	public abstract void refresh();
-
-	public abstract void move(float currentPosition);
+	public abstract void refreshFloor(int floor_index);
 	
 }

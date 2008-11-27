@@ -3,6 +3,7 @@ package observers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import views.*;
+import views.graphics.JFrameConfigView;
 
 import controllers.MainController;
 
