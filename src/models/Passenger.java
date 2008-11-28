@@ -21,12 +21,14 @@ public abstract class Passenger implements Observer {
 	protected boolean elevatorCalled;
 	protected boolean inTheElevator;
 	
-	/*
-	public void TimeVar() { 
-		 beginTime = System.currentTimeMillis(); 
-	} */
 	
-	public long getTime() { 
+//	public void TimeVar() { 
+//		 beginTime = System.currentTimeMillis(); 
+//	}
+//	
+	public long getTime() {
+		 System.out.println("CurrentTime :"+System.currentTimeMillis());
+		 System.out.println("BeginTime :"+beginTime);
 		 return (System.currentTimeMillis() - beginTime) / 1000;  
 	} 
 	

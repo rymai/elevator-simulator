@@ -98,9 +98,9 @@ public class Person extends Passenger {
 						this.inTheElevator = elevator.takePassenger(this);
 						if(inTheElevator) {
 							// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
+							System.out.println("Durée de l'attente : "+getTime());
 							actsAfterEnteredTheElevator();
 							Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
-							System.out.println("Durée de l'attente : "+getTime());
 						}
 						else {
 							actsAfterBeRejectedFromElevator();
