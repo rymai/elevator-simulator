@@ -9,6 +9,9 @@ public abstract class Passenger implements Observer {
 	
 	protected MainController controller;
 	
+	// Compteur perso
+	protected long beginTime;
+	
 	protected Elevator elevator;
 	
 	protected PassengerView view;
@@ -17,6 +20,15 @@ public abstract class Passenger implements Observer {
 	
 	protected boolean elevatorCalled;
 	protected boolean inTheElevator;
+	
+	/*
+	public void TimeVar() { 
+		 beginTime = System.currentTimeMillis(); 
+	} */
+	
+	public long getTime() { 
+		 return (System.currentTimeMillis() - beginTime) / 1000;  
+	} 
 	
 	public Passenger(int current_floor, int  wanted_floor, MainController controller, Elevator elevator) {
 		this.controller = controller;
@@ -44,6 +56,9 @@ public abstract class Passenger implements Observer {
 	private void askForElevator() {
 		System.out.print("Passenger.askForElevator ");
 		elevatorCalled = elevator.call(currentFloor);
+		if(elevatorCalled){
+			beginTime = System.currentTimeMillis();
+		}
 		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
 	}
 	
@@ -53,6 +68,7 @@ public abstract class Passenger implements Observer {
 	
 	public boolean isInTheElevator() {
 		return inTheElevator;
+		
 	}
 
 	public int getCurrentFloor() {

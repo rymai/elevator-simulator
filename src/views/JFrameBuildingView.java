@@ -6,11 +6,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import main.Console;
 import models.Building;
@@ -20,8 +23,8 @@ public class JFrameBuildingView extends BuildingView implements ActionListener {
 
 	private JFrame window;
 	private ArrayList<ElevatorView> elevatorViews;
-	private static int FRAME_WIDTH = 1000;
-	private static int FRAME_HEIGHT = 800;
+	private static int FRAME_WIDTH = 800;
+	private static int FRAME_HEIGHT = 600;
 	
 	public JFrameBuildingView(MainController controller, Building building) {
 		super(controller, building);
@@ -32,6 +35,7 @@ public class JFrameBuildingView extends BuildingView implements ActionListener {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBackground(Color.CYAN);
 		window.setResizable(false);
+		System.out.println("fenetre lancée");
 		
 		// 1 row, x cols (x is the number of elevators)		
 		window.setLayout(new GridLayout(1, building.getElevatorCount()));

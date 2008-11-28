@@ -1,11 +1,14 @@
 package views;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.*;
 
 import observers.*;
 
-public class JFrameConfigView extends JFrame {
+public class JFrameConfigView extends JFrame implements KeyListener{
 
 	private static final long serialVersionUID = 8164118974463460991L;
 	private static final String POLICE = "Monaco";
@@ -43,6 +46,25 @@ public class JFrameConfigView extends JFrame {
 		Container content_pane = this.getContentPane();
 
 		this.jpanel_principal = new JPanel();
+		
+		this.addKeyListener(new KeyListener(){
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				System.out.println("touche appuyee");
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				System.out.println("touche appuyee");
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				System.out.println("touche appuyee");
+			}
+			
+		});
+		
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
 		{			
 			// Cadre du choix du nombre d'etages
@@ -150,7 +172,19 @@ public class JFrameConfigView extends JFrame {
 	public int get_group_count() {
 		return jslider_group_count.getValue();
 	}
-	
-	
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println("touche appuyee");
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		System.out.println("touche appuyee");
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		System.out.println("touche appuyee");
+	}
 }
