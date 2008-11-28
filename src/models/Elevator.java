@@ -2,9 +2,6 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Observable;
-
-import com.sun.tools.javac.tree.Tree.TopLevel;
-
 import main.Console;
 import controllers.MainController;
 import strategies.ElevatorStrategy;
