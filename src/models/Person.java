@@ -82,6 +82,7 @@ public class Person extends Passenger {
 								// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
 								actsAfterEnteredTheElevator();
 								Console.debug("Boulet monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
+								System.out.println("Durée de l'attente : "+getTime());
 							}
 							else {
 								Console.debug("Je n'ai pas pu monter dans ascenseur "+elevator.getIdentifier()+"! Je suis un gros boulet!");
@@ -99,6 +100,7 @@ public class Person extends Passenger {
 							// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
 							actsAfterEnteredTheElevator();
 							Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
+							System.out.println("Durée de l'attente : "+getTime());
 						}
 						else {
 							actsAfterBeRejectedFromElevator();

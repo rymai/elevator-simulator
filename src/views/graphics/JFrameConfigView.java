@@ -1,12 +1,11 @@
 package views.graphics;
 
 import java.awt.*;
-
 import javax.swing.*;
-
 import observers.*;
 
 public class JFrameConfigView extends JFrame implements InterfaceSwing {
+
 
 	private static final long serialVersionUID = 8164118974463460991L;
 	private static final String POLICE = "Monaco";
@@ -44,6 +43,7 @@ public class JFrameConfigView extends JFrame implements InterfaceSwing {
 		Container content_pane = this.getContentPane();
 
 		this.jpanel_principal = new JPanel();
+		
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
 		{			
 			// Cadre du choix du nombre d'etages
@@ -155,5 +155,4 @@ public class JFrameConfigView extends JFrame implements InterfaceSwing {
 	public Component getComponent() {
 		return jpanel_principal;
 	}
-	
 }

@@ -13,7 +13,7 @@ public class Linear implements ElevatorStrategy {
 	
 	private int stopTime = 0;
 	public void incrementStopTime() {
-		this.stopTime++;
+		this.stopTime+=10;
 	}
 
 	private int stoppedTime = 0;
