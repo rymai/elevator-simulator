@@ -56,7 +56,7 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 				elevator.resetCurrentFloorCalls();
 				elevator.setChangedAndNotifiyObservers();
 				elevator.getView().refresh();
-				elevator.getView().refreshFloor(elevator.getCurrentFloor());
+				elevator.getBuilding().getView().refreshFloor(elevator.getCurrentFloor());
 				hasAlreadyTakeAPerson = false;
 				if(stoppedTime >= stopTime) leaveThisFloor();
 			}
@@ -91,8 +91,8 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 			// DEBUG
 			Console.debug("Demande pour l'ascenseur "+elevator.getIdentifier()+" :");
 			String demande = "";
-			for (int i = elevator.getAskedFloors().size()-1; i >= 0; i--) {
-				demande += i+" -> "+elevator.getAskedFloors().get(i)+"\n";
+			for (int i = elevator.getBuilding().getAskedFloors().size()-1; i >= 0; i--) {
+				demande += i+" -> "+elevator.getBuilding().getAskedFloors().get(i)+"\n";
 			}
 			Console.debug(demande);
 			Console.debug("Step : "+Integer.toString(elevator.getStep()));

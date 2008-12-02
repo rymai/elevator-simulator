@@ -16,8 +16,8 @@ public class Person extends Passenger {
 	// Pour simuler les cons.
 	private int qi;
 	
-	public Person(int current_floor, int wanted_floor, int sex, int mass, int qi, MainController controller, Elevator elevator) {
-		super(current_floor, wanted_floor, controller, elevator);
+	public Person(int current_floor, int wanted_floor, int sex, int mass, int qi, MainController controller) {
+		super(current_floor, wanted_floor, controller);
 		this.sex = sex;
 		this.mass = mass;
 		this.qi = qi;
@@ -71,6 +71,7 @@ public class Person extends Passenger {
 			if(!inTheElevator) {
 				// L'ascenseur est bien a mon etage
 				if(elevatorIsAtMyFloor()) {
+					elevator = controller.getBuilding().getElevatorAtFloor(currentFloor);
 					// L'ascenseur est en alerte
 					if(elevator.isInAlert()) {
 						// QI faible = la personne essaye de monter quand meme
@@ -80,9 +81,9 @@ public class Person extends Passenger {
 							// La personne a reussi a forcer et a monter
 							if(inTheElevator) {
 								// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
+								System.out.println("Duree de l'attente : "+getTime());
 								actsAfterEnteredTheElevator();
 								Console.debug("Boulet monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
-								System.out.println("Durée de l'attente : "+getTime());
 							}
 							else {
 								Console.debug("Je n'ai pas pu monter dans ascenseur "+elevator.getIdentifier()+"! Je suis un gros boulet!");
@@ -100,7 +101,6 @@ public class Person extends Passenger {
 							// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
 							actsAfterEnteredTheElevator();
 							Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
-							System.out.println("Durée de l'attente : "+getTime());
 						}
 						else {
 							actsAfterBeRejectedFromElevator();
@@ -124,7 +124,8 @@ public class Person extends Passenger {
 	}
 	
 	private boolean elevatorIsAtMyFloor() {
-		return Float.compare(elevator.getCurrentFloor(), currentFloor) == 0;
+		return controller.getBuilding().isThereElevatorAtFloor(currentFloor);
+//		return Float.compare(elevator.getCurrentFloor(), currentFloor) == 0;
 	}
 	
 	private boolean itsMyDestinationFloor() {

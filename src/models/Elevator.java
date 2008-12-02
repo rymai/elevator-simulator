@@ -80,7 +80,6 @@ public class Elevator extends Observable implements Runnable {
 	 * Each index represents a floor (ie : index 0 represents the ground, and so...)
 	 * If a passenger call the elevator from the floor 3, the value at the index 3 increments.
 	 */
-	protected ArrayList<Integer> askedFloors;
 	protected ArrayList<Passenger> passengers;
 
 	public Elevator(MainController controller) {
@@ -101,18 +100,13 @@ public class Elevator extends Observable implements Runnable {
 		this.strategy.setElevator(this);
 		this.currentPosition = 0f;
 		this.goingToTop = true;
-		this.askedFloors = new ArrayList<Integer>(controller.getBuilding().getFloorCount());
 		this.passengers = new ArrayList<Passenger>();
-		for (int i = 0; i < controller.getBuilding().getFloorCount(); i++) {
-			askedFloors.add(i, 0);
-		}
+		
 		theThread = new Thread(this);
 	}
 
 	// All is doing here
 	public void acts() {
-		// Repaint the elevator
-		getView().refresh();
 		Console.debug("Eleva "+identifier+" : Position => "+currentPosition);
 		strategy.acts();
 	}
@@ -125,12 +119,6 @@ public class Elevator extends Observable implements Runnable {
 
 	public boolean isInAlert() {
 		return currentWeight > alertWeight;
-	}
-
-	public boolean call(int floor) {
-		askedFloors.set(floor, askedFloors.get(floor)+1);
-		//		Console.debug("Demande etage "+floor+" : "+askedFloors.get(floor));
-		return true;
 	}
 
 	public boolean takePassenger(Passenger passenger) {
@@ -147,7 +135,7 @@ public class Elevator extends Observable implements Runnable {
 	}
 
 	public boolean isThereCallsAtThisFloor() {
-		return !isAtAFloor() ? false : (askedFloors.get(getCurrentFloor()) > 0);
+		return !isAtAFloor() ? false : (building.getAskedFloors().get(getCurrentFloor()) > 0);
 	}
 
 	public boolean atTop() {
@@ -167,22 +155,22 @@ public class Elevator extends Observable implements Runnable {
 	}
 
 	public boolean noCallAtAll() {
-		for (int i = 0; i <= floorCount(); i++) {
-			if(askedFloors.get(i) > 0) return false;
+		for (int i = 0; i < building.getFloorCount(); i++) {
+			if(building.getAskedFloors().get(i) > 0) return false;
 		}
 		return true;
 	}
 
 	public boolean noCallOnTheWay() {
 		if(goingToTop) {
-			for (int i = currentPosition.intValue(); i <= floorCount(); i++) {
-				if(askedFloors.get(i) > 0) return false;
+			for (int i = currentPosition.intValue(); i < building.getFloorCount(); i++) {
+				if(building.getAskedFloors().get(i) > 0) return false;
 			}
 			return true;
 		}
 		else {
 			for (int i = currentPosition.intValue(); i >= 0; i--) {
-				if(askedFloors.get(i) > 0) return false;
+				if(building.getAskedFloors().get(i) > 0) return false;
 			}
 			return true;
 		}
@@ -225,7 +213,7 @@ public class Elevator extends Observable implements Runnable {
 	}
 
 	public void resetCurrentFloorCalls() {
-		askedFloors.set(getCurrentFloor(), 0);
+		building.getAskedFloors().set(getCurrentFloor(), 0);
 	}
 
 	public boolean goingToTop() {
@@ -256,16 +244,9 @@ public class Elevator extends Observable implements Runnable {
 		currentPosition = getCurrentPosition()+getStep()*getSpeedPerRound();
 	}
 
-	public ArrayList<Integer> getAskedFloors() {
-		return askedFloors;
-	}
-
-	private int floorCount() {
-		return askedFloors.size()-1;
-	}
-
 	public void setView(ElevatorView elevator_view) {
 		this.view = elevator_view;
+		view.setElevator(this);
 	}
 
 	public ElevatorView getView() {
@@ -296,7 +277,12 @@ public class Elevator extends Observable implements Runnable {
 	public void run() {
 		while (isRunning()) {			
 			Console.debug("...");
+			// Repaint the elevator
+			getView().refresh();
 			acts();
+			for (Passenger p : controller.building.getPassengers()) {
+				p.acts();
+			}
 			//			displayPassengersPerFloor(floor_count);
 			try {
 				java.util.concurrent.TimeUnit.MILLISECONDS.sleep(SLEEPING_DURATION);
@@ -304,14 +290,6 @@ public class Elevator extends Observable implements Runnable {
 				ex.printStackTrace();
 			}
 		}
-	}
-
-	public int getWaitingPassengerCountAtFloor(int floor_index) {
-		return building.getWaitingPassengerCountAtElevatorAndFloor(this, floor_index);
-	}
-
-	public int getArrivedPassengerCountAtFloor(int floor_index) {
-		return building.getArrivedPassengerCountAtElevatorAndFloor(this, floor_index);
 	}
 
 	public int getMaxPersons() {

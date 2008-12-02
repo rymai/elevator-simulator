@@ -25,12 +25,12 @@ public class SimulatorFactory {
 //		Console.debug("Person sex: "+Person.getTextForSex(sex)+" | mass: "+mass+"kg | qi: "+qi+ ". "+
 //				"Ascenseur: "+elevator.getIdentifier()+". "+
 //				"Actuellement a l'etage "+current_floor+", veux aller a l'etage "+wanted_floor+". ");
-		return new Person(current_floor, wanted_floor, sex, mass, qi,controller, elevator);
+		return new Person(current_floor, wanted_floor, sex, mass, qi,controller);
 	}
 	
 	public Group getGroup(int current_floor, int wanted_floor, int personCount, MainController controller, Elevator elevator) {
 //		Console.debug("Creation d'un groupe initialisé à une taille de "+personCount+".");
-		return new Group(current_floor, wanted_floor, personCount, controller, elevator);
+		return new Group(current_floor, wanted_floor, personCount, controller);
 	}
 
 	public Elevator getElevator(MainController controller, String type, int max_person) {
@@ -45,8 +45,8 @@ public class SimulatorFactory {
 		return new JFrameBuildingView(controller, building);
 	}
 
-	public ElevatorView getElevatorView(Elevator elevator, int identifier) {
-		return new JPanelElevatorView(elevator, identifier);
+	public ElevatorView getElevatorView(Elevator e, int identifier) {
+		return new JPanelElevatorView(e, identifier);
 	}
 	
 }

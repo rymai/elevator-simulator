@@ -32,11 +32,10 @@ public class JPanelElevatorView extends ElevatorView implements InterfaceSwing {
 	private ArrayList<JPanelFloorView> startFloors;
 	private ArrayList<JPanelFloorView> endFloors;
 	
-	public JPanelElevatorView(Elevator elevator, int identifier) {
-		super(elevator, identifier);
-		
+	public JPanelElevatorView(Elevator e, int identifier) {
+		super(e, identifier);
 		frame = ((JFrameBuildingView)elevator.getBuilding().getView()).getBuildingView();
-		elevatorWidth = (int)(frame.getWidth()/elevator.getBuilding().getElevatorCount())/3;
+		elevatorWidth = (int)(frame.getWidth()/elevator.getBuilding().getElevatorCount());
 		floorHeight = (int)frame.getHeight()/elevator.getBuilding().getFloorCount();
 		startFloors = new ArrayList<JPanelFloorView>(elevator.getBuilding().getFloorCount());
 		endFloors = new ArrayList<JPanelFloorView>(elevator.getBuilding().getFloorCount());
@@ -44,32 +43,21 @@ public class JPanelElevatorView extends ElevatorView implements InterfaceSwing {
 		
 		JPanel background = new JPanel();
 		background.setLayout(null);
-		background.setBackground(Color.WHITE);
+		background.setBackground(Color.BLUE);
 		
 		Random rand = new Random();
-		for (int i = 0; i < floor_count; i++) {
-			Color c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-			Console.debug("y de base : "+Integer.toString((frame.getHeight()-floorHeight)));
-			Console.debug("y pour i="+i+" : "+Integer.toString((frame.getHeight()-floorHeight)-(i*floorHeight)));
-			startFloors.add(new JPanelFloorView(elevator, i, FloorView.START_FLOOR, 0, (frame.getHeight()-floorHeight)-(i*floorHeight), elevatorWidth, floorHeight, c));
-		}
-		
 		elevatorView = new JPanel();
 		elevatorView.setBackground(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
-		elevatorView.setBounds(elevatorWidth, frame.getHeight()-floorHeight, elevatorWidth, floorHeight);
-		
-		for (int i = 0; i < floor_count; i++) {
-			Color c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-			endFloors.add(new JPanelFloorView(elevator, i, FloorView.END_FLOOR, 2*elevatorWidth, (frame.getHeight()-floorHeight)-(i*floorHeight), elevatorWidth, floorHeight, c));
-		}
+//		elevatorView.setBounds(elevatorWidth, frame.getHeight()-floorHeight, elevatorWidth, floorHeight);
+		elevatorView.setSize(elevatorWidth, floorHeight);
 		
 		labelPassengersInElevator = new JLabel("0", SwingConstants.CENTER);
 		elevatorView.add(labelPassengersInElevator);
 		
-		for (int i = 0; i < floor_count; i++) {
-			background.add(startFloors.get(i).getComponent(), null);
-			background.add(endFloors.get(i).getComponent(), null);
-		}
+//		for (int i = 0; i < floor_count; i++) {
+//			background.add(startFloors.get(i).getComponent(), null);
+//			background.add(endFloors.get(i).getComponent(), null);
+//		}
 		background.add(elevatorView, null);
 		frame.add(background, identifier);
 		frame.validate();
@@ -85,10 +73,6 @@ public class JPanelElevatorView extends ElevatorView implements InterfaceSwing {
 
 	public void display() {
 		this.elevatorView.setVisible(true);
-		for (int i = 0; i < elevator.getBuilding().getFloorCount(); i++) {
-			startFloors.get(i).display();
-			endFloors.get(i).display();
-		}
 		Console.debug("Affichage de la vue ascenseur "+identifier+" de taille : "+elevatorView.getWidth()+"x"+elevatorView.getHeight());
 	}
 
@@ -120,12 +104,6 @@ public class JPanelElevatorView extends ElevatorView implements InterfaceSwing {
 
 	public Component getComponent() {
 		return elevatorView;
-	}
-
-	@Override
-	public void refreshFloor(int floor_index) {
-		startFloors.get(floor_index).refresh();
-		endFloors.get(floor_index).refresh();
 	}
 
 }
