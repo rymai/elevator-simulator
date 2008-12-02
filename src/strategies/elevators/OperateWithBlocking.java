@@ -45,19 +45,22 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 	}
 	
 	public void acts() {
-		Console.debug("\tStrategy Linear");
+		Console.debug("\tStrategy Operate With Blocking - Manoeuvre a blocage");
 		
+                //if the elevator is not call at all
 		if(!elevator.noCallAtAll()) {
 			Console.debug_variable("\tstopTime", stopTime);
 			Console.debug_variable("\tstoppedTime", stoppedTime);
-			// On est arriv� a un �tage, on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
-			if(elevator.isThereCallsAtThisFloor()) {
+			// On est arrive a un etage, on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
+			
+                        if((elevator.isThereCallsAtThisFloor()&&(!hasAlreadyTakeAPerson))) {
 				Console.debug("\tStop => "+elevator.getCurrentFloor());
 				elevator.resetCurrentFloorCalls();
 				elevator.setChangedAndNotifiyObservers();
 				elevator.getView().refresh();
 				elevator.getView().refreshFloor(elevator.getCurrentFloor());
-				hasAlreadyTakeAPerson = false;
+				hasAlreadyTakeAPerson = true;
+                                
 				if(stoppedTime >= stopTime) leaveThisFloor();
 			}
 			else {
@@ -72,6 +75,7 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 //			Console.debug("\tEn haut ? : "+elevator.atTop());
 //			Console.debug("\tEn bas ? : "+elevator.atBottom());
 			
+                        
 			if((elevator.goingToTop() && elevator.atTop())
 				|| (!elevator.goingToTop() && elevator.atBottom())
 				|| elevator.noCallOnTheWay()) {
@@ -126,11 +130,13 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 
 	public Passenger releasePassenger(Passenger passenger) {
 		int index = elevator.getPassengers().indexOf(passenger);
+                hasAlreadyTakeAPerson = false;
 		if(index != -1) {
 			elevator.getPassengers().remove(index);
 			elevator.removeOfCurrentWeight(passenger.getTotalMass());
 			incrementStopTime();
 		}
+                
 		else passenger = null;
 		return passenger;
 	}

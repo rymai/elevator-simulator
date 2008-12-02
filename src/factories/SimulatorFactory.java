@@ -9,6 +9,7 @@ import views.graphics.JFrameBuildingView;
 import views.graphics.JPanelElevatorView;
 import controllers.MainController;
 import models.*;
+import strategies.elevators.OperateWithBlocking;
 
 public class SimulatorFactory {
 	
@@ -29,7 +30,7 @@ public class SimulatorFactory {
 	}
 	
 	public Group getGroup(int current_floor, int wanted_floor, int personCount, MainController controller, Elevator elevator) {
-//		Console.debug("Creation d'un groupe initialisŽ ˆ une taille de "+personCount+".");
+//		Console.debug("Creation d'un groupe initialisï¿½ ï¿½ une taille de "+personCount+".");
 		return new Group(current_floor, wanted_floor, personCount, controller, elevator);
 	}
 
@@ -38,6 +39,8 @@ public class SimulatorFactory {
 		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
 			strategy = new Linear();
+                else if(type.equals("OPERATEWITHBLOCKING"))
+			strategy = new OperateWithBlocking();
 		return new Elevator(controller, max_person, strategy);
 	}
 
