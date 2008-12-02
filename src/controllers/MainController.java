@@ -16,7 +16,7 @@ public class MainController {
 	
 	private static MainController INSTANCE = null;
 
-	// Le point d'acces a tous les modele (le batiment a acces direct aux elevators et aux passagers)
+	// Le point d'acces a tous les modeles (le batiment a acces direct aux elevators et aux passagers)
 	public static Building building = null;
 	public Building getBuilding() {
 		return building;
