@@ -19,6 +19,10 @@ public abstract class BuildingView implements InterfaceView {
 		this.controller = controller;
 		this.building = building;
 	}
+
+	public abstract void refreshFloor(int floor_index);
 	
-//	public abstract void addElevator(ElevatorView elevatorView);
+	public abstract void addStartsFloors();
+	public abstract void addEndsFloors();
+	
 }

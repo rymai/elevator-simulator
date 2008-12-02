@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import views.FloorView;
+import models.Building;
 import models.Elevator;
 
 public class JPanelFloorView extends FloorView implements InterfaceSwing {
@@ -14,11 +15,13 @@ public class JPanelFloorView extends FloorView implements InterfaceSwing {
 	private JPanel floorView = null;
 	private JLabel passengerView = null;
 	
-	public JPanelFloorView(Elevator elevator, int floor_index, int floor_kind, int x, int y, int w, int h, Color c) {
-		super(elevator, floor_index, floor_kind);
+	public JPanelFloorView(Building building, int floor_index, int floor_kind, int x, int y, int w, int h, Color c) {
+		super(building, floor_index, floor_kind);
 		floorView = new JPanel();
 		floorView.setBackground(c);
 		floorView.setBounds(x, y, w, h);
+//		System.out.println(floorView.getBounds().toString());
+//		floorView.setSize(w, h);
 		passengerView = new JLabel();
 		displayPassengerAtTheFloor();
 		floorView.add(passengerView);
@@ -39,9 +42,9 @@ public class JPanelFloorView extends FloorView implements InterfaceSwing {
 	private void displayPassengerAtTheFloor() {
 		int x = 0;
 		if(floorKind == FloorView.START_FLOOR)
-			x = elevator.getWaitingPassengerCountAtFloor(floorIndex);
+			x = building.getWaitingPassengerCountAtFloor(floorIndex);
 		else
-			x = elevator.getArrivedPassengerCountAtFloor(floorIndex);
+			x = building.getArrivedPassengerCountAtFloor(floorIndex);
 		
 		String t = "";
 		for (int i = 0; i < x; i++) {

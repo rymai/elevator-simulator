@@ -16,7 +16,7 @@ public class MainController {
 	
 	private static MainController INSTANCE = null;
 
-	// Le point d'acces a tous les modele (le batiment a acces direct aux elevators et aux passagers)
+	// Le point d'acces a tous les modeles (le batiment a acces direct aux elevators et aux passagers)
 	public static Building building = null;
 	public Building getBuilding() {
 		return building;
@@ -78,19 +78,28 @@ public class MainController {
 		}
 		// Add passengers to the building
 		building.setPassengers(passengers);
+		
+		for (Elevator e : elevators) {
+			for (Passenger p : passengers) {
+				e.addObserver(p);
+			}
+		}
 
 		// Creating the building view
 		building.setView(sf.getBuildingView(INSTANCE, building));
-		building.getView().display();
+		building.getView().addStartsFloors();
 		
 		// Creating a view for each elevator
 		Elevator temp_elevator;
 		for (int i = 0; i < elevators.size(); i++) {
 			temp_elevator = elevators.get(i);
-			temp_elevator.setView(sf.getElevatorView(temp_elevator, i));
+			temp_elevator.setView(sf.getElevatorView(temp_elevator, i+1));
 			temp_elevator.getView().display();
 		}
-
+		
+		building.getView().addEndsFloors();
+		building.getView().display();
+		
 		// Actions
 		for (Passenger p : passengers) {
 			p.acts();

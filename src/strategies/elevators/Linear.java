@@ -40,8 +40,8 @@ public class Linear implements ElevatorStrategy {
 				Console.debug("\tStop => "+elevator.getCurrentFloor());
 				elevator.resetCurrentFloorCalls();
 				elevator.setChangedAndNotifiyObservers();
-				elevator.getView().refresh();
-				elevator.getView().refreshFloor(elevator.getCurrentFloor());
+				elevator.getBuilding().getView().refresh();
+				elevator.getBuilding().getView().refreshFloor(elevator.getCurrentFloor());
 				hasAlreadyTakeAPerson = false;
 				if(stoppedTime >= stopTime) leaveThisFloor();
 			}
@@ -76,8 +76,8 @@ public class Linear implements ElevatorStrategy {
 			// DEBUG
 			Console.debug("Demande pour l'ascenseur "+elevator.getIdentifier()+" :");
 			String demande = "";
-			for (int i = elevator.getAskedFloors().size()-1; i >= 0; i--) {
-				demande += i+" -> "+elevator.getAskedFloors().get(i)+"\n";
+			for (int i = elevator.getBuilding().getAskedFloors().size()-1; i >= 0; i--) {
+				demande += i+" -> "+elevator.getBuilding().getAskedFloors().get(i)+"\n";
 			}
 			Console.debug(demande);
 			Console.debug("Step : "+Integer.toString(elevator.getStep()));
@@ -85,7 +85,7 @@ public class Linear implements ElevatorStrategy {
 			// DEBUG
 		}
 		else {
-			elevator.setRunning(false);
+//			elevator.setRunning(false);
 		}
 	}
 

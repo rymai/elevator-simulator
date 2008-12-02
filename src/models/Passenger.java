@@ -21,18 +21,9 @@ public abstract class Passenger implements Observer {
 	protected boolean elevatorCalled;
 	protected boolean inTheElevator;
 	
-	/*
-	public void TimeVar() { 
-		 beginTime = System.currentTimeMillis(); 
-	} */
-	
-	public long getTime() { 
-		 return (System.currentTimeMillis() - beginTime) / 1000;  
-	} 
-	
-	public Passenger(int current_floor, int  wanted_floor, MainController controller, Elevator elevator) {
+	public Passenger(int current_floor, int  wanted_floor, MainController controller) {
 		this.controller = controller;
-		this.setElevator(elevator);
+//		this.setElevator(elevator);
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCount();
 		this.wantedFloor = wanted_floor%this.controller.getBuilding().getFloorCount();
 		elevatorCalled = false;
@@ -48,21 +39,18 @@ public abstract class Passenger implements Observer {
 	}
 
 	public void acts() {
-		if(!elevatorCalled && !isArrived()) {
-			askForElevator();
+		if(!isArrived()) {
+			if(!elevatorCalled || getTime() > 8) {
+				askForElevator();
+			}
 		}
 	}
 
 	private void askForElevator() {
-		if(inTheElevator)
-			elevatorCalled = elevator.call(wantedFloor);
-		else
-			elevatorCalled = elevator.call(currentFloor);
-		System.out.print("Passenger.askForElevator ");
-		if(elevatorCalled){
-			beginTime = System.currentTimeMillis();
-		}
-		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
+		if(inTheElevator) elevatorCalled = this.controller.getBuilding().callElevator(wantedFloor);
+		else elevatorCalled = this.controller.getBuilding().callElevator(currentFloor);
+		if(elevatorCalled) beginTime = System.currentTimeMillis();
+//		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
 	}
 	
 	public boolean isArrived() {
@@ -82,6 +70,10 @@ public abstract class Passenger implements Observer {
 		return elevator;
 	}
 
+	public long getTime() { 
+		 return (System.currentTimeMillis() - beginTime) / 1000;  
+	} 
+	
 	public abstract void actsAfterEnteredTheElevator();
 	public abstract void actsAfterBeRejectedFromElevator();
 
