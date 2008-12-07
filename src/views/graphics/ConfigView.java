@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import observers.*;
 
-public class JFrameConfigView extends JFrame implements InterfaceSwing {
+public class ConfigView extends JFrame {
 
 
 	private static final long serialVersionUID = 8164118974463460991L;
@@ -35,7 +35,7 @@ public class JFrameConfigView extends JFrame implements InterfaceSwing {
 			private JSlider jslider_group_count;
 		private JPanel jpanel_start_simulation;
 
-	public JFrameConfigView() {
+	public ConfigView() {
 		this.setLocationByPlatform(true);
 		this.setSize(600, 600);
 		this.setTitle("Projet Java 2008 : Simulation de comportement d'ascenseurs - Tic/Tac/Viet");

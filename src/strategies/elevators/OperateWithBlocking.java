@@ -20,7 +20,7 @@ puis en direction de l’unique étage de destination, sans aucun arrêt interm�
 Ce mode de fonctionnement est très consommateur d’énergie et n’est utilisé que sur les 
 ascenseurs mono-vitesse.*/
 
-public class OperateWithBlocking  implements ElevatorStrategy {
+public class OperateWithBlocking extends ElevatorStrategy {
 	
 	private Elevator elevator;
 	
@@ -47,15 +47,13 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 	public void acts() {
 		Console.debug("\tStrategy Linear");
 		
-		if(!elevator.noCallAtAll()) {
-			Console.debug_variable("\tstopTime", stopTime);
-			Console.debug_variable("\tstoppedTime", stoppedTime);
+		if(!elevator.getBuilding().allPassengersAreArrived()) {
+			boolean must_leave_now = false;
+			releaseAllArrivedPassengers();
 			// On est arriv� a un �tage, on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
 			if(elevator.isThereCallsAtThisFloor()) {
 				Console.debug("\tStop => "+elevator.getCurrentFloor());
 				elevator.resetCurrentFloorCalls();
-				elevator.setChangedAndNotifiyObservers();
-				elevator.getView().refresh();
 				elevator.getBuilding().getView().refreshFloor(elevator.getCurrentFloor());
 				hasAlreadyTakeAPerson = false;
 				if(stoppedTime >= stopTime) leaveThisFloor();
@@ -77,16 +75,6 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 				|| elevator.noCallOnTheWay()) {
 				elevator.changeDirection(); // Changement de sens!
 			}
-
-			if(elevator.isBlocked()) {
-				Console.debug("\tBlocked => "+elevator.getCurrentFloor());
-				do {
-					Passenger p = elevator.releasePassenger(elevator.getLastPassenger());
-					p.actsAfterBeRejectedFromElevator();
-					Console.debug("\tPassenger => "+p.getClass()+" : Out");
-				} while(elevator.isBlocked());
-				leaveThisFloor();
-			}
 			
 			// DEBUG
 			Console.debug("Demande pour l'ascenseur "+elevator.getIdentifier()+" :");
@@ -100,7 +88,7 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 			// DEBUG
 		}
 		else {
-			elevator.setRunning(false);
+//			elevator.setRunning(false);
 		}
 	}
 
@@ -108,7 +96,7 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 		stopTime = 0;
 		stoppedTime = 0;
 		// The elevator moves
-		if(!elevator.noCallAtAll()) elevator.moves();
+//		if(!elevator.noCallAtAll()) elevator.moves();
 	}
 
 	public boolean takePassenger(Passenger passenger) {
@@ -124,15 +112,13 @@ public class OperateWithBlocking  implements ElevatorStrategy {
 		else return false;
 	}
 
-	public Passenger releasePassenger(Passenger passenger) {
+	public void releasePassenger(Passenger passenger) {
 		int index = elevator.getPassengers().indexOf(passenger);
 		if(index != -1) {
 			elevator.getPassengers().remove(index);
 			elevator.removeOfCurrentWeight(passenger.getTotalMass());
 			incrementStopTime();
 		}
-		else passenger = null;
-		return passenger;
 	}
 	
 }

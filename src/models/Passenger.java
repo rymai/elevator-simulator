@@ -1,80 +1,66 @@
 package models;
-import java.util.Observer;
 
-import main.Console;
 import controllers.MainController;
-import views.PassengerView;
 
-public abstract class Passenger implements Observer {
+public abstract class Passenger {
 	
 	protected MainController controller;
 	
 	// Compteur perso
 	protected long beginTime;
-	
 	protected Elevator elevator;
-	
-	protected PassengerView view;
 	protected int currentFloor;
 	protected int wantedFloor;
 	
-	protected boolean elevatorCalled;
-	protected boolean inTheElevator;
-	
 	public Passenger(int current_floor, int  wanted_floor, MainController controller) {
 		this.controller = controller;
-//		this.setElevator(elevator);
-		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCount();
-		this.wantedFloor = wanted_floor%this.controller.getBuilding().getFloorCount();
-		elevatorCalled = false;
+		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
+		this.wantedFloor = wanted_floor%this.controller.getBuilding().getFloorCountWithGround();
+		this.elevator = null;
+		this.beginTime = System.currentTimeMillis();
 	}
 	
 	public abstract int getTotalMass();
 	public abstract int getPersonCount();
+	public abstract boolean canEnterElevator(Elevator elevator);
 	
-	// Definit devant quel ascenseur l'individu attend
+	public Elevator getElevator() {
+		return elevator;
+	}
+	// Definit dans quel ascenseur l'individu se trouve
 	public void setElevator(Elevator elevator) {
 		this.elevator = elevator;
-		elevator.addObserver(this);
-	}
-
-	public void acts() {
-		if(!isArrived()) {
-			if(!elevatorCalled || getTime() > 8) {
-				askForElevator();
-			}
-		}
-	}
-
-	private void askForElevator() {
-		if(inTheElevator) elevatorCalled = this.controller.getBuilding().callElevator(wantedFloor);
-		else elevatorCalled = this.controller.getBuilding().callElevator(currentFloor);
-		if(elevatorCalled) beginTime = System.currentTimeMillis();
-//		Console.debug("Demande ascenseur "+elevator.getIdentifier()+" (Žtage courant "+currentFloor+" -> "+wantedFloor+")");
 	}
 	
 	public boolean isArrived() {
-		return wantedFloor == Integer.MAX_VALUE;
+		return (wantedFloor == currentFloor) && !isInTheElevator();
 	}
 	
 	public boolean isInTheElevator() {
-		return inTheElevator;
-		
+		return elevator != null;
 	}
 
 	public int getCurrentFloor() {
 		return currentFloor;
 	}
-
-	public Elevator getElevator() {
-		return elevator;
+	public void setCurrentFloor(int floor) {
+		currentFloor = floor;
 	}
 
-	public long getTime() { 
+	public long waitingTime() { 
 		 return (System.currentTimeMillis() - beginTime) / 1000;  
-	} 
+	}
+
+	public int getWantedFloor() {
+		return wantedFloor;
+	}
+
+	public boolean isWaitingAtFloor(int floor) {
+		return !isArrived() && !isInTheElevator() && currentFloor == floor;
+	}
 	
-	public abstract void actsAfterEnteredTheElevator();
-	public abstract void actsAfterBeRejectedFromElevator();
+	public boolean isArrivedAtFloor(int floor) {
+		return isArrived() && currentFloor == floor;
+	}
 
 }
