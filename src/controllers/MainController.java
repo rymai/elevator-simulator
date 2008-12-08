@@ -28,8 +28,13 @@ public class MainController {
 	}
 
 	/**
+<<<<<<< HEAD:src/controllers/MainController.java
+	 * La pr�sence d'un constructeur priv� supprime
+	 * le constructeur public par d�faut.
+=======
 	 * La presence d'un constructeur prive supprime
 	 * le constructeur public par defaut.
+>>>>>>> dadc5d0bf5c9154c27700743d663f00fd16d6c7d:src/controllers/MainController.java
 	 */
 	private MainController() {}
 
@@ -58,18 +63,13 @@ public class MainController {
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
-<<<<<<< HEAD:src/controllers/MainController.java
-		for (int i = 0; i < elevator_count; i++) {
-                    //
-			elevator = sf.getElevator(INSTANCE, "OPERATEWITHBLOCKING", 5);
-			elevator.setIdentifier(Integer.toString(i));
-=======
+
 		for (int i = 1; i <= elevator_count; i++) {
 //			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", 5);
-			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
-
+//			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
+			elevator = sf.getElevator(INSTANCE, "NAWAK", 5);
+			elevator = sf.getElevator(INSTANCE, "OPERATEWITHBLOCKING", 5);
 			elevator.setIdentifier(i);
->>>>>>> 6e6488c141f982ccbb4c5933f95521f49bb2e84a:src/controllers/MainController.java
 			elevators.add(elevator);
 		}
 		// Add elevators to the building

@@ -250,4 +250,28 @@ public class Building {
 		return null;
 	}
 	
+	public int getMaximumWaitingFloor(){
+		int maxCrowdedFloor = 0;
+		int numberOfPeople = 0;
+		for(int i=0; i <= floorCount; i++){
+			//System.out.println("Etage "+i);
+			if(getWaitingPassengersCountAtFloor(i) > numberOfPeople){
+				//System.out.println("Etage "+i+"Comparaison "+getWaitingPassengersCountAtFloor(i)+">"+maxCrowdedFloor);
+				maxCrowdedFloor = i;
+				numberOfPeople = getWaitingPassengersCountAtFloor(i);
+			}
+		}
+		System.out.println("Etage le plus blind� : "+maxCrowdedFloor);
+		return maxCrowdedFloor;
+	}
+	
+	public ArrayList<Integer> getFloorWithWaitingPassengers(){
+		ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
+		for(int i=0; i <= floorCount; i++){
+			if(getWaitingPassengersCountAtFloor(i) > 0){
+				numberWaiting.add(i);
+			}
+		}
+		return numberWaiting;
+	}
 }

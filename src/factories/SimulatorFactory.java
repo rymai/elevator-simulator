@@ -7,13 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import strategies.ElevatorStrategy;
-import strategies.elevators.Linear;
-import strategies.elevators.LinearInTheDirection;
-import views.BuildingView;
-import views.ElevatorView;
+import strategies.elevators.*;
 import controllers.MainController;
 import models.*;
-import strategies.elevators.OperateWithBlocking;
 
 public class SimulatorFactory {
 
@@ -44,28 +40,21 @@ public class SimulatorFactory {
 	}
 
 	public Group getGroup(int current_floor, int wanted_floor, int personCount, MainController controller, Elevator elevator) {
-<<<<<<< HEAD:src/factories/SimulatorFactory.java
 //		Console.debug("Creation d'un groupe initialisï¿½ ï¿½ une taille de "+personCount+".");
-		return new Group(current_floor, wanted_floor, personCount, controller, elevator);
-=======
-		//		Console.debug("Creation d'un groupe initialisŽ ˆ une taille de "+personCount+".");
 		return new Group(current_floor, wanted_floor, personCount, controller);
->>>>>>> 6e6488c141f982ccbb4c5933f95521f49bb2e84a:src/factories/SimulatorFactory.java
 	}
 
 	public Elevator getElevator(MainController controller, String type, int max_person) {
 		//		Console.debug("Creation d'un ascenseur de type "+type);
 		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
-<<<<<<< HEAD:src/factories/SimulatorFactory.java
-			strategy = new Linear();
-                else if(type.equals("OPERATEWITHBLOCKING"))
-			strategy = new OperateWithBlocking();
-=======
 			strategy = loadPlugin("strategies.elevators.Linear");
 		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
 			strategy = new LinearInTheDirection();
->>>>>>> 6e6488c141f982ccbb4c5933f95521f49bb2e84a:src/factories/SimulatorFactory.java
+		else if(type.equals("NAWAK"))
+			strategy = new Nawak();
+        //else if(type.equals("OPERATEWITHBLOCKING"))
+		//	strategy = new OperateWithBlocking();
 		return new Elevator(controller, max_person, strategy);
 	}
 	
