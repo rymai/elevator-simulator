@@ -12,8 +12,8 @@ public abstract class Passenger {
 	protected int currentFloor;
 	protected int wantedFloor;
 	
-	public Passenger(int current_floor, int  wanted_floor, MainController controller) {
-		this.controller = controller;
+	public Passenger(int current_floor, int  wanted_floor) {
+		this.controller = MainController.getInstance();
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
 		this.wantedFloor = wanted_floor%this.controller.getBuilding().getFloorCountWithGround();
 		this.elevator = null;

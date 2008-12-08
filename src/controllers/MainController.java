@@ -58,7 +58,7 @@ public class MainController {
 		SimulatorFactory sf = new SimulatorFactory();
 
 		// Constructs the buildings.
-		building = sf.getBuilding(floor_count, INSTANCE);
+		building = sf.getBuilding(floor_count);
 
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
@@ -67,8 +67,8 @@ public class MainController {
 		for (int i = 1; i <= elevator_count; i++) {
 //			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", 5);
 //			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
-			elevator = sf.getElevator(INSTANCE, "NAWAK", 5);
-			elevator = sf.getElevator(INSTANCE, "OPERATEWITHBLOCKING", 5);
+			elevator = sf.getElevator("NAWAK", 5);
+			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);
 			elevator.setIdentifier(i);
 			elevators.add(elevator);
 		}
@@ -78,7 +78,7 @@ public class MainController {
 		// Constructs the passengers (only persons for now)
 		LinkedList<Passenger> passengers = new LinkedList<Passenger>();
 		for (int i = 0; i < person_count; i++) {
-			passengers.add(sf.getPerson(building.getFloorCountWithGround(), INSTANCE));
+			passengers.add(sf.getPerson(building.getFloorCountWithGround()));
 		}
 		// Add passengers to the building
 		building.setPassengers(passengers);

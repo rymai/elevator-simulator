@@ -13,16 +13,16 @@ import models.*;
 
 public class SimulatorFactory {
 
-	public Building getBuilding(int floor_count, ArrayList<Elevator> elevator_list, LinkedList<Passenger> passengers_list, MainController controller) {
+	public Building getBuilding(int floor_count, ArrayList<Elevator> elevator_list, LinkedList<Passenger> passengers_list) {
 		//		Console.debug("Creation d'un batiment avec "+floorCount+" etages et "+elevatorList.size()+" ascenseurs.");
-		return new Building(floor_count, elevator_list, passengers_list, controller);
+		return new Building(floor_count, elevator_list, passengers_list);
 	}
 
-	public Building getBuilding(int floor_count, MainController controller) {
-		return new Building(floor_count, controller);
+	public Building getBuilding(int floor_count) {
+		return new Building(floor_count);
 	}
 
-	public Person getPerson(int max_floor, MainController controller) {
+	public Person getPerson(int max_floor) {
 		//		Console.debug("Person sex: "+Person.getTextForSex(sex)+" | mass: "+mass+"kg | qi: "+qi+ ". "+
 		//				"Ascenseur: "+elevator.getIdentifier()+". "+
 		//				"Actuellement a l'etage "+current_floor+", veux aller a l'etage "+wanted_floor+". ");
@@ -36,15 +36,15 @@ public class SimulatorFactory {
 			wanted_floor = rand.nextInt(max_floor);
 		} while (wanted_floor == current_floor);
 
-		return new Person(current_floor, wanted_floor, sex, mass, qi,controller);
+		return new Person(current_floor, wanted_floor, sex, mass, qi);
 	}
 
-	public Group getGroup(int current_floor, int wanted_floor, int personCount, MainController controller, Elevator elevator) {
+	public Group getGroup(int current_floor, int wanted_floor, int personCount, Elevator elevator) {
 //		Console.debug("Creation d'un groupe initialis� � une taille de "+personCount+".");
-		return new Group(current_floor, wanted_floor, personCount, controller);
+		return new Group(current_floor, wanted_floor, personCount);
 	}
 
-	public Elevator getElevator(MainController controller, String type, int max_person) {
+	public Elevator getElevator(String type, int max_person) {
 		//		Console.debug("Creation d'un ascenseur de type "+type);
 		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
@@ -55,7 +55,7 @@ public class SimulatorFactory {
 			strategy = new Nawak();
         //else if(type.equals("OPERATEWITHBLOCKING"))
 		//	strategy = new OperateWithBlocking();
-		return new Elevator(controller, max_person, strategy);
+		return new Elevator(max_person, strategy);
 	}
 	
 	private static ElevatorStrategy loadPlugin(String className) {

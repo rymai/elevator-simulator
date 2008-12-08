@@ -15,8 +15,8 @@ public class Person extends Passenger {
 	// Pour simuler les cons.
 	private int qi;
 	
-	public Person(int current_floor, int wanted_floor, int sex, int mass, int qi, MainController controller) {
-		super(current_floor, wanted_floor, controller);
+	public Person(int current_floor, int wanted_floor, int sex, int mass, int qi) {
+		super(current_floor, wanted_floor);
 		this.sex = sex;
 		this.mass = mass;
 		this.qi = qi;

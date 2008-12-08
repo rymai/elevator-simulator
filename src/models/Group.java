@@ -8,13 +8,13 @@ public class Group extends Passenger {
 	
 	private ArrayList<Person> persons;
 	
-	public Group(int current_floor, int wanted_floor, int personCount, MainController controller) {
-		super(current_floor, wanted_floor, controller);
+	public Group(int current_floor, int wanted_floor, int personCount) {
+		super(current_floor, wanted_floor);
 		this.persons = new ArrayList<Person>(personCount);
 	}
 	
-	public Group(int current_floor, int wanted_floor, ArrayList<Person> persons, MainController controller) {
-		super(current_floor, wanted_floor, controller);
+	public Group(int current_floor, int wanted_floor, ArrayList<Person> persons) {
+		super(current_floor, wanted_floor);
 		this.persons = persons;
 	}
 
