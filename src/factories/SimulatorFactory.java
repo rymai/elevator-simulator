@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import strategies.ElevatorStrategy;
-import strategies.elevators.Linear;
-import strategies.elevators.LinearInTheDirection;
-import views.BuildingView;
-import views.ElevatorView;
+import strategies.elevators.*;
 import controllers.MainController;
 import models.*;
 
@@ -51,6 +48,8 @@ public class SimulatorFactory {
 			strategy = new Linear();
 		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
 			strategy = new LinearInTheDirection();
+		else if(type.equals("NAWAK"))
+			strategy = new Nawak();
 		return new Elevator(controller, max_person, strategy);
 	}
 

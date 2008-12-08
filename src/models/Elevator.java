@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import main.Console;
@@ -69,6 +70,8 @@ public class Elevator {
 	
 	private int stopTime = 0;
 	private int stoppedTime = 0;
+	
+	private int targetFloor;
 
 	/**
 	 * This array has a length equal to the number of floor of the elevator's building
@@ -99,8 +102,15 @@ public class Elevator {
 		this.goingToTop = true;
 		this.passengers = new LinkedList<Passenger>();
 		this.moving = false;
+		this.targetFloor = 0;
 	}
 
+	public int getTargetFloor() {
+		return targetFloor;
+	}
+	public void setTargetFloor(int targetFloor) {
+		this.targetFloor = targetFloor;
+	}
 	// All is done here
 	public void acts() {
 //		Console.debug("Eleva "+identifier+" : Floor => "+currentFloor+", prochain deplacement : "+getStep());
@@ -203,6 +213,9 @@ public class Elevator {
 		return passengers.size();
 	}
 
+	public void setGoingToTop(boolean goingToTop) {
+		this.goingToTop = goingToTop;
+	}
 	public LinkedList<Passenger> getPassengers() {
 		return passengers;
 	}
@@ -308,5 +321,15 @@ public class Elevator {
 		setMoving(true);
 		strategy.leaveThisFloor();
 	}
+	
+	public ArrayList<Integer> getFloorWithWaitingToGoOut(){
+		ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
+		for(Passenger p : passengers){
+			if(!numberWaiting.contains(p.getWantedFloor())){
+				numberWaiting.add(p.getWantedFloor());
+			}
+		}
+		return numberWaiting;
+	}	
 	
 }
