@@ -46,9 +46,9 @@ public class MainController {
 		return INSTANCE;
 	}
 
-	public void startSimulation(int floor_count, int elevator_count, int person_count, int group_count) {
+	public void startSimulation(int floor_count, int elevator_count, int person_per_elevator, int person_count, int group_count) {
 		Console.info("Lancement d'une partie avec "+floor_count+" etages, "+elevator_count+
-				" ascenseurs, "+person_count+" individus et "+group_count+" groupes.");
+				" ascenseurs, "+person_per_elevator+" max personnes par ascenseur, "+person_count+" individus et "+group_count+" groupes.");
 
 		SimulatorFactory sf = new SimulatorFactory();
 
@@ -59,8 +59,8 @@ public class MainController {
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
 		for (int i = 1; i <= elevator_count; i++) {
-//			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", 5);
-			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
+//			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", person_per_elevator);
+			elevator = sf.getElevator(INSTANCE, "LINEAR", person_per_elevator);
 
 			elevator.setIdentifier(i);
 			elevators.add(elevator);

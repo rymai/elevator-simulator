@@ -2,6 +2,7 @@ package views.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.Random;
 
 import controllers.MainController;
@@ -24,7 +25,7 @@ public class AnimatedPerson extends AnimatedObject {
 	private Color eye_color;
 	
 	public static final int PERSON_WIDTH = arm_width*2 + 2;
-	public static final int PERSON_HEIGHT = head_height + body_width + leg_height -2;
+	public static final int PERSON_HEIGHT = head_height + body_width + leg_height - 1;
 	
 	public AnimatedPerson(MyFrame frame, Person person, int x, int y) {
 		super(frame, x, y);
@@ -52,27 +53,39 @@ public class AnimatedPerson extends AnimatedObject {
 
 	@Override
 	public void drawYourself(Graphics g) {
-		Random rand = new Random();
 		
-		g.setColor(head_color);
+		if(person.getQi() > 70)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.BLACK);
 		// Head
 		g.fillOval(x, y, head_width, head_height);
 		
-		g.setColor(eye_color);
+		if(person.getQi() <= 70)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.BLACK);
+//		g.setColor(eye_color);
 		// Left eye
 		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
 		// Right eye
 		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
-		g.setColor(Color.RED);
+//		g.setColor(Color.RED);
 		// Smile
-		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 0, -180);
+		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
 		
 		g.setColor(Color.BLACK);
 		// Body
-		g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
-		
+		if(person.getSex() == person.MALE)
+			g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
+		else {
+			int[] xs = new int[]{x+(head_width/2), x+(head_width/2)-arm_width, x+(head_width/2)+arm_width};
+			int[] ys = new int[]{y+head_height, y+head_height+body_height+2, y+head_height+body_height+2};
+			Polygon p = new Polygon(xs, ys, 3);
+			g.fillPolygon(p);	
+		}
 		// Arms
 		g.drawLine(x+(head_width/2)-arm_width, y+head_height+shoulder_height, x+(head_width/2)+arm_width, y+head_height+shoulder_height);
 		

@@ -6,8 +6,8 @@ import models.Elevator;
 
 public class AnimatedElevator extends AnimatedObject {
 
-	public static final int ELEVATOR_WIDTH = 80;
-	public static final int ELEVATOR_HEIGHT = 50;
+	public static int ELEVATOR_WIDTH = 100;
+	public static int ELEVATOR_HEIGHT = 50;
 	public static final int BETWEEN_2_FLOORS_DURATION = 10;
 	private Elevator elevator;
 	private int animationStep;

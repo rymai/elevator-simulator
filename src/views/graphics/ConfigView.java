@@ -1,6 +1,9 @@
 package views.graphics;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.*;
 import observers.*;
 
@@ -17,6 +20,8 @@ public class ConfigView extends JFrame {
 	private static final int MAX_PERSON_COUNT = 100;
 	private static final int MIN_GROUP_COUNT = 0;
 	private static final int MAX_GROUP_COUNT = 10;
+	private static final int MIN_PERSON_PER_ELEVATOR_COUNT = 1;
+	public static final int MAX_PERSON_PER_ELEVATOR_COUNT = 10;
 	
 	// |Nb etage: <slider>
 	// |Nb ascenseur: <slider>
@@ -29,6 +34,8 @@ public class ConfigView extends JFrame {
 			private JSlider jslider_floor_count;
 		private JPanel jpanel_elevator_count;
 			private JSlider jslider_elevator_count;
+		private JPanel jpanel_person_per_elevator_count;
+			private JSlider jslider_person_per_elevator_count;
 		private JPanel jpanel_person_count;
 			private JSlider jslider_person_count;
 		private JPanel jpanel_group_count;
@@ -68,7 +75,7 @@ public class ConfigView extends JFrame {
 			this.jpanel_elevator_count = new JPanel(new GridLayout(1,3));
 			{	
 				JLabel choose_elevator_count = new JLabel("Nombre d'ascenseur");
-				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD,15));
+				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
 				jpanel_elevator_count.add(choose_elevator_count);
 				
 				JLabel jlabel_elevator_count = new JLabel(Integer.toString((int)MAX_ELEVATOR_COUNT/2));
@@ -81,6 +88,24 @@ public class ConfigView extends JFrame {
 				jpanel_elevator_count.add(jlabel_elevator_count);
 			}
 			this.jpanel_principal.add(jpanel_elevator_count);
+			
+			// Cadre du choix du nombre d'ascenseur
+			this.jpanel_person_per_elevator_count = new JPanel(new GridLayout(1,3));
+			{	
+				JLabel choose_person_per_elevator_count = new JLabel("Personnes max par ascenseur");
+				choose_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 12));
+				jpanel_person_per_elevator_count.add(choose_person_per_elevator_count);
+				
+				JLabel jlabel_person_per_elevator_count = new JLabel(Integer.toString((int)MAX_PERSON_PER_ELEVATOR_COUNT/2));
+				jlabel_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
+
+				jslider_person_per_elevator_count = new JSlider(MIN_PERSON_PER_ELEVATOR_COUNT, MAX_PERSON_PER_ELEVATOR_COUNT);
+				jslider_person_per_elevator_count.setValue((int)MAX_ELEVATOR_COUNT/2);
+				jslider_person_per_elevator_count.addChangeListener(new SliderUpdateObserver(jlabel_person_per_elevator_count));
+				jpanel_person_per_elevator_count.add(jslider_person_per_elevator_count);
+				jpanel_person_per_elevator_count.add(jlabel_person_per_elevator_count);
+			}
+			this.jpanel_principal.add(jpanel_person_per_elevator_count);
 			
 			// Cadre du choix du nombre d'individu
 			this.jpanel_person_count = new JPanel(new GridLayout(1,3));
@@ -134,6 +159,97 @@ public class ConfigView extends JFrame {
 		
 		this.setResizable(true);
 		this.setVisible(true);
+		
+//		JMenuBar menu_bar = new JMenuBar();
+//		JMenu menu1 = new JMenu("Simulation");
+//		JMenuItem item1 = new JMenuItem("New simulation");
+//		
+//		menu1.add(item1);
+//		menu_bar.add(menu1);
+//		menu_bar.setVisible(true);
+		
+		//Where the GUI is created:
+		JMenuBar menuBar;
+		JMenu menu, submenu;
+		JMenuItem menuItem;
+		JRadioButtonMenuItem rbMenuItem;
+		JCheckBoxMenuItem cbMenuItem;
+
+		//Create the menu bar.
+		menuBar = new JMenuBar();
+
+		//Build the first menu.
+		menu = new JMenu("A Menu");
+		menu.setMnemonic(KeyEvent.VK_A);
+		menu.getAccessibleContext().setAccessibleDescription(
+		        "The only menu in this program that has menu items");
+		menuBar.add(menu);
+
+		//a group of JMenuItems
+		menuItem = new JMenuItem("A text-only menu item",
+		                         KeyEvent.VK_T);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(
+		        KeyEvent.VK_1, ActionEvent.ALT_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription(
+		        "This doesn't really do anything");
+		menu.add(menuItem);
+
+		menuItem = new JMenuItem("Both text and icon",
+		                         new ImageIcon("images/middle.gif"));
+		menuItem.setMnemonic(KeyEvent.VK_B);
+		menu.add(menuItem);
+
+		menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
+		menuItem.setMnemonic(KeyEvent.VK_D);
+		menu.add(menuItem);
+
+		//a group of radio button menu items
+		menu.addSeparator();
+		ButtonGroup group = new ButtonGroup();
+		rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
+		rbMenuItem.setSelected(true);
+		rbMenuItem.setMnemonic(KeyEvent.VK_R);
+		group.add(rbMenuItem);
+		menu.add(rbMenuItem);
+
+		rbMenuItem = new JRadioButtonMenuItem("Another one");
+		rbMenuItem.setMnemonic(KeyEvent.VK_O);
+		group.add(rbMenuItem);
+		menu.add(rbMenuItem);
+
+		//a group of check box menu items
+		menu.addSeparator();
+		cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
+		cbMenuItem.setMnemonic(KeyEvent.VK_C);
+		menu.add(cbMenuItem);
+
+		cbMenuItem = new JCheckBoxMenuItem("Another one");
+		cbMenuItem.setMnemonic(KeyEvent.VK_H);
+		menu.add(cbMenuItem);
+
+		//a submenu
+		menu.addSeparator();
+		submenu = new JMenu("A submenu");
+		submenu.setMnemonic(KeyEvent.VK_S);
+
+		menuItem = new JMenuItem("An item in the submenu");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(
+		        KeyEvent.VK_2, ActionEvent.ALT_MASK));
+		submenu.add(menuItem);
+
+		menuItem = new JMenuItem("Another item");
+		submenu.add(menuItem);
+		menu.add(submenu);
+
+		//Build second menu in the menu bar.
+		menu = new JMenu("Another Menu");
+		menu.setMnemonic(KeyEvent.VK_N);
+		menu.getAccessibleContext().setAccessibleDescription(
+		        "This menu does nothing");
+		menuBar.add(menu);
+
+		this.setJMenuBar(menuBar);
+		
 	}
 
 	public int get_floor_count() {
@@ -142,6 +258,10 @@ public class ConfigView extends JFrame {
 
 	public int get_elevator_count() {
 		return jslider_elevator_count.getValue();
+	}
+	
+	public int get_person_per_elevator_count() {
+		return jslider_person_per_elevator_count.getValue();
 	}
 
 	public int get_person_count() {

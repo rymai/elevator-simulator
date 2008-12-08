@@ -2,6 +2,8 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Observable;
+
+import main.Console;
 import controllers.MainController;
 
 public class Group extends Passenger {
@@ -41,13 +43,6 @@ public class Group extends Passenger {
 	public void addPerson(Person person) {
 		this.persons.add(person);
 	}
-	
-	/**
-	 * Methode implementant le comportement du groupe lorsque son ascenceur s'arrete
-	 */
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-	}
 
 	public int getPersonCount() {
 		return persons.size();
@@ -55,8 +50,16 @@ public class Group extends Passenger {
 
 	@Override
 	public boolean canEnterElevator(Elevator elevator) {
-		// TODO Auto-generated method stub
-		return false;
+		// Si l'ascenseur indique qu'il est en alerte de poids
+		if(!elevator.isInAlert()) {
+			if(elevator.takePassenger(this)) {
+				Console.debug("Nous montons dans ascenseur "+elevator.getIdentifier()+", nous allons a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
+			}
+			else {
+				Console.debug("Nous sommes trop lourd pour monter dans ascenseur "+elevator.getIdentifier()+".");
+			}
+		}
+		return isInTheElevator();
 	}
 	
 }
