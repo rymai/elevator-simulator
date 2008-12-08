@@ -18,7 +18,7 @@ import models.*;
  *
  */
 public class MainController {
-	
+
 	private static MainController INSTANCE = null;
 
 	// Le point d'acces a tous les modeles (le batiment a acces direct aux elevators et aux passagers)
@@ -54,7 +54,7 @@ public class MainController {
 
 		// Constructs the buildings.
 		building = sf.getBuilding(floor_count, INSTANCE);
-		
+
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
@@ -75,8 +75,8 @@ public class MainController {
 		}
 		// Add passengers to the building
 		building.setPassengers(passengers);
-		
-		
+
+
 		// Graphics!
 		MyFrame frame = new MyFrame(elevator_count, building.getFloorCountWithGround());
 		for (int i = 0; i < elevators.size(); i++) {
@@ -84,12 +84,12 @@ public class MainController {
 			frame.addAnimatedObject(e);
 			elevators.get(i).setAnimatedElevator(e);
 		}
-		
+
 		for (int i = 0; i <= building.getFloorCountWithGround(); i++) {
-			frame.addFixedObject(new FixedFloor(0, MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i)));
-			frame.addFixedObject(new FixedFloor(FixedFloor.FLOOR_WIDTH+(elevator_count*AnimatedElevator.ELEVATOR_WIDTH), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i)));
+			frame.addFixedObject(new FixedFloor(0, MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i), i));
+			frame.addFixedObject(new FixedFloor(FixedFloor.FLOOR_WIDTH+(elevator_count*AnimatedElevator.ELEVATOR_WIDTH), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i), i));
 		}
-		
+
 		Passenger passenger;
 		for (int i = 0; i < building.getPassengers().size(); i++) {
 			passenger = building.getPassengers().get(i);

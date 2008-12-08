@@ -1,5 +1,8 @@
 package factories;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -48,10 +51,44 @@ public class SimulatorFactory {
 		//		Console.debug("Creation d'un ascenseur de type "+type);
 		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
-			strategy = new Linear();
+			strategy = loadPlugin("strategies.elevators.Linear");
 		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
 			strategy = new LinearInTheDirection();
 		return new Elevator(controller, max_person, strategy);
+	}
+	
+	private static ElevatorStrategy loadPlugin(String className) {
+		Class c = null;   
+		try {        
+			URLClassLoader cl = new URLClassLoader (new URL[] { 
+//					new URL("file:///Users/remy/Documents/Development/Java/M1 Miage/elevator-behaviour-simulator-in-java/plugins")
+					new URL("file:///Users/remy/Desktop/plugins/")
+			});
+			c = cl.loadClass(className);
+		} 
+		catch(ClassNotFoundException e) {
+			System.err.println("Classe " + className + " non trouvee");
+			e.printStackTrace();   
+			return null;
+		}
+		catch (MalformedURLException e) {
+			e.printStackTrace();
+		}        
+
+		try {   
+			Object o = c.newInstance();      
+			return (ElevatorStrategy) o;
+		} 
+		catch(InstantiationException e) {  
+			System.err.println("Erreur dans l'instantiation de la classe "+ className);
+			e.printStackTrace();
+			return null;
+		}    
+		catch(IllegalAccessException e) {  
+			System.err.println("Erreur dans l'instantiation de la classe "+ className);
+			e.printStackTrace();
+			return null;
+		}    
 	}
 
 }

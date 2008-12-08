@@ -9,26 +9,28 @@ import models.Person;
 
 public class AnimatedPerson extends AnimatedObject {
 
-	private static int head_width = 12;
-	private static int head_height = 12;
+	private static int head_width = 13;
+	private static int head_height = 13;
 	private static int eye_width = 2;
 	private static int eye_height = 2;
 	private static int shoulder_height = 3;
-	private static int arm_width = 5;
+	private static int arm_width = 7;
 	private static int body_width = 10;
-	private static int body_height = 7;
+	private static int body_height = 8;
 	private static int leg_width = 10;
 	private static int leg_height = 5;
 	private Person person;
+	private Color head_color;
 	private Color eye_color;
 	
 	public static final int PERSON_WIDTH = arm_width*2 + 2;
-	public static final int PERSON_HEIGHT = head_height + body_width + leg_height - 2;
+	public static final int PERSON_HEIGHT = head_height + body_width + leg_height -2;
 	
 	public AnimatedPerson(MyFrame frame, Person person, int x, int y) {
 		super(frame, x, y);
 		this.person = person;
 		Random rand = new Random();
+		head_color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 		eye_color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	}
 
@@ -52,8 +54,9 @@ public class AnimatedPerson extends AnimatedObject {
 	public void drawYourself(Graphics g) {
 		Random rand = new Random();
 		
+		g.setColor(head_color);
 		// Head
-		g.drawOval(x, y, head_width, head_height);
+		g.fillOval(x, y, head_width, head_height);
 		
 		g.setColor(eye_color);
 		// Left eye

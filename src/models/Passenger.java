@@ -17,7 +17,7 @@ public abstract class Passenger {
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
 		this.wantedFloor = wanted_floor%this.controller.getBuilding().getFloorCountWithGround();
 		this.elevator = null;
-		this.beginTime = System.currentTimeMillis();
+		resetTime();
 	}
 	
 	public abstract int getTotalMass();
@@ -47,7 +47,7 @@ public abstract class Passenger {
 		currentFloor = floor;
 	}
 
-	public long getWaitingTime() { 
+	public long getTime() { 
 		 return (System.currentTimeMillis() - beginTime) / 1000;  
 	}
 
@@ -61,6 +61,10 @@ public abstract class Passenger {
 	
 	public boolean isArrivedAtFloor(int floor) {
 		return isArrived() && currentFloor == floor;
+	}
+
+	public void resetTime() {
+		beginTime = System.currentTimeMillis();
 	}
 
 }
