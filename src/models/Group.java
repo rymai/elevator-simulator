@@ -54,14 +54,9 @@ public class Group extends Passenger {
 	}
 
 	@Override
-	public void actsAfterBeRejectedFromElevator() {
+	public boolean canEnterElevator(Elevator elevator) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
-
-	@Override
-	public void actsAfterEnteredTheElevator() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

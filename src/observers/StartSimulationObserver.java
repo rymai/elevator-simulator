@@ -3,15 +3,15 @@ package observers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import views.*;
-import views.graphics.JFrameConfigView;
+import views.graphics.ConfigView;
 
 import controllers.MainController;
 
 public class StartSimulationObserver implements ActionListener {
 
-	private JFrameConfigView window;
+	private ConfigView window;
 	
-	public StartSimulationObserver(JFrameConfigView f) {
+	public StartSimulationObserver(ConfigView f) {
 		this.window = f;
 	}
 	

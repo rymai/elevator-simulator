@@ -3,14 +3,45 @@ package strategies;
 import models.Elevator;
 import models.Passenger;
 
-public interface ElevatorStrategy {
+public abstract class ElevatorStrategy {
 
-	public void acts();
+	protected Elevator elevator;
 
-	public boolean takePassenger(Passenger passenger);
+	public ElevatorStrategy() {
+	}
+	
+	public ElevatorStrategy(Elevator elevator) {
+		this.elevator = elevator;
+	}
 
-	public void setElevator(Elevator elevator);
+	public abstract void acts();
 
-	public Passenger releasePassenger(Passenger passenger);
+	public abstract boolean takePassenger(Passenger passenger);
+
+	public abstract void releasePassenger(Passenger passenger);
+	
+	public abstract void leaveThisFloor();
+	
+	public Elevator getElevator() {
+		return elevator;
+	}
+	
+	public void setElevator(Elevator elevator) {
+		this.elevator = elevator;
+	}
+	
+	public synchronized void releaseAllArrivedPassengers() {
+		for (int i = 0; i < elevator.getPassengerCount(); i++) {
+			if(elevator.getPassengers().get(i).getWantedFloor() == elevator.getCurrentFloor()) {
+				elevator.releasePassenger(elevator.getPassengers().get(i));
+			}
+		}
+		
+//		for (Passenger passenger : elevator.getPassengers()) {
+//			if(passenger.getWantedFloor() == elevator.getCurrentFloor()) {
+//				elevator.releasePassenger(passenger);
+//			}
+//		}
+	}
 	
 }
