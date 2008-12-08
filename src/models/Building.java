@@ -105,7 +105,7 @@ public class Building {
 		return null;
 	}
 
-	private LinkedList<Passenger> getWaitingPassengersAtFloor(int floor) {
+	public LinkedList<Passenger> getWaitingPassengersAtFloor(int floor) {
 		LinkedList<Passenger> ret_list = new LinkedList<Passenger>();
 		for (Passenger p : passengers) {
 			if(p.isWaitingAtFloor(floor)) ret_list.add(p);
@@ -116,7 +116,7 @@ public class Building {
 		return getWaitingPassengersAtFloor(floor).size();
 	}
 
-	private LinkedList<Passenger> getArrivedPassengersAtFloor(int floor) {
+	public LinkedList<Passenger> getArrivedPassengersAtFloor(int floor) {
 		LinkedList<Passenger> ret_list = new LinkedList<Passenger>();
 		for (Passenger p : passengers) {
 			if(p.isArrivedAtFloor(floor)) ret_list.add(p);
@@ -169,6 +169,19 @@ public class Building {
 			if(!p.isArrived() && !p.isInTheElevator()) i++;
 		}
 		return i;
+	}
+
+	public Passenger getWaitingPassengersAtFloorInThisDirection(int floor, boolean going_to_top) {
+		LinkedList<Passenger> ps = getWaitingPassengersAtFloor(floor);
+		for (Passenger p : ps) {
+			if(going_to_top) {
+				if(p.getWantedFloor() > p.getCurrentFloor()) return p;
+			}
+			else {
+				if(p.getWantedFloor() < p.getCurrentFloor()) return p;
+			}
+		}
+		return null;
 	}
 	
 }

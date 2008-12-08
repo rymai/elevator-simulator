@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
+import strategies.elevators.LinearInTheDirection;
 import views.BuildingView;
 import views.ElevatorView;
 import controllers.MainController;
@@ -48,6 +49,8 @@ public class SimulatorFactory {
 		ElevatorStrategy strategy = null;
 		if(type.equals("LINEAR"))
 			strategy = new Linear();
+		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
+			strategy = new LinearInTheDirection();
 		return new Elevator(controller, max_person, strategy);
 	}
 

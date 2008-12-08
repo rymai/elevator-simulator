@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
+import statistics.WaitingTime;
+
 class SimulationPanel extends JPanel implements Runnable {
 
 	private ArrayList<AnimatedObject> listAnimatedObjects;
@@ -14,7 +16,7 @@ class SimulationPanel extends JPanel implements Runnable {
 	private Thread t;
 	private MyFrame frame;
 	private boolean inPause = false;
-	private int framePerSecond = 10;
+	private long framePerSecond = 10;
 
 	public SimulationPanel(MyFrame f, int w, int h) {
 		setSize(w, h);
@@ -67,12 +69,28 @@ class SimulationPanel extends JPanel implements Runnable {
 		}
 	}
 
-	public synchronized void pause() {
+	public void pause() {
 		System.out.println("Pause!!!!!!!!!!!!!!!!!");
 		inPause = !inPause;
 		if(!inPause) {
 			run();
 		}
 	}
+	
+	public void speedUp() {
+		framePerSecond++;
+		if(framePerSecond>50) framePerSecond = 50;
+		System.out.println("framePerSecond : "+framePerSecond);
+	}
 
+	public void speedDown() {
+		framePerSecond--;
+		if(framePerSecond<=0) framePerSecond = (long) 0.1;
+		System.out.println("framePerSecond : "+framePerSecond);
+	}
+
+	public void displayWaitingTime() {
+		System.out.println("Temps moyen d'attente : "+WaitingTime.average());
+	}
+	
 }

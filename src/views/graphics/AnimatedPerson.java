@@ -57,14 +57,14 @@ public class AnimatedPerson extends AnimatedObject {
 		
 		g.setColor(eye_color);
 		// Left eye
-		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5, eye_width, eye_height);
+		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
 		// Right eye
-		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5, eye_width, eye_height);
+		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
 		g.setColor(Color.RED);
 		// Smile
-		g.drawArc(x+head_width/3, y+head_height/3, head_width/2, head_height/2, 0, -180);
+		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 0, -180);
 		
 		g.setColor(Color.BLACK);
 		// Body

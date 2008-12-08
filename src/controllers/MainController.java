@@ -59,7 +59,9 @@ public class MainController {
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
 		for (int i = 1; i <= elevator_count; i++) {
+//			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", 5);
 			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
+
 			elevator.setIdentifier(i);
 			elevators.add(elevator);
 		}
@@ -74,48 +76,27 @@ public class MainController {
 		// Add passengers to the building
 		building.setPassengers(passengers);
 		
+		
+		// Graphics!
 		MyFrame frame = new MyFrame(elevator_count, building.getFloorCountWithGround());
 		for (int i = 0; i < elevators.size(); i++) {
 			AnimatedElevator e = new AnimatedElevator(frame, elevators.get(i), FixedFloor.FLOOR_WIDTH+(AnimatedElevator.ELEVATOR_WIDTH*i), MyFrame.frame_height-AnimatedElevator.ELEVATOR_HEIGHT);
 			frame.addAnimatedObject(e);
 			elevators.get(i).setAnimatedElevator(e);
 		}
+		
 		for (int i = 0; i <= building.getFloorCountWithGround(); i++) {
 			frame.addFixedObject(new FixedFloor(0, MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i)));
 			frame.addFixedObject(new FixedFloor(FixedFloor.FLOOR_WIDTH+(elevator_count*AnimatedElevator.ELEVATOR_WIDTH), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*i)));
 		}
-//		int[] passengersAtFloor = new int[building.getFloorCountWithGround()];
-//		for (int i = 0; i < passengersAtFloor.length; i++) {
-//			passengersAtFloor[i] = 0;
-//		}
+		
 		Passenger passenger;
 		for (int i = 0; i < building.getPassengers().size(); i++) {
 			passenger = building.getPassengers().get(i);
 			if (passenger instanceof Person) {
 				frame.addAnimatedObject(new AnimatedPerson(frame, (Person)passenger, FixedFloor.FLOOR_WIDTH-AnimatedPerson.PERSON_WIDTH-(AnimatedPerson.PERSON_WIDTH*building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*passenger.getCurrentFloor())-AnimatedPerson.PERSON_HEIGHT));
 			}
-//			passengersAtFloor[passenger.getCurrentFloor()] += passenger.getPersonCount();
 		}
-
-		// Creating the building view
-//		building.setView(sf.getBuildingView(INSTANCE, building));
-//		building.getView().addStartsFloors();
-		
-		// Creating a view for each elevator
-//		Elevator temp_elevator;
-//		for (int i = 0; i < elevators.size(); i++) {
-//			temp_elevator = elevators.get(i);
-//			temp_elevator.setView(sf.getElevatorView(temp_elevator, i+1));
-//			temp_elevator.getView().display();
-//		}
-		
-//		building.getView().addEndsFloors();
-//		building.getView().display();
-		
-		// Actions
-//		for (Passenger p : passengers) {
-//			p.acts();
-//		}
 	}
 
 	private void displayPassengersPerFloor(int floor_count) {

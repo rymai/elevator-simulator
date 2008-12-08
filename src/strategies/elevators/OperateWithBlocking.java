@@ -70,8 +70,8 @@ public class OperateWithBlocking extends ElevatorStrategy {
 //			Console.debug("\tEn haut ? : "+elevator.atTop());
 //			Console.debug("\tEn bas ? : "+elevator.atBottom());
 			
-			if((elevator.goingToTop() && elevator.atTop())
-				|| (!elevator.goingToTop() && elevator.atBottom())
+			if((elevator.isGoingToTop() && elevator.atTop())
+				|| (!elevator.isGoingToTop() && elevator.atBottom())
 				|| elevator.noCallOnTheWay()) {
 				elevator.changeDirection(); // Changement de sens!
 			}

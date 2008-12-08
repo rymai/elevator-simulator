@@ -6,8 +6,6 @@ import models.Passenger;
 public abstract class ElevatorStrategy {
 
 	protected Elevator elevator;
-	private int stopTime = 0;
-	private int stoppedTime = 0;
 
 	public ElevatorStrategy() {
 	}
@@ -22,6 +20,7 @@ public abstract class ElevatorStrategy {
 
 	public abstract void releasePassenger(Passenger passenger);
 	
+	public abstract void leaveThisFloor();
 	
 	public Elevator getElevator() {
 		return elevator;
@@ -29,29 +28,6 @@ public abstract class ElevatorStrategy {
 	
 	public void setElevator(Elevator elevator) {
 		this.elevator = elevator;
-	}
-	
-	public int getStopTime() {
-		return stopTime;
-	}
-
-	public void setStopTime(int stopTime) {
-		this.stopTime = stopTime;
-	}
-
-	public int getStoppedTime() {
-		return stoppedTime;
-	}
-
-	public void setStoppedTime(int stoppedTime) {
-		this.stoppedTime = stoppedTime;
-	}
-	
-	public void incrementStopTime() {
-		this.stopTime += 5;
-	}
-	public void incrementStoppedTime() {
-		this.stoppedTime++;
 	}
 	
 	public synchronized void releaseAllArrivedPassengers() {

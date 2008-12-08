@@ -1,7 +1,10 @@
 package models;
 
 import java.util.LinkedList;
+
+import main.Console;
 import controllers.MainController;
+import statistics.WaitingTime;
 import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
 import views.ElevatorView;
@@ -63,6 +66,9 @@ public class Elevator {
 
 	// Booleen indiquant si l'ascenseur se dirige vers le haut
 	private boolean goingToTop;
+	
+	private int stopTime = 0;
+	private int stoppedTime = 0;
 
 	/**
 	 * This array has a length equal to the number of floor of the elevator's building
@@ -106,7 +112,18 @@ public class Elevator {
 	}
 
 	public synchronized boolean takePassenger(Passenger passenger) {
-		return strategy.takePassenger(passenger);
+		if(willBeBlockedWithThisMass(passenger.getTotalMass())) {
+			return false;
+		}
+		else {
+			passengers.add(passenger);
+			addToCurrentWeight(passenger.getTotalMass());
+			passenger.setElevator(this);
+			WaitingTime.addTime(passenger.getWaitingTime());
+			strategy.takePassenger(passenger);
+			Console.debug("Un passager monte. "+passenger.getCurrentFloor()+" -> "+passenger.getWantedFloor());
+			return true;
+		}
 	}
 
 	public void releasePassenger(Passenger passenger) {
@@ -202,7 +219,7 @@ public class Elevator {
 		building.getAskedFloors().set(currentFloor, 0);
 	}
 
-	public boolean goingToTop() {
+	public boolean isGoingToTop() {
 		return goingToTop;
 	}
 
@@ -256,6 +273,40 @@ public class Elevator {
 	
 	public void setAnimatedElevator(AnimatedElevator e) {
 		animatedElevator = e;
+	}
+	public boolean willBeBlockedWithThisMass(int mass) {
+		return currentWeight + mass >= maxWeight;
+	}
+	
+	public int getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(int stopTime) {
+		this.stopTime = stopTime;
+	}
+	
+	public int getStoppedTime() {
+		return stoppedTime;
+	}
+
+	public void setStoppedTime(int stoppedTime) {
+		this.stoppedTime = stoppedTime;
+	}
+	
+	public void incrementStopTime(int increment_amount) {
+		this.stopTime += increment_amount;
+	}
+	public void incrementStoppedTime(int increment_amount) {
+		this.stoppedTime += increment_amount;
+	}
+	
+	public void leaveThisFloor() {
+		setStopTime(0);
+		setStoppedTime(0);
+		// The elevator moves
+		setMoving(true);
+		strategy.leaveThisFloor();
 	}
 	
 }

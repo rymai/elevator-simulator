@@ -36,7 +36,13 @@ public class MyFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					panel.pause();
+					panel.displayWaitingTime();
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					panel.speedUp();
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					panel.speedDown();
 				}
 			}
 		});

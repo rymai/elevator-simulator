@@ -47,7 +47,7 @@ public abstract class Passenger {
 		currentFloor = floor;
 	}
 
-	public long waitingTime() { 
+	public long getWaitingTime() { 
 		 return (System.currentTimeMillis() - beginTime) / 1000;  
 	}
 
