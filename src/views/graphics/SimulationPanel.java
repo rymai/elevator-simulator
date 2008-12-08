@@ -7,7 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
-import statistics.WaitingTime;
+import models.Elevator;
+
+import controllers.MainController;
+
+import statistics.Times;
 
 class SimulationPanel extends JPanel implements Runnable {
 
@@ -48,7 +52,18 @@ class SimulationPanel extends JPanel implements Runnable {
 			} catch (InterruptedException ex) {
 				Logger.getLogger(SimulationPanel.class.getName()).log(Level.SEVERE, null, ex);
 			}
+			if(MainController.getInstance().getBuilding().allPassengersAreArrived()) inPause = true;
 		}
+		
+		long sum_waiting_times = 0, sum_trip_times = 0;
+		for(Elevator elevator : MainController.getInstance().getBuilding().getElevators()) {
+			System.out.println("Temps moyen d'attente (ascenseur "+elevator.getIdentifier()+") : "+elevator.getWaitingTime().averageWaitingTime());
+			System.out.println("Temps moyen de voyage (ascenseur "+elevator.getIdentifier()+") : "+elevator.getWaitingTime().averageTripTime());
+			sum_waiting_times += elevator.getWaitingTime().averageWaitingTime();
+			sum_trip_times += elevator.getWaitingTime().averageTripTime();
+		}
+		System.out.println("Temps moyen d'attente global : "+(long)(sum_waiting_times/MainController.getInstance().getBuilding().getElevatorCount()));
+		System.out.println("Temps moyen de voyage global : "+(long)(sum_trip_times/MainController.getInstance().getBuilding().getElevatorCount()));
 	}
 
 	@Override
@@ -90,7 +105,7 @@ class SimulationPanel extends JPanel implements Runnable {
 	}
 
 	public void displayWaitingTime() {
-		System.out.println("Temps moyen d'attente : "+WaitingTime.average());
+//		System.out.println("Temps moyen d'attente : "+WaitingTime.average());
 	}
 	
 }

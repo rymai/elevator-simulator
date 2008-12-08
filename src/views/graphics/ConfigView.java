@@ -10,7 +10,7 @@ public class ConfigView extends JFrame {
 	private static final long serialVersionUID = 8164118974463460991L;
 	private static final String POLICE = "Monaco";
 	private static final int MIN_FLOOR_COUNT = 2;
-	public static final int MAX_FLOOR_COUNT = 16;
+	public static final int MAX_FLOOR_COUNT = 10;
 	private static final int MIN_ELEVATOR_COUNT = 1;
 	public static final int MAX_ELEVATOR_COUNT = 10;
 	private static final int MIN_PERSON_COUNT = 1;

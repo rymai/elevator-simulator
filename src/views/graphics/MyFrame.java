@@ -48,10 +48,10 @@ public class MyFrame extends JFrame {
 		});
         
 //        Insets insets = getInsets(); 
-//		FRAME_WIDTH = getWidth()+insets.left+insets.right;
-//		FRAME_HEIGHT = getHeight()+insets.bottom+insets.top;
-//		setSize(FRAME_WIDTH, FRAME_HEIGHT);
-//		System.out.println(FRAME_WIDTH+"x"+FRAME_HEIGHT);
+//        frame_width = getWidth()+insets.left+insets.right;
+//        frame_height = getHeight()+insets.bottom+insets.top;
+//		setSize(frame_width, frame_height);
+//		System.out.println(frame_width+"x"+frame_height);
     }
     
     public void addAnimatedObject(AnimatedObject o) {

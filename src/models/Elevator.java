@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import main.Console;
 import controllers.MainController;
-import statistics.WaitingTime;
+import statistics.Times;
 import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
 import views.ElevatorView;
@@ -17,14 +17,16 @@ public class Elevator {
 	private static final int TO_BOTTOM = -1;
 
 	// Pointer to his controller
-	protected MainController controller;
-	protected Building building;
-	protected ElevatorView view;
+	private MainController controller;
+	private Building building;
+//	protected ElevatorView view;
 
-	protected ElevatorStrategy strategy;
+	private ElevatorStrategy strategy;
+	
+	private Times waitingTime;
 
 	// C'est mieux si l'identifier est unique.
-	protected int identifier;
+	private int identifier;
 	public int getIdentifier() {
 		return identifier;
 	}
@@ -36,12 +38,12 @@ public class Elevator {
 	 *  Nombre de personnes max pouvant physiquement entrer
 	 *  Au dela, l'ascenseur refuse forcement les passagers
 	 */ 
-	protected int maxPersons = 7;
+	private int maxPersons = 7;
 
 	/**
 	 *  Poids au dela duquel l'ascenseur refuse de bouger, il est physiquement bloqué.
 	 */
-	protected int maxWeight;
+	private int maxWeight;
 	public int getMaxWeight() {
 		return maxWeight;
 	}
@@ -55,15 +57,15 @@ public class Elevator {
 	 * Ce qui est interessant ici est la prise en compte du comportement des usagers.
 	 * En effet, un usager simple d'esprit montera meme si l'ascenseur indique qu'il est en alerte.
 	 */
-	protected int alertWeight;
+	private int alertWeight;
 	public void setAlertWeight(int alert_weight) {
 		this.alertWeight = alert_weight;
 	}
 
 	// Position courante
-	protected int currentFloor;
+	private int currentFloor;
 
-	protected int currentWeight = 0;
+	private int currentWeight = 0;
 
 	// Booleen indiquant si l'ascenseur se dirige vers le haut
 	private boolean goingToTop;
@@ -103,6 +105,7 @@ public class Elevator {
 		this.passengers = new LinkedList<Passenger>();
 		this.moving = false;
 		this.targetFloor = 0;
+		this.waitingTime = new Times();
 	}
 
 	public int getTargetFloor() {
@@ -129,18 +132,24 @@ public class Elevator {
 			passengers.add(passenger);
 			addToCurrentWeight(passenger.getTotalMass());
 			passenger.setElevator(this);
-			WaitingTime.addTime(passenger.getWaitingTime());
+			waitingTime.addWaitingTime(passenger.getTime());
+			passenger.resetTime();
 			strategy.takePassenger(passenger);
 			Console.debug("Un passager monte. "+passenger.getCurrentFloor()+" -> "+passenger.getWantedFloor());
 			return true;
 		}
 	}
 
+	public Times getWaitingTime() {
+		return waitingTime;
+	}
+	
 	public void releasePassenger(Passenger passenger) {
 		if(passengers.contains(passenger)) {
 			passengers.remove(passenger);
 			removeOfCurrentWeight(passenger.getTotalMass());
 			passenger.setElevator(null);
+			waitingTime.addTripTime(passenger.getTime());
 			strategy.releasePassenger(passenger);
 		}
 	}
@@ -183,7 +192,6 @@ public class Elevator {
 			for (int i = currentFloor; i <= building.getFloorCountWithGround(); i++) {
 				if(building.getWaitingPassengersCountAtFloor(i) > 0) return false;
 				
-				if(passengers.isEmpty()) return true;
 				for (Passenger p : passengers) {
 					if(p.getWantedFloor() == i) return false;
 				}

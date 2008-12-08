@@ -36,7 +36,7 @@ public class Linear extends ElevatorStrategy {
 			elevator.incrementStoppedTime(1);
 			if((elevator.getStoppedTime() > elevator.getStopTime()) || must_leave_now) elevator.leaveThisFloor();
 			
-			if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom())) {
+			if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom()) || (elevator.noCallOnTheWay())) {
 				elevator.changeDirection(); // Changement de sens pour le prochain mouvement
 			}
 		}
