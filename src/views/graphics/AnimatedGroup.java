@@ -38,7 +38,12 @@ public class AnimatedGroup extends AnimatedObject {
 
 	@Override
 	public void drawYourself(Graphics g) {
-		g.setColor(Color.RED);
+		if(group.getMood() == 1)
+			g.setColor(Color.GREEN);
+		else if(group.getMood() == 2)
+			g.setColor(Color.ORANGE);
+		else if(group.getMood() == 3)
+			g.setColor(Color.RED);
 		// Head
 		g.fillOval(x, y, AnimatedPerson.head_width, AnimatedPerson.head_height);
 		

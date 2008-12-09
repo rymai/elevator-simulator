@@ -53,29 +53,15 @@ public class AnimatedPerson extends AnimatedObject {
 
 	@Override
 	public void drawYourself(Graphics g) {
-		if(person.getQi() > 70)
-			g.setColor(Color.WHITE);
-		else
-			g.setColor(Color.BLACK);
+		if(person.getMood() == 1)
+			g.setColor(Color.GREEN);
+		else if(person.getMood() == 2)
+			g.setColor(Color.ORANGE);
+		else if(person.getMood() == 3)
+			g.setColor(Color.RED);
 		// Head
 		g.fillOval(x, y, head_width, head_height);
 		
-		if(person.getQi() <= 70)
-			g.setColor(Color.WHITE);
-		else
-			g.setColor(Color.BLACK);
-//		g.setColor(eye_color);
-		// Left eye
-		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5+1, eye_width, eye_height);
-		
-		// Right eye
-		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
-		
-//		g.setColor(Color.RED);
-		// Smile
-		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
-		
-		g.setColor(Color.BLACK);
 		// Body
 		if(person.getSex() == person.MALE)
 			g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
@@ -93,6 +79,16 @@ public class AnimatedPerson extends AnimatedObject {
 		
 		// Right leg
 		g.drawLine(x+(head_width/2), y+head_height+body_height, x+head_width, y+head_height+body_height+leg_height);
+		
+		g.setColor(Color.BLACK);
+		// Left eye
+		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5+1, eye_width, eye_height);
+		
+		// Right eye
+		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
+		
+		// Smile
+		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
 	}
 
 }

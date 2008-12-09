@@ -6,7 +6,7 @@ import controllers.MainController;
 
 public class FixedFloor extends FixedObject {
 
-	public final static int FLOOR_WIDTH = (int) ((MainController.getInstance().getBuilding().getPassengers().size()/MainController.getInstance().getBuilding().getFloorCountWithGround())*(AnimatedPerson.PERSON_WIDTH*1.5));
+	public final static int FLOOR_WIDTH = (int) ((MainController.getInstance().getBuilding().getPassengers().size()/MainController.getInstance().getBuilding().getFloorCountWithGround())*(AnimatedPerson.PERSON_WIDTH*2));
 	private int id;
 	
 	public FixedFloor(int x, int y, int id) {
@@ -20,7 +20,7 @@ public class FixedFloor extends FixedObject {
 			g.setColor(color);
             g.fillRect(x, y, FLOOR_WIDTH, AnimatedElevator.ELEVATOR_HEIGHT);
             g.setColor(Color.BLACK);
-            g.drawString(id == 1 ? "RDC" : "Etage "+(id-1), x+FLOOR_WIDTH/3, y+AnimatedElevator.ELEVATOR_HEIGHT/3);
+            g.drawString(id == 1 ? "RDC" : "Etage "+(id-1), x+FLOOR_WIDTH/4, y+AnimatedElevator.ELEVATOR_HEIGHT/3);
         }
 	}
 

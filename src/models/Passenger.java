@@ -1,5 +1,6 @@
 package models;
 
+import views.graphics.SimulationPanel;
 import controllers.MainController;
 
 public abstract class Passenger {
@@ -11,7 +12,7 @@ public abstract class Passenger {
 	protected Elevator elevator;
 	protected int currentFloor;
 	protected int wantedFloor;
-	
+
 	public Passenger(int current_floor, int  wanted_floor) {
 		this.controller = MainController.getInstance();
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
@@ -48,7 +49,7 @@ public abstract class Passenger {
 	}
 
 	public long getTime() { 
-		 return (System.currentTimeMillis() - beginTime) / 1000;  
+		 return ((System.currentTimeMillis() - beginTime) / 1000)*SimulationPanel.framePerSecond;  
 	}
 
 	public int getWantedFloor() {
@@ -65,6 +66,20 @@ public abstract class Passenger {
 
 	public void resetTime() {
 		beginTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * 1 : ok, 2 : a bit angry, 3 : very angry
+	 */
+	public int getMood() {
+		if(isArrived()) return 1;
+		if(getTime() > 60) {
+			return 3;
+		}
+		else if(getTime() > 25) {
+			return 2;
+		}
+		else return 1;
 	}
 
 }

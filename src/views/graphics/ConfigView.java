@@ -36,12 +36,11 @@ public class ConfigView extends JFrame {
 	// |Nb individu: <slider>
 	// |Nb groupes: <slider>
 	//
-	private JPanel jpanel_principal;
-	
 	private static Logger logger = Logger.getLogger("fr.unice.plugin.PluginLoader");
 	
 	private ElevatorStrategy elevatorStrategy = null;
 	
+	private JPanel jpanel_principal;
 		private JPanel jpanel_floor_count;
 			private JSlider jslider_floor_count;
 		private JPanel jpanel_elevator_count;
@@ -53,6 +52,19 @@ public class ConfigView extends JFrame {
 		private JPanel jpanel_group_count;
 			private JSlider jslider_group_count;
 		private JPanel jpanel_start_simulation;
+		
+	private JPanel jpanel_choix_comportements;
+//		private JPanel jpanel_floor_count;
+//			private JSlider jslider_floor_count;
+//		private JPanel jpanel_elevator_count;
+//			private JSlider jslider_elevator_count;
+//		private JPanel jpanel_person_per_elevator_count;
+//			private JSlider jslider_person_per_elevator_count;
+//		private JPanel jpanel_person_count;
+//			private JSlider jslider_person_count;
+//		private JPanel jpanel_group_count;
+//			private JSlider jslider_group_count;
+//		private JPanel jpanel_start_simulation;
 		
 		private PluginMenuItemFactory pluginMenuItemFactory;
 		private JMenuBar mb = new JMenuBar();
@@ -85,6 +97,7 @@ public class ConfigView extends JFrame {
 	    buildPluginMenu();
 		
 		this.jpanel_principal = new JPanel();
+		this.jpanel_choix_comportements = new JPanel();
 		
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
 		{			
@@ -191,6 +204,12 @@ public class ConfigView extends JFrame {
 			this.jpanel_principal.add(jpanel_start_simulation);
 		}
 		content_pane.add(jpanel_principal);
+		
+		this.jpanel_choix_comportements.setLayout(new BoxLayout(jpanel_choix_comportements, BoxLayout.PAGE_AXIS));
+		{
+			
+		}
+//		content_pane.add(jpanel_choix_comportements);
 		
 		this.setResizable(true);
 		this.setVisible(true);		
