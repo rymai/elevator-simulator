@@ -11,12 +11,8 @@ import views.graphics.AnimatedElevator;
 
 /**
  * 
-<<<<<<< HEAD:src/models/Elevator.java
  * @author x_nem
-=======
  * @author remy
- *
->>>>>>> ae95d19413ec8136479078e55df8e2dbb46c1208:src/models/Elevator.java
  */
 public class Elevator {
 
@@ -24,113 +20,7 @@ public class Elevator {
     private static final int TO_BOTTOM = -1;    // Pointer to his controller
     private MainController controller;
     private Building building;
-<<<<<<< HEAD:src/models/Elevator.java
-//	protected ElevatorView view;
-    private ElevatorStrategy strategy;
-    private Times waitingTime;    // C'est mieux si l'identifier est unique.
-    private int identifier;
 
-    public int getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
-    }
-    /**
-     *  Nombre de personnes max pouvant physiquement entrer
-     *  Au dela, l'ascenseur refuse forcement les passagers
-     */
-    private int maxPersons = 7;
-    /**
-     *  Poids au dela duquel l'ascenseur refuse de bouger, il est physiquement bloqu�.
-     */
-    private int maxWeight;
-
-    public int getMaxWeight() {
-        return maxWeight;
-    }
-
-    public void setMaxWeight(int max_weight) {
-        this.maxWeight = max_weight;
-    }    // 
-    /**
-     * Poids au dela duquel, l'ascenseur commence a avertir que la limite est bientot atteinte
-     * Ce qui est interessant ici est la prise en compte du comportement des usagers.
-     * En effet, un usager simple d'esprit montera meme si l'ascenseur indique qu'il est en alerte.
-     */
-    private int alertWeight;
-
-    public void setAlertWeight(int alert_weight) {
-        this.alertWeight = alert_weight;
-    }    // Position courante
-    private int currentFloor;
-    private int currentWeight = 0;    // Booleen indiquant si l'ascenseur se dirige vers le haut
-    private boolean goingToTop;
-    private int stopTime = 0;
-    private int stoppedTime = 0;
-    private int targetFloor;
-    /**
-     * This array has a length equal to the number of floor of the elevator's building
-     * Each index represents a floor (ie : index 0 represents the ground, and so...)
-     * If a passenger call the elevator from the floor 3, the value at the index 3 increments.
-     */
-    private LinkedList<Passenger> passengers;
-    private boolean moving;
-    private AnimatedElevator animatedElevator;
-
-    /**
-     * Constructeur  Elevator sans paramètre
-     * ce constructeur fait appel à une méthode "constructor" avec des paramètres par défaut
-     */
-    public Elevator() {
-        constructor(500, 400, new Linear(this));
-    }
-
-    /**
-     * Constructeur Elevator avec les paramètres choisis
-     * ce constructeur fait appel à une méthode "constructor" avec les paramètres
-     * @param max_persons   maximum de personnes possible
-     * @param strategy      strategie de l'Elevator
-     */
-    public Elevator(int max_persons, ElevatorStrategy strategy) {
-        this.maxPersons = max_persons;
-        constructor(max_persons * 80, (max_persons * 80) - 100, strategy);
-    }
-
-    /**
-     * méthode constructor commune aux constructeurs d'Elevator et de définir :
-     * le poids max, le poid d'alerte et la stratégie de l'ascenseur
-     * cette méthode evite les répétitions d'affectation
-     * @param max_weight 
-     * @param alert_weight
-     * @param strategy
-     */
-    public void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
-        this.controller = MainController.getInstance();
-        this.building = controller.getBuilding();
-        this.maxWeight = max_weight;
-        this.alertWeight = alert_weight;
-        this.strategy = strategy;
-        this.strategy.setElevator(this);
-        this.currentFloor = 0;
-        this.goingToTop = true;
-        this.passengers = new LinkedList<Passenger>();
-        this.moving = false;
-        this.targetFloor = 0;
-        this.waitingTime = new Times();
-    }
-
-    public int getTargetFloor() {
-        return targetFloor;
-    }
-
-    public void setTargetFloor(int targetFloor) {
-        this.targetFloor = targetFloor;
-    }
-    // All is done here
-    public void acts() {
-=======
     
 	private ElevatorStrategy strategy;
 	
@@ -203,7 +93,12 @@ public class Elevator {
 		this.maxPersons = max_persons;
 		constructor(max_persons*80, (max_persons*80)-100, strategy);
 	}
-
+/**
+ * Méthode constructor utilisé par les Constructeurs de la classe
+ * @param max_weight Masse Maximale de l' Elevator
+ * @param alert_weight Masse d'alerte de l' Elevator
+ * @param strategy Stratégie de l'Elevator
+ */
 	private void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
 		this.controller = MainController.getInstance();
 		this.building = controller.getBuilding();
@@ -220,7 +115,7 @@ public class Elevator {
 
 	// All is done here
 	public void acts() {
->>>>>>> ae95d19413ec8136479078e55df8e2dbb46c1208:src/models/Elevator.java
+
 //		Console.debug("Eleva "+identifier+" : Floor => "+currentFloor+", prochain deplacement : "+getStep());
         strategy.acts();
     }
@@ -422,6 +317,9 @@ public class Elevator {
         }
     }
 
+    public void setCurrentFloor(int oneFloor){
+        currentFloor = oneFloor;
+    }
     public int getMaxPersons() {
         return maxPersons;
     }
