@@ -27,7 +27,7 @@ public class LinearInTheDirection extends ElevatorStrategy {
 			// On est arrive a un etage, si on a un ou des appels a cet etage
 			// on ouvre les portes car cet ascenseur s'arrete a chaque etage appele sur sa route!
 			if(!elevator.isFull()) {
-				Passenger p = elevator.getBuilding().getWaitingPassengersAtFloorInThisDirection(elevator.getCurrentFloor(), elevator.isGoingToTop());
+				Passenger p = elevator.getBuilding().getFirstWaitingPassengerAtFloorInThisDirection(elevator.getCurrentFloor(), elevator.isGoingToTop());
 				if(p != null) {
 					if(!((elevator.getPassengerCount()+p.getPersonCount()) > elevator.getMaxPersons())) {
 						must_leave_now = !p.canEnterElevator(elevator);

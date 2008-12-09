@@ -30,15 +30,20 @@ public class MainController {
 	}
 
 	/**
-	 * La prsence d'un constructeur priv supprime
-	 * le constructeur public par dfaut.
+<<<<<<< HEAD:src/controllers/MainController.java
+	 * La prï¿½sence d'un constructeur privï¿½ supprime
+	 * le constructeur public par dï¿½faut.
+=======
+	 * La presence d'un constructeur prive supprime
+	 * le constructeur public par defaut.
+>>>>>>> dadc5d0bf5c9154c27700743d663f00fd16d6c7d:src/controllers/MainController.java
 	 */
 	private MainController() {}
 
 	/**
-	 * Le mot-cl synchronized sur la mthode de cration
-	 * empche toute instanciation multiple mme par
-	 * diffrents threads.
+	 * Le mot-clï¿½ synchronized sur la mï¿½thode de crï¿½ation
+	 * empï¿½che toute instanciation multiple mï¿½me par
+	 * diffï¿½rents threads.
 	 * @return L'unique instance du singleton.
 	 */
 	public synchronized static MainController getInstance() {
@@ -60,11 +65,14 @@ public class MainController {
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
+
 		for (int i = 1; i <= elevator_count; i++) {
 			elevator = sf.getElevator("LINEAR_IN_THE_DIRECTION", person_per_elevator);
 //			elevator = sf.getElevator("LINEAR", person_per_elevator);
+			elevator = sf.getElevator("NAWAK", 5);
+			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);		
+			// Avec plugin
 //			elevator = sf.getElevator(elevator_strategy, person_per_elevator);
-
 			elevator.setIdentifier(i);
 			elevators.add(elevator);
 		}
