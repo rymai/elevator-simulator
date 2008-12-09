@@ -20,7 +20,7 @@ public class MyFrame extends JFrame {
         panel = new SimulationPanel(this, getWidth(), getHeight());
         add(panel);
         pack();
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
         
         addKeyListener(new KeyListener() {

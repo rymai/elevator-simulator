@@ -71,16 +71,8 @@ public class MainController {
 
 
         for (int i = 1; i <= elevator_count; i++) {
-
-            
-
-
-            //			elevator = sf.getElevator("LINEAR_IN_THE_DIRECTION", person_per_elevator);
-            elevator = sf.getElevator("LINEAR", person_per_elevator);
-            //			elevator = sf.getElevator("NAWAK", 5);
-            //			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);		
             // Avec plugin
-            //			elevator = sf.getElevator(elevator_strategy, person_per_elevator);
+       		elevator = sf.getElevator(elevator_strategy, person_per_elevator);
             elevator.setIdentifier(i);
             //Placement des Elevators
             Random rand = new Random();
