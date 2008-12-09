@@ -1,12 +1,15 @@
 package strategies.elevators;
 
-import java.util.LinkedList;
-
 import main.Console;
 import models.Elevator;
 import models.Passenger;
 import strategies.ElevatorStrategy;
 
+/**
+ * 
+ * @author remy
+ *
+ */
 public class LinearInTheDirection extends ElevatorStrategy {
 
 	public LinearInTheDirection() {

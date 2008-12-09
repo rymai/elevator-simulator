@@ -1,3 +1,5 @@
-#Mon Dec 08 14:23:38 CET 2008
+#Tue Dec 09 09:46:40 CET 2008
 eclipse.preferences.version=1
 encoding//src/controllers/MainController.java=UTF-8
+encoding//src/models/Building.java=UTF-8
+encoding//src/models/Elevator.java=UTF-8

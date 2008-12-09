@@ -10,19 +10,19 @@ import models.Person;
 
 public class AnimatedPerson extends AnimatedObject {
 
-	private static int head_width = 13;
-	private static int head_height = 13;
-	private static int eye_width = 2;
-	private static int eye_height = 2;
-	private static int shoulder_height = 3;
-	private static int arm_width = 7;
-	private static int body_width = 10;
-	private static int body_height = 8;
-	private static int leg_width = 10;
-	private static int leg_height = 5;
-	private Person person;
-	private Color head_color;
-	private Color eye_color;
+	public static int head_width = 13;
+	public static int head_height = 13;
+	public static int eye_width = 2;
+	public static int eye_height = 2;
+	public static int shoulder_height = 3;
+	public static int arm_width = 7;
+	public static int body_width = 10;
+	public static int body_height = 8;
+	public static int leg_width = 10;
+	public static int leg_height = 5;
+	public Person person;
+	public Color head_color;
+	public Color eye_color;
 	
 	public static final int PERSON_WIDTH = arm_width*2 + 2;
 	public static final int PERSON_HEIGHT = head_height + body_width + leg_height - 1;
@@ -53,7 +53,6 @@ public class AnimatedPerson extends AnimatedObject {
 
 	@Override
 	public void drawYourself(Graphics g) {
-		
 		if(person.getQi() > 70)
 			g.setColor(Color.WHITE);
 		else

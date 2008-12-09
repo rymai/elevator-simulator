@@ -1,10 +1,7 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Observable;
-
 import main.Console;
-import controllers.MainController;
 
 public class Group extends Passenger {
 	

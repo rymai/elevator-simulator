@@ -54,44 +54,54 @@ public class Nawak extends ElevatorStrategy {
 			if(!tabWanted.isEmpty()){
 				floor = tabWanted.get(r.nextInt(tabWanted.size()));
 
-			//int random=0;
+				//int random=0;
 
-			//System.out.println(numberWaiting);
+				//System.out.println(numberWaiting);
 
-			System.out.println("Random :" +floor);
+				System.out.println("Random :" +floor);
 
-			if(floor < elevator.getCurrentFloor()){
-				elevator.setGoingToTop(false);
-			}else{
-				elevator.setGoingToTop(true);
+				if(floor < elevator.getCurrentFloor()){
+					elevator.setGoingToTop(false);
+				}else{
+					elevator.setGoingToTop(true);
+				}
+				elevator.setTargetFloor(floor);
+			}else {
+				elevator.setMoving(false);
 			}
-			elevator.setTargetFloor(floor);
-		}else {
-			elevator.setMoving(false);
-		}
-		/*	if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom())) {
+			/*	if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom())) {
 				elevator.changeDirection(); // Changement de sens pour le prochain mouvement
 			} */
+		}
+		else {
+			elevator.setMoving(false);
+		}
 	}
-	else {
-		elevator.setMoving(false);
+
+	@Override
+	public boolean takePassenger(Passenger passenger) {
+		elevator.incrementStopTime(5);
+		return true;
 	}
-}
 
-@Override
-public boolean takePassenger(Passenger passenger) {
-	elevator.incrementStopTime(5);
-	return true;
-}
+	@Override
+	public void releasePassenger(Passenger passenger) {
+		elevator.incrementStopTime(5);
+		Console.debug("Un passager descend. "+passenger.getCurrentFloor()+" -> "+passenger.getWantedFloor()+" "+passenger.isInTheElevator()+" "+passenger.isArrived());
+	}
 
-@Override
-public void releasePassenger(Passenger passenger) {
-	elevator.incrementStopTime(5);
-	Console.debug("Un passager descend. "+passenger.getCurrentFloor()+" -> "+passenger.getWantedFloor()+" "+passenger.isInTheElevator()+" "+passenger.isArrived());
-}
+	@Override
+	public void leaveThisFloor() {
+	}
 
-@Override
-public void leaveThisFloor() {
-}
+	@Override
+	public String getName() {
+		return "Comportement qui choisis un Žtage (ou il y a quelque chose ˆ faire) au hasard.";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
+	}
 
 }

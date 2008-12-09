@@ -5,6 +5,11 @@ import models.Elevator;
 import models.Passenger;
 import strategies.ElevatorStrategy;
 
+/**
+ * 
+ * @author francois
+ *
+ */
 public class Linear extends ElevatorStrategy {
 
 	public Linear() {

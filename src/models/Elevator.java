@@ -9,6 +9,11 @@ import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
 import views.graphics.AnimatedElevator;
 
+/**
+ * 
+ * @author remy
+ *
+ */
 public class Elevator {
 
     private static final int TO_TOP = 1;
@@ -36,7 +41,7 @@ public class Elevator {
 	private int maxPersons = 7;
 
 	/**
-	 *  Poids au dela duquel l'ascenseur refuse de bouger, il est physiquement bloqu�.
+	 *  Poids au dela duquel l'ascenseur refuse de bouger, il est physiquement bloqu�.
 	 */
 	private int maxWeight;
 	public int getMaxWeight() {
@@ -67,6 +72,8 @@ public class Elevator {
 	
 	private int stopTime = 0;
 	private int stoppedTime = 0;
+	
+	private int targetFloor;
 
 	/**
 	 * This array has a length equal to the number of floor of the elevator's building
@@ -86,7 +93,7 @@ public class Elevator {
 		constructor(max_persons*80, (max_persons*80)-100, strategy);
 	}
 
-	public void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
+	private void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
 		this.controller = MainController.getInstance();
 		this.building = controller.getBuilding();
 		this.maxWeight = max_weight;
@@ -107,9 +114,9 @@ public class Elevator {
     }
 
     /**
-     * Fonction renvoyant un booléen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
-     * true si le poids d'alerte est dépassé
-     * false si le poids d'alerte n'est pas dépassé
+     * Fonction renvoyant un booleen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
+     * true si le poids d'alerte est depasse
+     * false si le poids d'alerte n'est pas depasse
      * @return
      */
     public boolean isInAlert() {
@@ -162,15 +169,6 @@ public class Elevator {
     //		else return currentPosition%(currentPosition.intValue()) <= 0.1f;
     //	}
     
-    /**
-     * Fonction qui renvoie un booléen pour savoir si l'ascenseur a été appelé à l'étage courant
-     * true si il a bien été appelé à l'étage courant
-     * false si il n'a pas été appelé à l'étage courant
-     * @return
-     */
-    public boolean isThereCallsAtThisFloor() {
-        return building.getAskedFloors().get(currentFloor) > 0;
-    }
     /**
      * Fonction renvoyant un booléen 
      * true si l'ascenseur est au sommet
@@ -289,10 +287,6 @@ public class Elevator {
         goingToTop = !goingToTop;
     }
 
-    public void resetCurrentFloorCalls() {
-        building.getAskedFloors().set(currentFloor, 0);
-    }
-
     public boolean isGoingToTop() {
         return goingToTop;
     }
@@ -344,8 +338,8 @@ public class Elevator {
         return moving;
     }
 
-    public int getPassengerIndex(Person person) {
-        return passengers.indexOf(person);
+    public int getPassengerIndex(Passenger passenger) {
+        return passengers.indexOf(passenger);
     }
 
     public AnimatedElevator getAnimatedElevator() {
@@ -412,4 +406,12 @@ public class Elevator {
         }
         return numberWaiting;
     }
+	
+    public int getTargetFloor() {
+		return targetFloor;
+	}
+    
+    public void setTargetFloor(int floor) {
+		this.targetFloor = floor;
+	}
 }
