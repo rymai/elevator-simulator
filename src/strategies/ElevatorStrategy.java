@@ -3,6 +3,11 @@ package strategies;
 import models.Elevator;
 import models.Passenger;
 
+/**
+ * Classe Abstraite ElevatorStrategy
+ * classe de base pour les différents comportements d'ascenseur
+ * @author x_nem
+ */
 public abstract class ElevatorStrategy {
 
 	protected Elevator elevator;

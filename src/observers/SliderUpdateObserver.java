@@ -4,6 +4,10 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * Observer
+ * @author x_nem
+ */
 public class SliderUpdateObserver implements ChangeListener {
 
 	private JLabel label;

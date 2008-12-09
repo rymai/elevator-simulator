@@ -11,6 +11,10 @@ import strategies.elevators.Linear;
 import views.ElevatorView;
 import views.graphics.AnimatedElevator;
 
+/**
+ * 
+ * @author x_nem
+ */
 public class Elevator {
 
     private static final int TO_TOP = 1;
@@ -82,8 +86,8 @@ public class Elevator {
     /**
      * Constructeur Elevator avec les paramètres choisis
      * ce constructeur fait appel à une méthode "constructor" avec les paramètres
-     * @param max_persons
-     * @param strategy
+     * @param max_persons   maximum de personnes possible
+     * @param strategy      strategie de l'Elevator
      */
     public Elevator(int max_persons, ElevatorStrategy strategy) {
         this.maxPersons = max_persons;

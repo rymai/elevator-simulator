@@ -2,6 +2,10 @@ package models;
 
 import controllers.MainController;
 
+/**
+ * 
+ * @author x_nem
+ */
 public abstract class Passenger {
 	
 	protected MainController controller;
@@ -12,6 +16,11 @@ public abstract class Passenger {
 	protected int currentFloor;
 	protected int wantedFloor;
 	
+        /**
+         * Constructeur Passenger avec deux passages en paramètre
+         * @param current_floor     l'étage ou se situe le passager actuellement
+         * @param wanted_floor      l'étage ou il souhaite se rendre
+         */
 	public Passenger(int current_floor, int  wanted_floor) {
 		this.controller = MainController.getInstance();
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
@@ -32,6 +41,7 @@ public abstract class Passenger {
 		this.elevator = elevator;
 	}
 	
+        
 	public boolean isArrived() {
 		return (wantedFloor == currentFloor) && !isInTheElevator();
 	}

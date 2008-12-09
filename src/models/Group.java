@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.Observable;
 import controllers.MainController;
 
+/**
+ * 
+ * @author x_nem
+ */
 public class Group extends Passenger {
 	
 	private ArrayList<Person> persons;
 	
+        /**
+         * Constructeur Group 
+         * @param current_floor     étage actuel
+         * @param wanted_floor      étage souhaité
+         * @param personCount       Nombre de Personnes
+         */
 	public Group(int current_floor, int wanted_floor, int personCount) {
 		super(current_floor, wanted_floor);
 		this.persons = new ArrayList<Person>(personCount);
