@@ -18,9 +18,20 @@ public class StartSimulationObserver implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		window.setVisible(false);
-		MainController.getInstance().startSimulation(window.get_floor_count(), window.get_elevator_count(),
-				window.get_person_per_elevator_count(),	window.get_person_count(), window.get_group_count(), window.getElevatorStrategy());
+		try {
+			if(window.getElevatorStrategy() != null) {
+			window.setVisible(false);
+			MainController.getInstance().startSimulation(window.get_floor_count(), 
+					window.get_elevator_count(), window.get_person_per_elevator_count(), 
+					window.get_person_count(), window.get_group_count(), window.getElevatorStrategy());
+			}
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 }

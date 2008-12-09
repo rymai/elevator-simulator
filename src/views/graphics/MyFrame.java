@@ -44,6 +44,9 @@ public class MyFrame extends JFrame {
 				else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 					panel.speedDown();
 				}
+				else if(e.getKeyCode() == KeyEvent.VK_R) {
+					panel.restart();
+				}
 			}
 		});
         

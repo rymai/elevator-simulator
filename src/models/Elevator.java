@@ -6,7 +6,6 @@ import main.Console;
 import controllers.MainController;
 import statistics.Times;
 import strategies.ElevatorStrategy;
-import strategies.elevators.Linear;
 import views.graphics.AnimatedElevator;
 
 /**
@@ -84,10 +83,6 @@ public class Elevator {
 	private LinkedList<Passenger> passengers;
 	private boolean moving;
 	private AnimatedElevator animatedElevator;
-
-	public Elevator() {
-		constructor(500, 400, new Linear(this));
-	}
 
 	public Elevator(int max_persons, ElevatorStrategy strategy) {
 		this.maxPersons = max_persons;

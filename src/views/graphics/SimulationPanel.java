@@ -2,10 +2,14 @@ package views.graphics;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
+
+import com.sun.org.apache.xml.internal.utils.StopParseException;
+
 import models.Elevator;
 import controllers.MainController;
 
@@ -101,6 +105,16 @@ public class SimulationPanel extends JPanel implements Runnable {
 		}
 		System.out.println("Temps moyen d'attente global : "+Long.toString((sum_waiting_times/MainController.getInstance().getBuilding().getElevatorCount())));
 		System.out.println("Temps moyen de voyage global : "+Long.toString((sum_trip_times/MainController.getInstance().getBuilding().getElevatorCount())));
+	}
+
+	public void restart() {
+		pause();
+		frame.setVisible(false);
+		try {
+			new ConfigView();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
