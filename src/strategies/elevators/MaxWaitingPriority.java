@@ -5,6 +5,11 @@ import models.Elevator;
 import models.Passenger;
 import strategies.ElevatorStrategy;
 
+/**
+ * 
+ * @author francois
+ *
+ */
 public class MaxWaitingPriority extends ElevatorStrategy {
 
 	public MaxWaitingPriority() {
@@ -84,6 +89,16 @@ public class MaxWaitingPriority extends ElevatorStrategy {
 
 	@Override
 	public void leaveThisFloor() {
+	}
+
+	@Override
+	public String getName() {
+		return "L'ascenseur va se remplir ˆ l'Žtage ou il y a le plus de personne qui attendent.";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
 	}
 
 }

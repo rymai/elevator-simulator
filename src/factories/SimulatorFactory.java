@@ -23,9 +23,6 @@ public class SimulatorFactory {
 	}
 
 	public Person getPerson(int max_floor) {
-		//		Console.debug("Person sex: "+Person.getTextForSex(sex)+" | mass: "+mass+"kg | qi: "+qi+ ". "+
-		//				"Ascenseur: "+elevator.getIdentifier()+". "+
-		//				"Actuellement a l'etage "+current_floor+", veux aller a l'etage "+wanted_floor+". ");
 		int sex, mass, qi, current_floor, wanted_floor;
 		Random rand = new Random();
 		sex = rand.nextInt(2);
@@ -39,9 +36,24 @@ public class SimulatorFactory {
 		return new Person(current_floor, wanted_floor, sex, mass, qi);
 	}
 
-	public Group getGroup(int current_floor, int wanted_floor, int personCount, Elevator elevator) {
-//		Console.debug("Creation d'un groupe initialis� � une taille de "+personCount+".");
-		return new Group(current_floor, wanted_floor, personCount);
+	public Group getGroup(int max_floor) {
+		ArrayList<Person> persons = new ArrayList<Person>();
+		int sex, mass, qi, current_floor, wanted_floor;
+		Random rand = new Random();
+
+		current_floor = rand.nextInt(max_floor);
+		do {
+			wanted_floor = rand.nextInt(max_floor);
+		} while (wanted_floor == current_floor);
+		
+		int person_count = rand.nextInt(3)+2;
+		for (int i = 0; i < person_count; i++) {
+			sex = rand.nextInt(2);
+			mass = (rand.nextInt(70))+40;
+			qi = rand.nextInt(140);
+			persons.add(new Person(current_floor, wanted_floor, sex, mass, qi));
+		}
+		return new Group(current_floor, wanted_floor, persons);
 	}
 
 	public Elevator getElevator(String type, int max_person) {
@@ -58,12 +70,16 @@ public class SimulatorFactory {
 		return new Elevator(max_person, strategy);
 	}
 	
+	public Elevator getElevator(ElevatorStrategy elevatorStrategy, int max_person) {
+//		Console.debug("Creation d'un ascenseur de type "+type);
+		return new Elevator(max_person, elevatorStrategy);
+	}
+	
 	private static ElevatorStrategy loadPlugin(String className) {
 		Class c = null;   
 		try {        
 			URLClassLoader cl = new URLClassLoader (new URL[] { 
-//					new URL("file:///Users/remy/Documents/Development/Java/M1 Miage/elevator-behaviour-simulator-in-java/plugins")
-					new URL("file:///Users/remy/Desktop/plugins/")
+					new URL("file:///Users/remy/Documents/Development/Java/M1 Miage/elevator-plugins/src/")
 			});
 			c = cl.loadClass(className);
 		} 

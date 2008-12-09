@@ -1,12 +1,15 @@
 package strategies.elevators;
 
-import java.util.LinkedList;
-
 import main.Console;
 import models.Elevator;
 import models.Passenger;
 import strategies.ElevatorStrategy;
 
+/**
+ * 
+ * @author remy
+ *
+ */
 public class LinearInTheDirection extends ElevatorStrategy {
 
 	public LinearInTheDirection() {
@@ -61,6 +64,16 @@ public class LinearInTheDirection extends ElevatorStrategy {
 
 	@Override
 	public void leaveThisFloor() {
+	}
+
+	@Override
+	public String getName() {
+		return "Comportement lineaire avec duree de voyage minimum (et duree d'attente augmentee)";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
 	}
 
 }

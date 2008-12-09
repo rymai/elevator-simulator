@@ -2,18 +2,21 @@ package models;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 import main.Console;
 import controllers.MainController;
 import statistics.Times;
 import strategies.ElevatorStrategy;
 import strategies.elevators.Linear;
-import views.ElevatorView;
 import views.graphics.AnimatedElevator;
 
 /**
  * 
+<<<<<<< HEAD:src/models/Elevator.java
  * @author x_nem
+=======
+ * @author remy
+ *
+>>>>>>> ae95d19413ec8136479078e55df8e2dbb46c1208:src/models/Elevator.java
  */
 public class Elevator {
 
@@ -21,6 +24,7 @@ public class Elevator {
     private static final int TO_BOTTOM = -1;    // Pointer to his controller
     private MainController controller;
     private Building building;
+<<<<<<< HEAD:src/models/Elevator.java
 //	protected ElevatorView view;
     private ElevatorStrategy strategy;
     private Times waitingTime;    // C'est mieux si l'identifier est unique.
@@ -126,14 +130,105 @@ public class Elevator {
     }
     // All is done here
     public void acts() {
+=======
+    
+	private ElevatorStrategy strategy;
+	
+	private Times waitingTime;
+
+	// C'est mieux si l'identifier est unique.
+	private int identifier;
+	public int getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(int identifier) {
+		this.identifier = identifier;
+	}
+
+	/**
+	 *  Nombre de personnes max pouvant physiquement entrer
+	 *  Au dela, l'ascenseur refuse forcement les passagers
+	 */ 
+	private int maxPersons = 7;
+
+	/**
+	 *  Poids au dela duquel l'ascenseur refuse de bouger, il est physiquement bloqu�.
+	 */
+	private int maxWeight;
+	public int getMaxWeight() {
+		return maxWeight;
+	}
+	public void setMaxWeight(int max_weight) {
+		this.maxWeight = max_weight;
+	}
+
+	// 
+	/**
+	 * Poids au dela duquel, l'ascenseur commence a avertir que la limite est bientot atteinte
+	 * Ce qui est interessant ici est la prise en compte du comportement des usagers.
+	 * En effet, un usager simple d'esprit montera meme si l'ascenseur indique qu'il est en alerte.
+	 */
+	private int alertWeight;
+	public void setAlertWeight(int alert_weight) {
+		this.alertWeight = alert_weight;
+	}
+
+	// Position courante
+	private int currentFloor;
+
+	private int currentWeight = 0;
+
+	// Booleen indiquant si l'ascenseur se dirige vers le haut
+	private boolean goingToTop;
+	
+	private int stopTime = 0;
+	private int stoppedTime = 0;
+	
+	private int targetFloor;
+
+	/**
+	 * This array has a length equal to the number of floor of the elevator's building
+	 * Each index represents a floor (ie : index 0 represents the ground, and so...)
+	 * If a passenger call the elevator from the floor 3, the value at the index 3 increments.
+	 */
+	private LinkedList<Passenger> passengers;
+	private boolean moving;
+	private AnimatedElevator animatedElevator;
+
+	public Elevator() {
+		constructor(500, 400, new Linear(this));
+	}
+
+	public Elevator(int max_persons, ElevatorStrategy strategy) {
+		this.maxPersons = max_persons;
+		constructor(max_persons*80, (max_persons*80)-100, strategy);
+	}
+
+	private void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
+		this.controller = MainController.getInstance();
+		this.building = controller.getBuilding();
+		this.maxWeight = max_weight;
+		this.alertWeight = alert_weight;
+		this.strategy = strategy;
+		this.strategy.setElevator(this);
+		this.currentFloor = 0;
+		this.goingToTop = true;
+		this.passengers = new LinkedList<Passenger>();
+		this.moving = false;
+		this.waitingTime = new Times();
+	}
+
+	// All is done here
+	public void acts() {
+>>>>>>> ae95d19413ec8136479078e55df8e2dbb46c1208:src/models/Elevator.java
 //		Console.debug("Eleva "+identifier+" : Floor => "+currentFloor+", prochain deplacement : "+getStep());
         strategy.acts();
     }
 
     /**
-     * Fonction renvoyant un booléen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
-     * true si le poids d'alerte est dépassé
-     * false si le poids d'alerte n'est pas dépassé
+     * Fonction renvoyant un booleen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
+     * true si le poids d'alerte est depasse
+     * false si le poids d'alerte n'est pas depasse
      * @return
      */
     public boolean isInAlert() {
@@ -186,15 +281,6 @@ public class Elevator {
     //		else return currentPosition%(currentPosition.intValue()) <= 0.1f;
     //	}
     
-    /**
-     * Fonction qui renvoie un booléen pour savoir si l'ascenseur a été appelé à l'étage courant
-     * true si il a bien été appelé à l'étage courant
-     * false si il n'a pas été appelé à l'étage courant
-     * @return
-     */
-    public boolean isThereCallsAtThisFloor() {
-        return building.getAskedFloors().get(currentFloor) > 0;
-    }
     /**
      * Fonction renvoyant un booléen 
      * true si l'ascenseur est au sommet
@@ -313,10 +399,6 @@ public class Elevator {
         goingToTop = !goingToTop;
     }
 
-    public void resetCurrentFloorCalls() {
-        building.getAskedFloors().set(currentFloor, 0);
-    }
-
     public boolean isGoingToTop() {
         return goingToTop;
     }
@@ -368,8 +450,8 @@ public class Elevator {
         return moving;
     }
 
-    public int getPassengerIndex(Person person) {
-        return passengers.indexOf(person);
+    public int getPassengerIndex(Passenger passenger) {
+        return passengers.indexOf(passenger);
     }
 
     public AnimatedElevator getAnimatedElevator() {
@@ -436,4 +518,12 @@ public class Elevator {
         }
         return numberWaiting;
     }
+	
+    public int getTargetFloor() {
+		return targetFloor;
+	}
+    
+    public void setTargetFloor(int floor) {
+		this.targetFloor = floor;
+	}
 }

@@ -1,5 +1,6 @@
 package strategies;
 
+import plugin.Plugin;
 import models.Elevator;
 import models.Passenger;
 
@@ -8,7 +9,7 @@ import models.Passenger;
  * classe de base pour les différents comportements d'ascenseur
  * @author x_nem
  */
-public abstract class ElevatorStrategy {
+public abstract class ElevatorStrategy implements Plugin {
 
 	protected Elevator elevator;
 

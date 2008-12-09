@@ -2,7 +2,10 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import strategies.ElevatorStrategy;
 import views.graphics.AnimatedElevator;
+import views.graphics.AnimatedGroup;
 import views.graphics.AnimatedPerson;
 import views.graphics.FixedFloor;
 import views.graphics.MyFrame;
@@ -51,9 +54,9 @@ public class MainController {
 		return INSTANCE;
 	}
 
-	public void startSimulation(int floor_count, int elevator_count, int person_count, int group_count) {
+	public void startSimulation(int floor_count, int elevator_count, int person_per_elevator, int person_count, int group_count, ElevatorStrategy elevator_strategy) {
 		Console.info("Lancement d'une partie avec "+floor_count+" etages, "+elevator_count+
-				" ascenseurs, "+person_count+" individus et "+group_count+" groupes.");
+				" ascenseurs, "+person_per_elevator+" max personnes par ascenseur, "+person_count+" individus et "+group_count+" groupes.");
 
 		SimulatorFactory sf = new SimulatorFactory();
 
@@ -65,10 +68,12 @@ public class MainController {
 		Elevator elevator;
 
 		for (int i = 1; i <= elevator_count; i++) {
-//			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", 5);
-//			elevator = sf.getElevator(INSTANCE, "LINEAR", 5);
-			elevator = sf.getElevator("NAWAK", 5);
-			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);
+			//			elevator = sf.getElevator("LINEAR_IN_THE_DIRECTION", person_per_elevator);
+			elevator = sf.getElevator("LINEAR", person_per_elevator);
+			//			elevator = sf.getElevator("NAWAK", 5);
+			//			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);		
+			// Avec plugin
+			//			elevator = sf.getElevator(elevator_strategy, person_per_elevator);
 			elevator.setIdentifier(i);
 			elevators.add(elevator);
 		}
@@ -77,8 +82,18 @@ public class MainController {
 
 		// Constructs the passengers (only persons for now)
 		LinkedList<Passenger> passengers = new LinkedList<Passenger>();
-		for (int i = 0; i < person_count; i++) {
-			passengers.add(sf.getPerson(building.getFloorCountWithGround()));
+		int j = 0, group_nb = 0;
+		while(j < person_count) {
+			if(group_nb < group_count) {
+				Group group = sf.getGroup(building.getFloorCountWithGround());
+				passengers.add(group);
+				j += group.getPersonCount();
+				group_nb++;
+			}
+			else {
+				passengers.add(sf.getPerson(building.getFloorCountWithGround()));
+				j++;
+			}
 		}
 		// Add passengers to the building
 		building.setPassengers(passengers);
@@ -102,6 +117,10 @@ public class MainController {
 			passenger = building.getPassengers().get(i);
 			if (passenger instanceof Person) {
 				frame.addAnimatedObject(new AnimatedPerson(frame, (Person)passenger, FixedFloor.FLOOR_WIDTH-AnimatedPerson.PERSON_WIDTH-(AnimatedPerson.PERSON_WIDTH*building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*passenger.getCurrentFloor())-AnimatedPerson.PERSON_HEIGHT));
+			}
+			else if (passenger instanceof Group) {
+				System.out.println("Dessin d'un groupe de "+passenger.getPersonCount()+" personnes.");
+				frame.addAnimatedObject(new AnimatedGroup(frame, (Group)passenger, FixedFloor.FLOOR_WIDTH-AnimatedPerson.PERSON_WIDTH-(AnimatedPerson.PERSON_WIDTH*building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height-(AnimatedElevator.ELEVATOR_HEIGHT*passenger.getCurrentFloor())-AnimatedPerson.PERSON_HEIGHT));
 			}
 		}
 	}

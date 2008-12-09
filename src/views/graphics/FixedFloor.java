@@ -12,7 +12,7 @@ public class FixedFloor extends FixedObject {
 	public FixedFloor(int x, int y, int id) {
 		super(x, y);
 		this.id = id;
-		color = (id%2 == 0) ? Color.WHITE : Color.GRAY;
+		color = (id%2 == 0) ? new Color(230, 230, 230) : new Color(210, 210, 210);
 	}
 
 	public void drawYourself(Graphics g) {

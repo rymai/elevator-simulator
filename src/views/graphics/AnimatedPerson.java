@@ -2,6 +2,7 @@ package views.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.Random;
 
 import controllers.MainController;
@@ -9,22 +10,22 @@ import models.Person;
 
 public class AnimatedPerson extends AnimatedObject {
 
-	private static int head_width = 13;
-	private static int head_height = 13;
-	private static int eye_width = 2;
-	private static int eye_height = 2;
-	private static int shoulder_height = 3;
-	private static int arm_width = 7;
-	private static int body_width = 10;
-	private static int body_height = 8;
-	private static int leg_width = 10;
-	private static int leg_height = 5;
-	private Person person;
-	private Color head_color;
-	private Color eye_color;
+	public static int head_width = 13;
+	public static int head_height = 13;
+	public static int eye_width = 2;
+	public static int eye_height = 2;
+	public static int shoulder_height = 3;
+	public static int arm_width = 7;
+	public static int body_width = 10;
+	public static int body_height = 8;
+	public static int leg_width = 10;
+	public static int leg_height = 5;
+	public Person person;
+	public Color head_color;
+	public Color eye_color;
 	
 	public static final int PERSON_WIDTH = arm_width*2 + 2;
-	public static final int PERSON_HEIGHT = head_height + body_width + leg_height -2;
+	public static final int PERSON_HEIGHT = head_height + body_width + leg_height - 1;
 	
 	public AnimatedPerson(MyFrame frame, Person person, int x, int y) {
 		super(frame, x, y);
@@ -52,27 +53,38 @@ public class AnimatedPerson extends AnimatedObject {
 
 	@Override
 	public void drawYourself(Graphics g) {
-		Random rand = new Random();
-		
-		g.setColor(head_color);
+		if(person.getQi() > 70)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.BLACK);
 		// Head
 		g.fillOval(x, y, head_width, head_height);
 		
-		g.setColor(eye_color);
+		if(person.getQi() <= 70)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.BLACK);
+//		g.setColor(eye_color);
 		// Left eye
 		g.fillOval(x+(head_width/2)-head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
 		// Right eye
 		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
-		g.setColor(Color.RED);
+//		g.setColor(Color.RED);
 		// Smile
-		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 0, -180);
+		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
 		
 		g.setColor(Color.BLACK);
 		// Body
-		g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
-		
+		if(person.getSex() == person.MALE)
+			g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
+		else {
+			int[] xs = new int[]{x+(head_width/2), x+(head_width/2)-arm_width, x+(head_width/2)+arm_width};
+			int[] ys = new int[]{y+head_height, y+head_height+body_height+2, y+head_height+body_height+2};
+			Polygon p = new Polygon(xs, ys, 3);
+			g.fillPolygon(p);	
+		}
 		// Arms
 		g.drawLine(x+(head_width/2)-arm_width, y+head_height+shoulder_height, x+(head_width/2)+arm_width, y+head_height+shoulder_height);
 		

@@ -1,7 +1,18 @@
 package views.graphics;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.util.logging.Logger;
+
 import javax.swing.*;
+import plugin.Plugin;
+import plugin.PluginLoader;
+import plugin.util.PluginMenuItem;
+import plugin.util.PluginMenuItemFactory;
+import strategies.ElevatorStrategy;
 import observers.*;
 
 public class ConfigView extends JFrame {
@@ -17,6 +28,8 @@ public class ConfigView extends JFrame {
 	private static final int MAX_PERSON_COUNT = 100;
 	private static final int MIN_GROUP_COUNT = 0;
 	private static final int MAX_GROUP_COUNT = 10;
+	private static final int MIN_PERSON_PER_ELEVATOR_COUNT = 1;
+	public static final int MAX_PERSON_PER_ELEVATOR_COUNT = 10;
 	
 	// |Nb etage: <slider>
 	// |Nb ascenseur: <slider>
@@ -25,23 +38,52 @@ public class ConfigView extends JFrame {
 	//
 	private JPanel jpanel_principal;
 	
+	private static Logger logger = Logger.getLogger("fr.unice.plugin.PluginLoader");
+	
+	private ElevatorStrategy elevatorStrategy = null;
+	
 		private JPanel jpanel_floor_count;
 			private JSlider jslider_floor_count;
 		private JPanel jpanel_elevator_count;
 			private JSlider jslider_elevator_count;
+		private JPanel jpanel_person_per_elevator_count;
+			private JSlider jslider_person_per_elevator_count;
 		private JPanel jpanel_person_count;
 			private JSlider jslider_person_count;
 		private JPanel jpanel_group_count;
 			private JSlider jslider_group_count;
 		private JPanel jpanel_start_simulation;
+		
+		private PluginMenuItemFactory pluginMenuItemFactory;
+		private JMenuBar mb = new JMenuBar();
+		private JMenu menuPlugins;
+		private PluginLoader pluginLoader;
 
-	public ConfigView() {
+	public ConfigView() throws MalformedURLException {
 		this.setLocationByPlatform(true);
 		this.setSize(600, 600);
 		this.setTitle("Projet Java 2008 : Simulation de comportement d'ascenseurs - Tic/Tac/Viet");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Container content_pane = this.getContentPane();
 
+		// Les plugins seront dans le repertoire plugins/repository
+	    // (chemin relatif au repertoire dans lequel java est lance).
+	    pluginLoader = new PluginLoader("src/plugins/repository");
+
+	    // Chargement de tous les plugins places dans les URLs donnes ci-dessus.
+	    pluginLoader.loadPlugins();
+	    
+	    // Met le 1er plugin strategyElevator de la liste des plugins comme strategy par defaut
+	    Plugin[] plugins = pluginLoader.getPluginInstances(ElevatorStrategy.class);
+	    if (plugins.length != 0) {
+	    	elevatorStrategy = (ElevatorStrategy)plugins[0];
+	    }
+	    // Construction de la barre de menus
+	    setJMenuBar(mb);
+
+	    // Construction du menu des plugins
+	    buildPluginMenu();
+		
 		this.jpanel_principal = new JPanel();
 		
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
@@ -68,7 +110,7 @@ public class ConfigView extends JFrame {
 			this.jpanel_elevator_count = new JPanel(new GridLayout(1,3));
 			{	
 				JLabel choose_elevator_count = new JLabel("Nombre d'ascenseur");
-				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD,15));
+				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
 				jpanel_elevator_count.add(choose_elevator_count);
 				
 				JLabel jlabel_elevator_count = new JLabel(Integer.toString((int)MAX_ELEVATOR_COUNT/2));
@@ -81,6 +123,24 @@ public class ConfigView extends JFrame {
 				jpanel_elevator_count.add(jlabel_elevator_count);
 			}
 			this.jpanel_principal.add(jpanel_elevator_count);
+			
+			// Cadre du choix du nombre d'ascenseur
+			this.jpanel_person_per_elevator_count = new JPanel(new GridLayout(1,3));
+			{	
+				JLabel choose_person_per_elevator_count = new JLabel("Personnes max par ascenseur");
+				choose_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 12));
+				jpanel_person_per_elevator_count.add(choose_person_per_elevator_count);
+				
+				JLabel jlabel_person_per_elevator_count = new JLabel(Integer.toString((int)MAX_PERSON_PER_ELEVATOR_COUNT/2));
+				jlabel_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
+
+				jslider_person_per_elevator_count = new JSlider(MIN_PERSON_PER_ELEVATOR_COUNT, MAX_PERSON_PER_ELEVATOR_COUNT);
+				jslider_person_per_elevator_count.setValue((int)MAX_ELEVATOR_COUNT/2);
+				jslider_person_per_elevator_count.addChangeListener(new SliderUpdateObserver(jlabel_person_per_elevator_count));
+				jpanel_person_per_elevator_count.add(jslider_person_per_elevator_count);
+				jpanel_person_per_elevator_count.add(jlabel_person_per_elevator_count);
+			}
+			this.jpanel_principal.add(jpanel_person_per_elevator_count);
 			
 			// Cadre du choix du nombre d'individu
 			this.jpanel_person_count = new JPanel(new GridLayout(1,3));
@@ -133,7 +193,11 @@ public class ConfigView extends JFrame {
 		content_pane.add(jpanel_principal);
 		
 		this.setResizable(true);
-		this.setVisible(true);
+		this.setVisible(true);		
+	}
+
+	public ElevatorStrategy getElevatorStrategy() {
+		return elevatorStrategy;
 	}
 
 	public int get_floor_count() {
@@ -142,6 +206,10 @@ public class ConfigView extends JFrame {
 
 	public int get_elevator_count() {
 		return jslider_elevator_count.getValue();
+	}
+	
+	public int get_person_per_elevator_count() {
+		return jslider_person_per_elevator_count.getValue();
 	}
 
 	public int get_person_count() {
@@ -155,4 +223,37 @@ public class ConfigView extends JFrame {
 	public Component getComponent() {
 		return jpanel_principal;
 	}
+	
+	/**
+	   * Construit les entres du menu lies aux plugins.
+	   */
+	  private void buildPluginMenu() {
+	    menuPlugins = new JMenu("Comportements");
+
+	    // L'actionListener qui va ecouter les entrees du menu des plugins
+	    ActionListener listener = new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+	        // Met l'instance de plugin associee a l'entree du menu comme
+	        // strategy courante.
+	        elevatorStrategy = (ElevatorStrategy)((PluginMenuItem)e.getSource()).getPlugin();
+	        logger.info("Plugin choisi :" + elevatorStrategy);
+
+//	        fenetreDessin.setDessinateur(elevatorStrategy);
+	      }
+	    };
+
+	    if (pluginMenuItemFactory == null) {
+	      pluginMenuItemFactory =
+	          new PluginMenuItemFactory(menuPlugins, pluginLoader, listener);
+	    }
+
+	    buildPluginMenuEntries();
+
+	    mb.add(menuPlugins);
+	  }
+
+	  private void buildPluginMenuEntries() {
+	    // Fait construire les entrees du menu des plugins
+	    pluginMenuItemFactory.buildMenu(ElevatorStrategy.class);
+	  }
 }

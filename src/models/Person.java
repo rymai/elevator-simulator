@@ -1,7 +1,6 @@
 package models;
 
 import main.Console;
-import controllers.MainController;
 
 /**
  * Class Person
@@ -32,7 +31,6 @@ public class Person extends Passenger {
 		this.sex = sex;
 		this.mass = mass;
 		this.qi = qi;
-//		this.inTheElevator = false;
 	}
 
 	@Override
@@ -40,6 +38,11 @@ public class Person extends Passenger {
 		return mass;
 	}
 
+	@Override
+	public int getPersonCount() {
+		return 1;
+	}
+	
 	public int getSex() {
 		return sex;
 	}
@@ -64,20 +67,13 @@ public class Person extends Passenger {
 		this.sex = sex;
 	}
 
-	public void setMass(int mass) {
-		this.mass = mass;
-	}
-
 	public int getQi() {
 		return qi;
 	}
 
-	public void setQi(int qi) {
-		this.qi = qi;
-	}
-
 	/**
-	 * Methode implementant le comportement de la personne lorsque son ascenceur lui propose de monter
+	 * Methode implementant le comportement de la personne lorsque 
+	 * l'ascenceur passé en paramètre lui propose de monter
 	 */
 	@Override
 	public boolean canEnterElevator(Elevator elevator) {
@@ -88,12 +84,10 @@ public class Person extends Passenger {
 			if(qi < 70) {
 				if(elevator.takePassenger(this)) {
 					// Une fois la personne dans l'ascenseur, elle appelle l'etage ou elle veut aller
-//					Console.debug("Duree de l'attente : "+waitingTime());
 					Console.debug("Boulet monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
 				}
 				else {
 					Console.debug("Je n'ai pas pu monter dans ascenseur "+elevator.getIdentifier()+"! Je suis un gros boulet!");
-//					actsAfterBeRejectedFromElevator();
 				}
 					
 			}
@@ -104,7 +98,6 @@ public class Person extends Passenger {
 		// L'asenseur n'est pas en alerte
 		else {
 			if(elevator.takePassenger(this)) {
-//				Console.debug("Duree de l'attente : "+waitingTime());
 				Console.debug("Je monte dans ascenseur "+elevator.getIdentifier()+", je vais a l'etage "+wantedFloor+"! |"+elevator.getPassengerCount()+"|");
 			}
 			else {
@@ -112,19 +105,6 @@ public class Person extends Passenger {
 			}
 		}
 		return isInTheElevator();
-	}
-	
-	private boolean elevatorIsAtMyFloor() {
-		return controller.getBuilding().isThereElevatorAtFloor(currentFloor);
-	}
-	
-	private boolean itsMyDestinationFloor() {
-		return currentFloor == wantedFloor;
-	}
-
-	@Override
-	public int getPersonCount() {
-		return 1;
 	}
 	
 }
