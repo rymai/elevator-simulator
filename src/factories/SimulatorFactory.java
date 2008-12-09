@@ -1,14 +1,9 @@
 package factories;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import strategies.ElevatorStrategy;
-import strategies.elevators.*;
-import controllers.MainController;
 import models.*;
 
 public class SimulatorFactory {
@@ -56,56 +51,23 @@ public class SimulatorFactory {
 		return new Group(current_floor, wanted_floor, persons);
 	}
 
-	public Elevator getElevator(String type, int max_person) {
-		//		Console.debug("Creation d'un ascenseur de type "+type);
-		ElevatorStrategy strategy = null;
-		if(type.equals("LINEAR"))
-			strategy = loadPlugin("strategies.elevators.Linear");
-		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
-			strategy = new LinearInTheDirection();
-		else if(type.equals("NAWAK"))
-			strategy = new Nawak();
-        //else if(type.equals("OPERATEWITHBLOCKING"))
-		//	strategy = new OperateWithBlocking();
-		return new Elevator(max_person, strategy);
-	}
+//	public Elevator getElevator(String type, int max_person) {
+//		//		Console.debug("Creation d'un ascenseur de type "+type);
+//		ElevatorStrategy strategy = null;
+//		if(type.equals("LINEAR"))
+//			strategy = new Linear();
+//		else if(type.equals("LINEAR_IN_THE_DIRECTION"))
+//			strategy = new LinearInTheDirection();
+//		else if(type.equals("NAWAK"))
+//			strategy = new Nawak();
+//        //else if(type.equals("OPERATEWITHBLOCKING"))
+//		//	strategy = new OperateWithBlocking();
+//		return new Elevator(max_person, strategy);
+//	}
 	
 	public Elevator getElevator(ElevatorStrategy elevatorStrategy, int max_person) {
 //		Console.debug("Creation d'un ascenseur de type "+type);
 		return new Elevator(max_person, elevatorStrategy);
-	}
-	
-	private static ElevatorStrategy loadPlugin(String className) {
-		Class c = null;   
-		try {        
-			URLClassLoader cl = new URLClassLoader (new URL[] { 
-					new URL("file:///Users/remy/Documents/Development/Java/M1 Miage/elevator-plugins/src/")
-			});
-			c = cl.loadClass(className);
-		} 
-		catch(ClassNotFoundException e) {
-			System.err.println("Classe " + className + " non trouvee");
-			e.printStackTrace();   
-			return null;
-		}
-		catch (MalformedURLException e) {
-			e.printStackTrace();
-		}        
-
-		try {   
-			Object o = c.newInstance();      
-			return (ElevatorStrategy) o;
-		} 
-		catch(InstantiationException e) {  
-			System.err.println("Erreur dans l'instantiation de la classe "+ className);
-			e.printStackTrace();
-			return null;
-		}    
-		catch(IllegalAccessException e) {  
-			System.err.println("Erreur dans l'instantiation de la classe "+ className);
-			e.printStackTrace();
-			return null;
-		}    
 	}
 
 }

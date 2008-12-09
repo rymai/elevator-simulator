@@ -33,7 +33,7 @@ public class AnimatedElevator extends AnimatedObject {
     }
 
     /**
-     * Méthode mettant à jour l'état graphique et signale au modèle le déplacement l'arrivé d'un étage
+     * Méthode mettant à jour l'état graphique de l'elevator et signale au modèle le déplacement l'arrivé d'un étage
      * et passe la main au modèle pour qu'il agisse
      */
     public void updateState() {
@@ -64,6 +64,10 @@ public class AnimatedElevator extends AnimatedObject {
         }
     }
 
+    /**
+     * Méthode dessinant l'ascenseur
+     * @param g
+     */
     public void drawYourself(Graphics g) {
         if (g != null) {
             g.setColor(Color.BLACK);
