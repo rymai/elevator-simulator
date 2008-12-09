@@ -63,11 +63,7 @@ public class MainController {
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
 
-		for (int i = 1; i <= elevator_count; i++) {
-//			elevator = sf.getElevator("LINEAR_IN_THE_DIRECTION", person_per_elevator);
-			//            elevator = sf.getElevator("LINEAR", person_per_elevator);
-//			elevator = sf.getElevator("NAWAK", 5);
-			//			elevator = sf.getElevator("OPERATEWITHBLOCKING", 5);		
+		for (int i = 1; i <= elevator_count; i++) {		
 			// Avec plugin
 			elevator = sf.getElevator((ElevatorStrategy)elevator_strategy.getClass().newInstance(), person_per_elevator);
 			elevator.setIdentifier(i);
