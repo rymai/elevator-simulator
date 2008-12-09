@@ -63,4 +63,14 @@ public class LinearInTheDirection extends ElevatorStrategy {
 	public void leaveThisFloor() {
 	}
 
+	@Override
+	public String getName() {
+		return "Comportement lineaire avec duree de voyage minimum (et duree d'attente augmentee)";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
+	}
+
 }

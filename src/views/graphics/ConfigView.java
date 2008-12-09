@@ -2,9 +2,17 @@ package views.graphics;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.util.logging.Logger;
 
 import javax.swing.*;
+import plugin.Plugin;
+import plugin.PluginLoader;
+import plugin.util.PluginMenuItem;
+import plugin.util.PluginMenuItemFactory;
+import strategies.ElevatorStrategy;
 import observers.*;
 
 public class ConfigView extends JFrame {
@@ -30,6 +38,10 @@ public class ConfigView extends JFrame {
 	//
 	private JPanel jpanel_principal;
 	
+	private static Logger logger = Logger.getLogger("fr.unice.plugin.PluginLoader");
+	
+	private ElevatorStrategy elevatorStrategy = null;
+	
 		private JPanel jpanel_floor_count;
 			private JSlider jslider_floor_count;
 		private JPanel jpanel_elevator_count;
@@ -41,14 +53,37 @@ public class ConfigView extends JFrame {
 		private JPanel jpanel_group_count;
 			private JSlider jslider_group_count;
 		private JPanel jpanel_start_simulation;
+		
+		private PluginMenuItemFactory pluginMenuItemFactory;
+		private JMenuBar mb = new JMenuBar();
+		private JMenu menuPlugins;
+		private PluginLoader pluginLoader;
 
-	public ConfigView() {
+	public ConfigView() throws MalformedURLException {
 		this.setLocationByPlatform(true);
 		this.setSize(600, 600);
 		this.setTitle("Projet Java 2008 : Simulation de comportement d'ascenseurs - Tic/Tac/Viet");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Container content_pane = this.getContentPane();
 
+		// Les plugins seront dans le repertoire plugins/repository
+	    // (chemin relatif au repertoire dans lequel java est lance).
+	    pluginLoader = new PluginLoader("src/plugins/repository");
+
+	    // Chargement de tous les plugins places dans les URLs donnes ci-dessus.
+	    pluginLoader.loadPlugins();
+	    
+	    // Met le 1er plugin strategyElevator de la liste des plugins comme strategy par defaut
+	    Plugin[] plugins = pluginLoader.getPluginInstances(ElevatorStrategy.class);
+	    if (plugins.length != 0) {
+	    	elevatorStrategy = (ElevatorStrategy)plugins[0];
+	    }
+	    // Construction de la barre de menus
+	    setJMenuBar(mb);
+
+	    // Construction du menu des plugins
+	    buildPluginMenu();
+		
 		this.jpanel_principal = new JPanel();
 		
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
@@ -158,98 +193,11 @@ public class ConfigView extends JFrame {
 		content_pane.add(jpanel_principal);
 		
 		this.setResizable(true);
-		this.setVisible(true);
-		
-//		JMenuBar menu_bar = new JMenuBar();
-//		JMenu menu1 = new JMenu("Simulation");
-//		JMenuItem item1 = new JMenuItem("New simulation");
-//		
-//		menu1.add(item1);
-//		menu_bar.add(menu1);
-//		menu_bar.setVisible(true);
-		
-		//Where the GUI is created:
-		JMenuBar menuBar;
-		JMenu menu, submenu;
-		JMenuItem menuItem;
-		JRadioButtonMenuItem rbMenuItem;
-		JCheckBoxMenuItem cbMenuItem;
+		this.setVisible(true);		
+	}
 
-		//Create the menu bar.
-		menuBar = new JMenuBar();
-
-		//Build the first menu.
-		menu = new JMenu("A Menu");
-		menu.setMnemonic(KeyEvent.VK_A);
-		menu.getAccessibleContext().setAccessibleDescription(
-		        "The only menu in this program that has menu items");
-		menuBar.add(menu);
-
-		//a group of JMenuItems
-		menuItem = new JMenuItem("A text-only menu item",
-		                         KeyEvent.VK_T);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(
-		        KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription(
-		        "This doesn't really do anything");
-		menu.add(menuItem);
-
-		menuItem = new JMenuItem("Both text and icon",
-		                         new ImageIcon("images/middle.gif"));
-		menuItem.setMnemonic(KeyEvent.VK_B);
-		menu.add(menuItem);
-
-		menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
-		menuItem.setMnemonic(KeyEvent.VK_D);
-		menu.add(menuItem);
-
-		//a group of radio button menu items
-		menu.addSeparator();
-		ButtonGroup group = new ButtonGroup();
-		rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
-		rbMenuItem.setSelected(true);
-		rbMenuItem.setMnemonic(KeyEvent.VK_R);
-		group.add(rbMenuItem);
-		menu.add(rbMenuItem);
-
-		rbMenuItem = new JRadioButtonMenuItem("Another one");
-		rbMenuItem.setMnemonic(KeyEvent.VK_O);
-		group.add(rbMenuItem);
-		menu.add(rbMenuItem);
-
-		//a group of check box menu items
-		menu.addSeparator();
-		cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
-		cbMenuItem.setMnemonic(KeyEvent.VK_C);
-		menu.add(cbMenuItem);
-
-		cbMenuItem = new JCheckBoxMenuItem("Another one");
-		cbMenuItem.setMnemonic(KeyEvent.VK_H);
-		menu.add(cbMenuItem);
-
-		//a submenu
-		menu.addSeparator();
-		submenu = new JMenu("A submenu");
-		submenu.setMnemonic(KeyEvent.VK_S);
-
-		menuItem = new JMenuItem("An item in the submenu");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(
-		        KeyEvent.VK_2, ActionEvent.ALT_MASK));
-		submenu.add(menuItem);
-
-		menuItem = new JMenuItem("Another item");
-		submenu.add(menuItem);
-		menu.add(submenu);
-
-		//Build second menu in the menu bar.
-		menu = new JMenu("Another Menu");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription(
-		        "This menu does nothing");
-		menuBar.add(menu);
-
-		this.setJMenuBar(menuBar);
-		
+	public ElevatorStrategy getElevatorStrategy() {
+		return elevatorStrategy;
 	}
 
 	public int get_floor_count() {
@@ -275,4 +223,37 @@ public class ConfigView extends JFrame {
 	public Component getComponent() {
 		return jpanel_principal;
 	}
+	
+	/**
+	   * Construit les entres du menu lies aux plugins.
+	   */
+	  private void buildPluginMenu() {
+	    menuPlugins = new JMenu("Comportements");
+
+	    // L'actionListener qui va ecouter les entrees du menu des plugins
+	    ActionListener listener = new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+	        // Met l'instance de plugin associee a l'entree du menu comme
+	        // strategy courante.
+	        elevatorStrategy = (ElevatorStrategy)((PluginMenuItem)e.getSource()).getPlugin();
+	        logger.info("Plugin choisi :" + elevatorStrategy);
+
+//	        fenetreDessin.setDessinateur(elevatorStrategy);
+	      }
+	    };
+
+	    if (pluginMenuItemFactory == null) {
+	      pluginMenuItemFactory =
+	          new PluginMenuItemFactory(menuPlugins, pluginLoader, listener);
+	    }
+
+	    buildPluginMenuEntries();
+
+	    mb.add(menuPlugins);
+	  }
+
+	  private void buildPluginMenuEntries() {
+	    // Fait construire les entrees du menu des plugins
+	    pluginMenuItemFactory.buildMenu(ElevatorStrategy.class);
+	  }
 }

@@ -23,16 +23,16 @@ public class Building {
 	// Nombre d'etage du batiment
 	private int floorCount;
 
-	public Building(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list, MainController controller) {
-		constructor(floor_count, elevators_list, passengers_list, controller);
+	public Building(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
+		constructor(floor_count, elevators_list, passengers_list);
 	}
 
-	public Building(int floor_count, MainController mainController) {
-		constructor(floor_count, new ArrayList<Elevator>(floor_count), new LinkedList<Passenger>(), controller);
+	public Building(int floor_count) {
+		constructor(floor_count, new ArrayList<Elevator>(floor_count), new LinkedList<Passenger>());
 	}
 
-	public void constructor(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list, MainController controller) {
-		this.controller = controller;
+	public void constructor(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
+		this.controller = MainController.getInstance();
 		this.floorCount = floor_count;
 		this.elevators = elevators_list;
 		this.passengers = passengers_list;

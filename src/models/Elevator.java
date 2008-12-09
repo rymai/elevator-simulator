@@ -81,17 +81,17 @@ public class Elevator {
 	private boolean moving;
 	private AnimatedElevator animatedElevator;
 
-	public Elevator(MainController controller) {
-		constructor(controller, 500, 400, new Linear(this));
+	public Elevator() {
+		constructor(500, 400, new Linear(this));
 	}
 
-	public Elevator(MainController controller, int max_persons, ElevatorStrategy strategy) {
+	public Elevator(int max_persons, ElevatorStrategy strategy) {
 		this.maxPersons = max_persons;
-		constructor(controller, max_persons*80, (max_persons*80)-100, strategy);
+		constructor(max_persons*80, (max_persons*80)-100, strategy);
 	}
 
-	public void constructor(MainController controller, int max_weight, int alert_weight, ElevatorStrategy strategy) {
-		this.controller = controller;
+	public void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
+		this.controller = MainController.getInstance();
 		this.building = controller.getBuilding();
 		this.maxWeight = max_weight;
 		this.alertWeight = alert_weight;

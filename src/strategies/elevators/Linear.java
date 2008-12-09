@@ -16,7 +16,17 @@ public class Linear extends ElevatorStrategy {
 	}
 	
 	@Override
-	public synchronized void acts() {
+	public String getName() {
+		return "Comportement lineaire sans optimisation des durees d'attente.";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
+	}
+	
+	@Override
+	public void acts() {
 		//		System.out.println("id : "+elevator.getIdentifier());
 		// Aucun appel, on ne fait rien, on est a l'arret, tout va bien
 		if(!elevator.getBuilding().allPassengersAreArrived() && (elevator.getBuilding().getWaitingPassengersCount() != 0 || elevator.getPassengerCount() != 0)) {

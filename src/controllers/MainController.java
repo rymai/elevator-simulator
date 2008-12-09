@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import strategies.ElevatorStrategy;
 import views.graphics.AnimatedElevator;
 import views.graphics.AnimatedPerson;
 import views.graphics.FixedFloor;
@@ -46,21 +48,22 @@ public class MainController {
 		return INSTANCE;
 	}
 
-	public void startSimulation(int floor_count, int elevator_count, int person_per_elevator, int person_count, int group_count) {
+	public void startSimulation(int floor_count, int elevator_count, int person_per_elevator, int person_count, int group_count, ElevatorStrategy elevator_strategy) {
 		Console.info("Lancement d'une partie avec "+floor_count+" etages, "+elevator_count+
 				" ascenseurs, "+person_per_elevator+" max personnes par ascenseur, "+person_count+" individus et "+group_count+" groupes.");
 
 		SimulatorFactory sf = new SimulatorFactory();
 
 		// Constructs the buildings.
-		building = sf.getBuilding(floor_count, INSTANCE);
+		building = sf.getBuilding(floor_count);
 
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
 		for (int i = 1; i <= elevator_count; i++) {
-//			elevator = sf.getElevator(INSTANCE, "LINEAR_IN_THE_DIRECTION", person_per_elevator);
-			elevator = sf.getElevator(INSTANCE, "LINEAR", person_per_elevator);
+			elevator = sf.getElevator("LINEAR_IN_THE_DIRECTION", person_per_elevator);
+//			elevator = sf.getElevator("LINEAR", person_per_elevator);
+//			elevator = sf.getElevator(elevator_strategy, person_per_elevator);
 
 			elevator.setIdentifier(i);
 			elevators.add(elevator);
@@ -71,7 +74,7 @@ public class MainController {
 		// Constructs the passengers (only persons for now)
 		LinkedList<Passenger> passengers = new LinkedList<Passenger>();
 		for (int i = 0; i < person_count; i++) {
-			passengers.add(sf.getPerson(building.getFloorCountWithGround(), INSTANCE));
+			passengers.add(sf.getPerson(building.getFloorCountWithGround()));
 		}
 		// Add passengers to the building
 		building.setPassengers(passengers);
