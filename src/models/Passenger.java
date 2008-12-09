@@ -83,10 +83,10 @@ public abstract class Passenger {
 	 */
 	public int getMood() {
 		if(isArrived()) return 1;
-		if(getTime() > 60) {
+		if(getTime() > 180) {
 			return 3;
 		}
-		else if(getTime() > 25) {
+		else if(getTime() > 60) {
 			return 2;
 		}
 		else return 1;

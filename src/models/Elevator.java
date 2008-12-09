@@ -106,6 +106,7 @@ public class Elevator {
 		this.passengers = new LinkedList<Passenger>();
 		this.moving = false;
 		this.waitingTime = new Times();
+		this.targetFloor = Integer.MAX_VALUE;
 	}
 
 	// All is done here
@@ -132,7 +133,7 @@ public class Elevator {
      * @param passenger
      * @return
      */
-    public synchronized boolean takePassenger(Passenger passenger) {
+    public boolean takePassenger(Passenger passenger) {
 
         if (willBeBlockedWithThisMass(passenger.getTotalMass())) {
             return false;
@@ -212,7 +213,7 @@ public class Elevator {
     public boolean noCallOnTheWay() {
         if (goingToTop) {
             for (int i = currentFloor; i <= building.getFloorCountWithGround(); i++) {
-                if (building.getWaitingPassengersCountAtFloor(i) > 0) {
+                if (building.getWaitingPersonsCountAtFloor(i) > 0) {
                     return false;
                 }
                 for (Passenger p : passengers) {
@@ -224,7 +225,7 @@ public class Elevator {
             return true;
         } else {
             for (int i = currentFloor; i >= 0; i--) {
-                if (building.getWaitingPassengersCountAtFloor(i) > 0) {
+                if (building.getWaitingPersonsCountAtFloor(i) > 0) {
                     return false;
                 }
                 for (Passenger p : passengers) {
@@ -402,7 +403,7 @@ public class Elevator {
      * fonction renvoyant un arrayList des indices des étages dans lesquels les passagers veulent aller
      * @return
      */
-    public ArrayList<Integer> getFloorWithWaitingToGoOut() {
+    public ArrayList<Integer> getFloorsWanted() {
         ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
         for (Passenger p : passengers) {
             if (!numberWaiting.contains(p.getWantedFloor())) {
@@ -416,7 +417,18 @@ public class Elevator {
 		return targetFloor;
 	}
     
+    /**
+     * Définit l'étage visé par l'ascenseur
+     * Met à jour automatiquement le sens de déplacement en fonction de l'étage visé
+     * @param floor
+     */
     public void setTargetFloor(int floor) {
 		this.targetFloor = floor;
+		if(floor < getCurrentFloor()){
+			setGoingToTop(false);
+		}else{
+			setGoingToTop(true);
+		}
 	}
+    
 }

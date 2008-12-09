@@ -62,14 +62,13 @@ public class MainController {
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
-		// petite bite
 		for (int i = 1; i <= elevator_count; i++) {		
 			// Avec plugin
 			elevator = sf.getElevator((ElevatorStrategy)elevator_strategy.getClass().newInstance(), person_per_elevator);
 			elevator.setIdentifier(i);
 			//Placement des Elevators
 			Random rand = new Random();
-			elevator.setCurrentFloor( rand.nextInt(floor_count+1));
+			elevator.setCurrentFloor(rand.nextInt(floor_count+1));
 			elevators.add(elevator);
 		}
 		// Add elevators to the building

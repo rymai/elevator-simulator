@@ -260,7 +260,7 @@ public class ConfigView extends JFrame {
 	 * Construit les entres du menu lies aux plugins.
 	 */
 	private void buildPluginMenu() {
-		menuPlugins = new JMenu("Comportements");
+		menuPlugins = new JMenu("Choisir un comportement");
 
 		// L'actionListener qui va ecouter les entrees du menu des plugins
 		ActionListener listener = new ActionListener() {

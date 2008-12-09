@@ -21,7 +21,7 @@ public class SimulatorFactory {
 		int sex, mass, qi, current_floor, wanted_floor;
 		Random rand = new Random();
 		sex = rand.nextInt(2);
-		mass = (rand.nextInt(70))+40;
+		mass = 45+(rand.nextInt(75)); // Entre 45 et 120 kg
 		qi = rand.nextInt(140);
 		current_floor = rand.nextInt(max_floor);
 		do {
@@ -41,7 +41,9 @@ public class SimulatorFactory {
 			wanted_floor = rand.nextInt(max_floor);
 		} while (wanted_floor == current_floor);
 		
-		int person_count = rand.nextInt(3)+2;
+		// 2 ou 3 personnes 
+		// (au dela, on risque de depasser la limite de poids avec un seul groupe)
+		int person_count = 2+rand.nextInt(2);
 		for (int i = 0; i < person_count; i++) {
 			sex = rand.nextInt(2);
 			mass = (rand.nextInt(70))+40;

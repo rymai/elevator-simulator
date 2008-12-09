@@ -87,8 +87,15 @@ public class AnimatedPerson extends AnimatedObject {
 		// Right eye
 		g.fillOval(x+(head_width/2)+head_width/4, y+head_height/5+1, eye_width, eye_height);
 		
+		
 		// Smile
-		g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
+		if(person.getMood() == 1)
+			g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, 10, -190);
+		else if(person.getMood() == 2)
+			g.drawLine(x+head_width/2-2, y+head_height/2+3, x+head_width/3+5, y+head_height/2+3);
+		else if(person.getMood() == 3)
+			g.drawArc(x+head_width/3-1, y+head_height/3, head_width/2, head_height/2, -190, 10);
+		
 	}
 
 }

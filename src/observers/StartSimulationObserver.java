@@ -3,8 +3,8 @@ package observers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import views.graphics.ConfigView;
-
 import controllers.MainController;
+
 /**
  * 
  * @author x_nem

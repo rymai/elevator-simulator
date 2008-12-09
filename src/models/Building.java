@@ -21,30 +21,30 @@ public class Building {
 	// Nombre d'etage du batiment
 	private int floorCount;
 
-        /**
-         * Constructeur Building
-         * @param floor_count Nombre d'étage
-         * @param elevators_list Liste d'Elevator
-         * @param passengers_list Liste de passager
-         */
+	/**
+	 * Constructeur Building
+	 * @param floor_count Nombre d'étage
+	 * @param elevators_list Liste d'Elevator
+	 * @param passengers_list Liste de passager
+	 */
 	public Building(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
 		constructor(floor_count, elevators_list, passengers_list);
 	}
 
-        /**
-         * Constructeur Building avec un paramètre
-         * @param floor_count Nombre d'étage
-         */
+	/**
+	 * Constructeur Building avec un paramètre
+	 * @param floor_count Nombre d'étage
+	 */
 	public Building(int floor_count) {
 		constructor(floor_count, new ArrayList<Elevator>(floor_count), new LinkedList<Passenger>());
 	}
 
-        /**
-         * Méthode privée utilisé par les constructeurs pour initialiser les variables
-         * @param floor_count       Nombre d'étage
-         * @param elevators_list    Liste d'Elevator  (liste d'Elevator)
-         * @param passengers_list   Liste de Passengers
-         */
+	/**
+	 * Méthode privée utilisé par les constructeurs pour initialiser les variables
+	 * @param floor_count       Nombre d'étage
+	 * @param elevators_list    Liste d'Elevator  (liste d'Elevator)
+	 * @param passengers_list   Liste de Passengers
+	 */
 	private void constructor(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
 		this.floorCount = floor_count;
 		this.elevators = elevators_list;
@@ -73,12 +73,16 @@ public class Building {
 		this.passengers = passengers;
 	}
 
+	/**
+	 * Retourne le nombre d'étages (sans compter le RDC)
+	 * @return
+	 */
 	public int getFloorCount() {
 		return floorCount;
 	}
-	
+
 	/**
-	 * Retourne le nombre d'étages du batîment + le rez de chaussée
+	 * Retourne le nombre d'étages + le RDC
 	 * @return
 	 */
 	public int getFloorCountWithGround() {
@@ -102,6 +106,24 @@ public class Building {
 		return null;
 	}
 
+	/**
+	 * Retourne un booléen permettant de savoir si tous les passagers sont arrivés à destination
+	 * @return retourne true si les passagers sont bien tous arrivés
+	 * retourne false si les passagers ne sont tous pas tous arrivés
+	 * 
+	 */
+	public boolean allPassengersAreArrived() {
+		for (Passenger passenger : passengers) {
+			if(!passenger.isArrived()) return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Retourne la liste des passagers qui attendent à l'étage floor
+	 * @param floor
+	 * @return
+	 */
 	public LinkedList<Passenger> getWaitingPassengersAtFloor(int floor) {
 		LinkedList<Passenger> ret_list = new LinkedList<Passenger>();
 		for (Passenger p : passengers) {
@@ -110,13 +132,93 @@ public class Building {
 		return ret_list;
 	}
 
-	public int getWaitingPassengersCountAtFloor(int floor) {
+	/**
+	 * Retourne le ieme passagers qui attend à l'étage floor
+	 * @param floor
+	 * @param i Index du passager dans la LinkedList de passagers qui attendent à l'étage floor
+	 * @return
+	 */
+	public Passenger getWaitingPassengerAtFloorWithIndex(int floor, int i) {
+		LinkedList<Passenger> ps = getWaitingPassengersAtFloor(floor);
+		if(i >= ps.size()) {
+			return null;
+		}
+		else {
+			return ps.get(i);
+		}
+	}
+
+	/**
+	 * Retourne le ieme passagers qui attend à l'étage floor et qui va dans
+	 * la direction going_to_top
+	 * @param floor
+	 * @param i Index du passager dans la LinkedList de passagers qui attendent à l'étage floor
+	 * @return
+	 */
+	public Passenger getWaitingPassengerAtFloorWithIndexInThisDirection(int floor, int i, boolean going_to_top) {
+		Passenger p = getWaitingPassengerAtFloorWithIndex(floor,i);
+
+		if(p == null) return null;
+		else {
+			if(going_to_top) {
+				if(p.getWantedFloor() > p.getCurrentFloor()) return p;
+			}
+			else {
+				if(p.getWantedFloor() < p.getCurrentFloor()) return p;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Retourne le nombre de passagers qui attendent à l'étage floor
+	 * @param floor
+	 * @return
+	 */
+	public int getWaitingPersonsCountAtFloor(int floor) {
 		int sum = 0;
 		for (Passenger passenger : getWaitingPassengersAtFloor(floor)) {
 			sum += passenger.getPersonCount();
 		}
 		return sum;
 	}
+
+	/**
+	 * Retourne une liste chainée des passagers 
+	 * @param passenger
+	 * @return
+	 */
+	public LinkedList<Passenger> getPassengersAtFloor(Passenger passenger) {
+		if(passenger.isArrived()) {
+			return getArrivedPassengersAtFloor(passenger.getCurrentFloor());
+		}
+		else {
+			return getWaitingPassengersAtFloor(passenger.getCurrentFloor());
+		}
+	}
+
+	/**
+	 * Retourne l'index d'un passager passé en paramètre (utile pour dessiner les passager)
+	 * @param passenger
+	 * @return
+	 */
+	public int getPassengerIndexAtHisFloor(Passenger passenger) {
+		LinkedList<Passenger> list = getPassengersAtFloor(passenger);
+		return list.indexOf(passenger);
+	}
+
+	/**
+	 * Retourne le nombre de personnes attendant un ascenseur
+	 * @return
+	 */
+	public int getWaitingPersonsCount() {
+		int sum = 0;
+		for (Passenger p : passengers) {
+			if(!p.isArrived() && !p.isInTheElevator()) sum += p.getPersonCount();
+		}
+		return sum;
+	}
+
 	/**
 	 * Retourne une Liste Chainé de Passenger pour connaîre les passagers arrivant à l'étage
 	 * @param floor 
@@ -143,97 +245,16 @@ public class Building {
 	}
 
 	/**
-	 * Retourne le premiet passager attendant à l'étage passé en paramètre
-	 * @param floor paramètre étage
-	 * @return retourne le premier passager attendant à l'étage 
-	 */
-	public Passenger getFirstPassengerWaitingAtFloor(int floor) {
-		for (Passenger passenger : passengers) {
-			if(passenger.isWaitingAtFloor(floor)) return passenger;
-		}
-		return null;
-	}
-	
-	/**
-	 * Retourne un booléen permettant de savoir si tous les passagers sont arrivés à destination
-	 * @return retourne true si les passagers sont bien tous arrivés
-	 * retourne false si les passagers ne sont tous pas tous arrivés
-	 * 
-	 */
-	public boolean allPassengersAreArrived() {
-		for (Passenger passenger : passengers) {
-			if(!passenger.isArrived()) return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Retourne l'index d'un passager passé en paramètre (utile pour dessiner les passager)
-	 * @param passenger
-	 * @return
-	 */
-	public int getPassengerIndexAtHisFloor(Passenger passenger) {
-		LinkedList<Passenger> list = getPassengersAtFloor(passenger);
-		return list.indexOf(passenger);
-	}
-
-	/**
-	 * Retourne une liste chainé des passagers 
-	 * @param passenger
-	 * @return
-	 */
-	public LinkedList<Passenger> getPassengersAtFloor(Passenger passenger) {
-		if(passenger.isArrived()) {
-			return getArrivedPassengersAtFloor(passenger.getCurrentFloor());
-		}
-		else {
-			return getWaitingPassengersAtFloor(passenger.getCurrentFloor());
-		}
-	}
-
-	/**
-	 * Retourne le nombre de passagers totals attendant un ascenseur
-	 * @return
-	 */
-	public int getWaitingPassengersCount() {
-		int sum = 0;
-		for (Passenger p : passengers) {
-			if(!p.isArrived() && !p.isInTheElevator()) sum += p.getPersonCount();
-		}
-		return sum;
-	}
-
-	/**
-	 * Retourne le premier passager de l'étage passé en paramètre qui va dans une certaine direction
-	 * @param floor étage passé en paramètre
-	 * @param going_to_top direction de l'ascenseur
-	 * @return un Passenger ou null selon si il y a au moins une personne qui va dans la direction passé en paramètre
-	 */
-	public Passenger getFirstWaitingPassengerAtFloorInThisDirection(int floor, boolean going_to_top) {
-
-		LinkedList<Passenger> ps = getWaitingPassengersAtFloor(floor);
-		for (Passenger p : ps) {
-			if(going_to_top) {
-				if(p.getWantedFloor() > p.getCurrentFloor()) return p;
-			}
-			else {
-				if(p.getWantedFloor() < p.getCurrentFloor()) return p;
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Retourne l'etage ou il y a le maximum de passagers en attente
-	 * @return
+	 * @return L'indice de l'etage ou il y a le maximum de passagers en attente
 	 */
 	public int getMaximumWaitingFloor(){
 		int maxCrowdedFloor = 0;
 		int numberOfPeople = 0;
 		for(int i=0; i <= floorCount; i++){
-			if(getWaitingPassengersCountAtFloor(i) > numberOfPeople){
+			if(getWaitingPersonsCountAtFloor(i) > numberOfPeople){
 				maxCrowdedFloor = i;
-				numberOfPeople = getWaitingPassengersCountAtFloor(i);
+				numberOfPeople = getWaitingPersonsCountAtFloor(i);
 			}
 		}
 		System.out.println("Etage le plus blindé : "+maxCrowdedFloor);
@@ -241,17 +262,17 @@ public class Building {
 	}
 
 	/**
-	 * Retourne les etages ou il y a des passagers qui attendent
-	 * @return
+	 * Retourne les indices des etages ou il y a des passagers qui attendent
+	 * @return Une ArrayList<Integer> des etages ou il y a des passagers
 	 */
 	public ArrayList<Integer> getFloorWithWaitingPassengers(){
 		ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
 		for(int i=0; i <= floorCount; i++){
-			if(getWaitingPassengersCountAtFloor(i) > 0){
+			if(getWaitingPersonsCountAtFloor(i) > 0){
 				numberWaiting.add(i);
 			}
 		}
 		return numberWaiting;
 	}
-	
+
 }

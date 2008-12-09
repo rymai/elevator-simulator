@@ -12,7 +12,8 @@ import models.Passenger;
 public abstract class ElevatorStrategy implements Plugin {
 
 	protected Elevator elevator;
-
+	protected boolean must_leave_now = false;
+	
 	public ElevatorStrategy() {
 	}
 	
