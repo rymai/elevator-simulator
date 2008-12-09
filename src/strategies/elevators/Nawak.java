@@ -17,6 +17,16 @@ public class Nawak extends ElevatorStrategy {
 	public Nawak(Elevator elevator) {
 		super(elevator);
 	}
+	
+	@Override
+	public String getName() {
+		return "Nawak : Comportement qui choisit un Žtage (ou il y a quelque chose ˆ faire) au hasard.";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
+	}
 
 	@Override
 	public synchronized void acts() {
@@ -54,12 +64,6 @@ public class Nawak extends ElevatorStrategy {
 			if(!tabWanted.isEmpty()){
 				floor = tabWanted.get(r.nextInt(tabWanted.size()));
 
-				//int random=0;
-
-				//System.out.println(numberWaiting);
-
-				System.out.println("Random :" +floor);
-
 				if(floor < elevator.getCurrentFloor()){
 					elevator.setGoingToTop(false);
 				}else{
@@ -69,9 +73,6 @@ public class Nawak extends ElevatorStrategy {
 			}else {
 				elevator.setMoving(false);
 			}
-			/*	if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom())) {
-				elevator.changeDirection(); // Changement de sens pour le prochain mouvement
-			} */
 		}
 		else {
 			elevator.setMoving(false);
@@ -92,16 +93,6 @@ public class Nawak extends ElevatorStrategy {
 
 	@Override
 	public void leaveThisFloor() {
-	}
-
-	@Override
-	public String getName() {
-		return "Comportement qui choisis un Žtage (ou il y a quelque chose ˆ faire) au hasard.";
-	}
-
-	@Override
-	public Class getType() {
-		return ElevatorStrategy.class;
 	}
 
 }

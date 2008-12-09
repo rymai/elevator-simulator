@@ -1,28 +1,24 @@
 package strategies.elevators;
 
+import java.util.ArrayList;
 import main.Console;
 import models.Elevator;
 import models.Passenger;
 import strategies.ElevatorStrategy;
 
-/**
- * 
- * @author francois
- *
- */
-public class Linear extends ElevatorStrategy {
+public class NearestFloor extends ElevatorStrategy {
 
-	public Linear() {
+	public NearestFloor() {
 		super();
 	}
 
-	public Linear(Elevator elevator) {
+	public NearestFloor(Elevator elevator) {
 		super(elevator);
 	}
-	
+
 	@Override
 	public String getName() {
-		return "Linear : Comportement lineaire sans optimisation des durees d'attente.";
+		return "NearestFloor : Comportement qui choisit un Žtage (ou il y a quelque chose ˆ faire) au hasard.";
 	}
 
 	@Override
@@ -31,7 +27,7 @@ public class Linear extends ElevatorStrategy {
 	}
 	
 	@Override
-	public void acts() {
+	public synchronized void acts() {
 		//		System.out.println("id : "+elevator.getIdentifier());
 		// Aucun appel, on ne fait rien, on est a l'arret, tout va bien
 		if(!elevator.getBuilding().allPassengersAreArrived() && (elevator.getBuilding().getWaitingPassengersCount() != 0 || elevator.getPassengerCount() != 0)) {
@@ -50,9 +46,32 @@ public class Linear extends ElevatorStrategy {
 			elevator.setMoving(false);
 			elevator.incrementStoppedTime(1);
 			if((elevator.getStoppedTime() > elevator.getStopTime()) || must_leave_now) elevator.leaveThisFloor();
+
+			// Etage au hazard
+			ArrayList<Integer> tabWaiting = elevator.getBuilding().getFloorWithWaitingPassengers();
+			ArrayList<Integer> tabWanted = elevator.getFloorWithWaitingToGoOut();
+
+			// Mix des deux listes
+			for (Integer i : tabWaiting) {
+				if(!tabWanted.contains(i)){
+					tabWanted.add(i);
+				}
+			}
 			
-			if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom()) || (elevator.noCallOnTheWay())) {
-				elevator.changeDirection(); // Changement de sens pour le prochain mouvement
+			if(!tabWanted.isEmpty()){
+				int nearestFloor = Integer.MAX_VALUE;
+				for (Integer floor : tabWanted) {
+					if(Math.sqrt((elevator.getCurrentFloor() - floor)*(elevator.getCurrentFloor() - floor)) < nearestFloor) nearestFloor = floor;
+				}
+System.out.println("nearestFloor java : "+nearestFloor);
+				if(nearestFloor < elevator.getCurrentFloor()){
+					elevator.setGoingToTop(false);
+				}else{
+					elevator.setGoingToTop(true);
+				}
+				elevator.setTargetFloor(nearestFloor);
+			}else {
+				elevator.setMoving(false);
 			}
 		}
 		else {

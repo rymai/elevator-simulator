@@ -21,6 +21,16 @@ public class LinearInTheDirection extends ElevatorStrategy {
 	}
 	
 	@Override
+	public String getName() {
+		return "LinearInTheDirection : Comportement lineaire avec duree de voyage minimum (et duree d'attente augmentee)";
+	}
+
+	@Override
+	public Class getType() {
+		return ElevatorStrategy.class;
+	}
+	
+	@Override
 	public void acts() {
 //		System.out.println("id : "+elevator.getIdentifier());
 		// Aucun appel, on ne fait rien, on est a l'arret, tout va bien
@@ -41,7 +51,7 @@ public class LinearInTheDirection extends ElevatorStrategy {
 			elevator.incrementStoppedTime(1);
 			if((elevator.getStoppedTime() > elevator.getStopTime()) || must_leave_now) elevator.leaveThisFloor();
 			
-			if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom())) {
+			if((elevator.isGoingToTop() && elevator.atTop()) || (!elevator.isGoingToTop() && elevator.atBottom()) || (elevator.noCallOnTheWay())) {
 				elevator.changeDirection(); // Changement de sens pour le prochain mouvement
 			}
 		}
@@ -64,16 +74,6 @@ public class LinearInTheDirection extends ElevatorStrategy {
 
 	@Override
 	public void leaveThisFloor() {
-	}
-
-	@Override
-	public String getName() {
-		return "Comportement lineaire avec duree de voyage minimum (et duree d'attente augmentee)";
-	}
-
-	@Override
-	public Class getType() {
-		return ElevatorStrategy.class;
 	}
 
 }

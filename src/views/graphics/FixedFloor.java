@@ -20,7 +20,7 @@ public class FixedFloor extends FixedObject {
 			g.setColor(color);
             g.fillRect(x, y, FLOOR_WIDTH, AnimatedElevator.ELEVATOR_HEIGHT);
             g.setColor(Color.BLACK);
-            g.drawString(id == 1 ? "RDC" : "Etage "+(id-1), x+FLOOR_WIDTH/4, y+AnimatedElevator.ELEVATOR_HEIGHT/3);
+            g.drawString(id == 0 ? "RDC" : "Etage "+id, x+FLOOR_WIDTH/4, y+AnimatedElevator.ELEVATOR_HEIGHT/3);
         }
 	}
 

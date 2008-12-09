@@ -3,10 +3,8 @@ package views.graphics;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
-
 import javax.swing.*;
 import plugin.Plugin;
 import plugin.PluginLoader;
@@ -25,9 +23,9 @@ public class ConfigView extends JFrame {
 	private static final int MIN_ELEVATOR_COUNT = 1;
 	public static final int MAX_ELEVATOR_COUNT = 10;
 	private static final int MIN_PERSON_COUNT = 1;
-	private static final int MAX_PERSON_COUNT = 100;
+	private static final int MAX_PERSON_COUNT = 200;
 	private static final int MIN_GROUP_COUNT = 0;
-	private static final int MAX_GROUP_COUNT = 10;
+	private static final int MAX_GROUP_COUNT = 20;
 	private static final int MIN_PERSON_PER_ELEVATOR_COUNT = 1;
 	public static final int MAX_PERSON_PER_ELEVATOR_COUNT = 10;
 	
@@ -73,14 +71,15 @@ public class ConfigView extends JFrame {
 
 	public ConfigView() throws MalformedURLException {
 		this.setLocationByPlatform(true);
-		this.setSize(600, 600);
+		this.setSize(1000, 600);
 		this.setTitle("Projet Java 2008 : Simulation de comportement d'ascenseurs - Tic/Tac/Viet");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLayout(new GridLayout(1, 2));
 		Container content_pane = this.getContentPane();
 
 		// Les plugins seront dans le repertoire plugins/repository
 	    // (chemin relatif au repertoire dans lequel java est lance).
-	    pluginLoader = new PluginLoader("src/plugins/repository");
+	    pluginLoader = new PluginLoader("plugins");
 
 	    // Chargement de tous les plugins places dans les URLs donnes ci-dessus.
 	    pluginLoader.loadPlugins();
@@ -209,7 +208,7 @@ public class ConfigView extends JFrame {
 		{
 			
 		}
-//		content_pane.add(jpanel_choix_comportements);
+		content_pane.add(jpanel_choix_comportements);
 		
 		this.setResizable(true);
 		this.setVisible(true);		
@@ -238,10 +237,6 @@ public class ConfigView extends JFrame {
 	public int get_group_count() {
 		return jslider_group_count.getValue();
 	}
-
-	public Component getComponent() {
-		return jpanel_principal;
-	}
 	
 	/**
 	   * Construit les entres du menu lies aux plugins.
@@ -256,8 +251,6 @@ public class ConfigView extends JFrame {
 	        // strategy courante.
 	        elevatorStrategy = (ElevatorStrategy)((PluginMenuItem)e.getSource()).getPlugin();
 	        logger.info("Plugin choisi :" + elevatorStrategy);
-
-//	        fenetreDessin.setDessinateur(elevatorStrategy);
 	      }
 	    };
 
