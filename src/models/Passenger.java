@@ -3,16 +3,25 @@ package models;
 import views.graphics.SimulationPanel;
 import controllers.MainController;
 
+/**
+ * 
+ * @author x_nem
+ */
 public abstract class Passenger {
-	
+
 	protected MainController controller;
-	
+
 	// Compteur perso
 	protected long beginTime;
 	protected Elevator elevator;
 	protected int currentFloor;
 	protected int wantedFloor;
 
+	/**
+	 * Constructeur Passenger avec deux passages en paramètre
+	 * @param current_floor     l'étage ou se situe le passager actuellement
+	 * @param wanted_floor      l'étage ou il souhaite se rendre
+	 */
 	public Passenger(int current_floor, int  wanted_floor) {
 		this.controller = MainController.getInstance();
 		this.currentFloor = current_floor%this.controller.getBuilding().getFloorCountWithGround();
@@ -20,11 +29,11 @@ public abstract class Passenger {
 		this.elevator = null;
 		resetTime();
 	}
-	
+
 	public abstract int getTotalMass();
 	public abstract int getPersonCount();
 	public abstract boolean canEnterElevator(Elevator elevator);
-	
+
 	public Elevator getElevator() {
 		return elevator;
 	}
@@ -32,11 +41,12 @@ public abstract class Passenger {
 	public void setElevator(Elevator elevator) {
 		this.elevator = elevator;
 	}
-	
+
+
 	public boolean isArrived() {
 		return (wantedFloor == currentFloor) && !isInTheElevator();
 	}
-	
+
 	public boolean isInTheElevator() {
 		return elevator != null;
 	}
@@ -49,7 +59,7 @@ public abstract class Passenger {
 	}
 
 	public long getTime() { 
-		 return ((System.currentTimeMillis() - beginTime) / 1000)*SimulationPanel.framePerSecond;  
+		return ((System.currentTimeMillis() - beginTime) / 1000)*SimulationPanel.framePerSecond;  
 	}
 
 	public int getWantedFloor() {
@@ -59,7 +69,7 @@ public abstract class Passenger {
 	public boolean isWaitingAtFloor(int floor) {
 		return !isArrived() && !isInTheElevator() && currentFloor == floor;
 	}
-	
+
 	public boolean isArrivedAtFloor(int floor) {
 		return isArrived() && currentFloor == floor;
 	}
@@ -67,7 +77,7 @@ public abstract class Passenger {
 	public void resetTime() {
 		beginTime = System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * 1 : ok, 2 : a bit angry, 3 : very angry
 	 */

@@ -1,12 +1,18 @@
 package statistics;
 
 import java.util.ArrayList;
-
+/**
+ * Class Times pour générer les statistiques
+ * @author x_nem
+ */
 public class Times {
 
 	private ArrayList<Long> waitingTimes;
 	private ArrayList<Long> tripTimes;
 	
+        /**
+         * Constructeur de Times
+         */
 	public Times() {
 		waitingTimes = new ArrayList<Long>();
 		tripTimes = new ArrayList<Long>();

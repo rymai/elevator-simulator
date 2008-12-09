@@ -21,15 +21,31 @@ public class Building {
 	// Nombre d'etage du batiment
 	private int floorCount;
 
+        /**
+         * Constructeur Building
+         * @param floor_count Nombre d'étage
+         * @param elevators_list Liste d'Elevator
+         * @param passengers_list Liste de passager
+         */
 	public Building(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
 		constructor(floor_count, elevators_list, passengers_list);
 	}
 
+        /**
+         * Constructeur Building avec un paramètre
+         * @param floor_count Nombre d'étage
+         */
 	public Building(int floor_count) {
 		constructor(floor_count, new ArrayList<Elevator>(floor_count), new LinkedList<Passenger>());
 	}
 
-	public void constructor(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
+        /**
+         * Méthode privée utilisé par les constructeurs pour initialiser les variables
+         * @param floor_count       Nombre d'étage
+         * @param elevators_list    Liste d'Elevator  (liste d'Elevator)
+         * @param passengers_list   Liste de Passengers
+         */
+	private void constructor(int floor_count, ArrayList<Elevator> elevators_list, LinkedList<Passenger> passengers_list) {
 		this.floorCount = floor_count;
 		this.elevators = elevators_list;
 		this.passengers = passengers_list;

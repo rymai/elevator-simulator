@@ -2,6 +2,10 @@ package models;
 
 import main.Console;
 
+/**
+ * Class Person
+ * @author x_nem
+ */
 public class Person extends Passenger {
 	
 	public static final int MALE = 0;
@@ -14,6 +18,14 @@ public class Person extends Passenger {
 	// Pour simuler les cons.
 	private int qi;
 	
+        /**
+         * Constructeur Person 
+         * @param current_floor         étage actuel
+         * @param wanted_floor          étage souhaité
+         * @param sex                   sex de la personne
+         * @param mass                  masse (poids) de la personne
+         * @param qi                    qi de la personne
+         */
 	public Person(int current_floor, int wanted_floor, int sex, int mass, int qi) {
 		super(current_floor, wanted_floor);
 		this.sex = sex;
@@ -35,6 +47,12 @@ public class Person extends Passenger {
 		return sex;
 	}
 	
+        /**
+         * Fonction renvoyant le sexe de la personne en chaine de caractère
+         * male ou female
+         * @param sex
+         * @return
+         */
 	public static String getTextForSex(int sex) {
 		switch (sex) {
 		case MALE:

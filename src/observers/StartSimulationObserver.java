@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 import views.graphics.ConfigView;
 
 import controllers.MainController;
-
+/**
+ * 
+ * @author x_nem
+ */
 public class StartSimulationObserver implements ActionListener {
 
 	private ConfigView window;
