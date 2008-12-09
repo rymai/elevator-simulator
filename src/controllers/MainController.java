@@ -31,13 +31,8 @@ public class MainController {
     }
 
     /**
-    <<<<<<< HEAD:src/controllers/MainController.java
-     * La pr�sence d'un constructeur priv� supprime
-     * le constructeur public par d�faut.
-    =======
      * La presence d'un constructeur prive supprime
-     * le constructeur public par defaut.
-    >>>>>>> dadc5d0bf5c9154c27700743d663f00fd16d6c7d:src/controllers/MainController.java
+     * le constructeur public par defaut
      */
     private MainController() {
     }
@@ -48,6 +43,10 @@ public class MainController {
      * diff�rents threads.
      * @return L'unique instance du singleton.
      */
+    /**
+     * 
+     * @return
+     */
     public synchronized static MainController getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new MainController();
@@ -55,6 +54,15 @@ public class MainController {
         return INSTANCE;
     }
 
+    /**
+     * Méthode startSimulation pour lancer la simulation
+     * @param floor_count           Nombre d'étages
+     * @param elevator_count        Nombe d'ascenseur
+     * @param person_per_elevator   personnes par ascenseur
+     * @param person_count          nombre de personnes total
+     * @param group_count           nombre de groupe total
+     * @param elevator_strategy     strategie - comportement de l'ascenseur
+     */
     public void startSimulation(int floor_count, int elevator_count, int person_per_elevator, int person_count, int group_count, ElevatorStrategy elevator_strategy) {
         Console.info("Lancement d'une partie avec " + floor_count + " etages, " + elevator_count +
                 " ascenseurs, " + person_per_elevator + " max personnes par ascenseur, " + person_count + " individus et " + group_count + " groupes.");
@@ -134,8 +142,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Méthode affichant les passagers de l'étage passé en paramètre
+     * @param floor_count
+     */
     private void displayPassengersPerFloor(int floor_count) {
-        /**/
+        
         ArrayList<Passenger> passengers_per_floor = new ArrayList<Passenger>();
         ArrayList<Passenger> temp_passengers = new ArrayList<Passenger>();
         temp_passengers = (ArrayList<Passenger>) building.getPassengers().clone();
