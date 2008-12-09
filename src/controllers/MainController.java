@@ -62,7 +62,7 @@ public class MainController {
 		// Constructs the elevators
 		ArrayList<Elevator> elevators = new ArrayList<Elevator>(elevator_count);
 		Elevator elevator;
-
+		// petite bite
 		for (int i = 1; i <= elevator_count; i++) {		
 			// Avec plugin
 			elevator = sf.getElevator((ElevatorStrategy)elevator_strategy.getClass().newInstance(), person_per_elevator);
