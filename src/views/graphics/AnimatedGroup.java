@@ -2,12 +2,7 @@ package views.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
-import java.util.LinkedList;
-
 import models.Group;
-import models.Person;
-
 import controllers.MainController;
 
 /**
@@ -17,8 +12,7 @@ import controllers.MainController;
 public class AnimatedGroup extends AnimatedObject {
 
     private Group group;
-    private LinkedList<AnimatedPerson> animatedPersons = new LinkedList<AnimatedPerson>();
-
+    
     public AnimatedGroup(MyFrame frame, Group group, int x, int y) {
         super(frame, x, y);
         this.group = group;
@@ -73,4 +67,5 @@ public class AnimatedGroup extends AnimatedObject {
         g.setColor(Color.BLACK);
         g.drawString(Integer.toString(group.getPersonCount()), x + AnimatedPerson.head_width / 3 - 1, y + AnimatedPerson.head_height - 1);
     }
+    
 }

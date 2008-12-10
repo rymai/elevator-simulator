@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
-
-import com.sun.org.apache.xml.internal.utils.StopParseException;
-
 import models.Elevator;
 import controllers.MainController;
 
 public class SimulationPanel extends JPanel implements Runnable {
 
+	private static final long serialVersionUID = -478959610785423275L;
 	private ArrayList<AnimatedObject> listAnimatedObjects;
 	private ArrayList<FixedObject> listFixedObjects;
 	private Thread t;

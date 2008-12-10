@@ -1,7 +1,7 @@
 package main;
 
 public class Console {
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	
 	public static void info(String text) {
 		System.out.println(text);

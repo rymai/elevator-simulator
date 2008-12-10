@@ -93,7 +93,7 @@ public class ConfigView extends JFrame {
 			// Cadre du choix du nombre d'etages
 			this.jpanel_floor_count = new JPanel(new GridLayout(1,3));
 			{	
-				JLabel choose_floor_count = new JLabel("Nombre d'étages");
+				JLabel choose_floor_count = new JLabel("Nombre d'√©tages");
 				choose_floor_count.setFont(new Font(POLICE, Font.BOLD, 15));
 				jpanel_floor_count.add(choose_floor_count);
 
@@ -248,7 +248,7 @@ public class ConfigView extends JFrame {
 		item = new JMenuItem("Surprise");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "« Si vous voulez connaître vos vrais amis,\nhabitez un cinquième étage sans ascenseur. »\n[Charles Morellet]", "Citation", JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null, "ÔøΩ Si vous voulez connaÔøΩtre vos vrais amis,\nhabitez un cinquiÔøΩme ÔøΩtage sans ascenseur. ÔøΩ\n[Charles Morellet]", "Citation", JOptionPane.OK_OPTION);
 			}
 		});
 		menuReload.add(item);

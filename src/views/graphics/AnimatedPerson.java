@@ -63,7 +63,7 @@ public class AnimatedPerson extends AnimatedObject {
 		g.fillOval(x, y, head_width, head_height);
 		
 		// Body
-		if(person.getSex() == person.MALE)
+		if(person.getSex() == Person.MALE)
 			g.drawLine(x+(head_width/2), y+head_height, x+(head_width/2), y+head_height+body_height);
 		else {
 			int[] xs = new int[]{x+(head_width/2), x+(head_width/2)-arm_width, x+(head_width/2)+arm_width};

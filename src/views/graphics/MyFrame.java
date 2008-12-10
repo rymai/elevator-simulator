@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 public class MyFrame extends JFrame {
 
+	private static final long serialVersionUID = -8699676873901285644L;
 	public static int frame_width;
 	public static int frame_height;
 	private SimulationPanel panel;

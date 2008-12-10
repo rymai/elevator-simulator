@@ -29,7 +29,6 @@ public class AnimatedElevator extends AnimatedObject {
         speedX = 0;
         speedY = ELEVATOR_HEIGHT / BETWEEN_2_FLOORS_DURATION;
         animationStep = BETWEEN_2_FLOORS_DURATION;
-        System.out.println("y : " + y);
     }
 
     /**
@@ -39,7 +38,6 @@ public class AnimatedElevator extends AnimatedObject {
     public void updateState() {
         // L'animation est arrive a un etage, on avertir l'elevator
         // On reset l'animationStep si l'elevator veut repartir
-//    	System.out.println(animationStep);
         if (animationStep == BETWEEN_2_FLOORS_DURATION) {
             if (elevator.getMoving()) {
                 // L'ascenseur pense encore qu'il bouge alors qu'il est arrive,

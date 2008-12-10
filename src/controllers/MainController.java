@@ -111,48 +111,9 @@ public class MainController {
 			if (passenger instanceof Person) {
 				frame.addAnimatedObject(new AnimatedPerson(frame, (Person) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
 			} else if (passenger instanceof Group) {
-				System.out.println("Dessin d'un groupe de " + passenger.getPersonCount() + " personnes.");
 				frame.addAnimatedObject(new AnimatedGroup(frame, (Group) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
 			}
 		}
 	}
-
-	private void displayPassengersPerFloor(int floor_count) {
-		/**/
-		ArrayList<Passenger> passengers_per_floor = new ArrayList<Passenger>();
-		ArrayList<Passenger> temp_passengers = new ArrayList<Passenger>();
-		temp_passengers = (ArrayList<Passenger>) building.getPassengers().clone();
-
-		Passenger p;
-		String mectons = "";
-		int floor = 0,  elevator_floor = 0;
-		for (int l = floor_count - 1; l >= 0; l--) {
-			passengers_per_floor.clear();
-			for (int k = 0; k < temp_passengers.size(); k++) {
-				p = temp_passengers.get(k);
-				if (p.getCurrentFloor() == l && !p.isInTheElevator()) {
-					floor = p.getCurrentFloor();
-					elevator_floor = (int) p.getElevator().getCurrentFloor();
-					passengers_per_floor.add(p);
-					temp_passengers.remove(p);
-
-				}
-			}
-			mectons = (floor == elevator_floor) ? "|X| " : "|" + Integer.toString(l) + "| ";
-			for (Passenger q : passengers_per_floor) {
-				mectons += q.isArrived() ? "A " : "W ";
-			}
-			Console.debug(mectons);
-		}
-		Console.debug("");
-
-		mectons = "";
-		for (Elevator e : building.getElevators()) {
-			for (Passenger q : e.getPassengers()) {
-				mectons += q.isArrived() ? "A " : "W ";
-			}
-			Console.debug("|" + mectons + "|(" + e.getCurrentWeight() + " kg) Elevator " + e.getIdentifier());
-		}
-		/**/
-	}
+	
 }

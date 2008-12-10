@@ -73,7 +73,7 @@ public class Person extends Passenger {
 
 	/**
 	 * Methode implementant le comportement de la personne lorsque 
-	 * l'ascenceur passé en paramètre lui propose de monter
+	 * l'ascenceur pass√© en param√®tre lui propose de monter
 	 */
 	@Override
 	public boolean canEnterElevator(Elevator elevator) {
