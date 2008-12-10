@@ -61,7 +61,7 @@ public class ConfigView extends JFrame {
 		logger.setLevel(Level.OFF);
 		
 		this.setLocationByPlatform(true);
-		this.setSize(600, 600);
+		this.setSize(600, 400);
 		this.setTitle("Projet Java 2008 : Simulation de comportement d'ascenseurs - Tic/Tac/Viet");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Container content_pane = this.getContentPane();
@@ -91,92 +91,112 @@ public class ConfigView extends JFrame {
 		this.jpanel_principal.setLayout(new BoxLayout(jpanel_principal, BoxLayout.PAGE_AXIS));
 		{			
 			// Cadre du choix du nombre d'etages
-			this.jpanel_floor_count = new JPanel(new GridLayout(1,3));
+			this.jpanel_floor_count = new JPanel(new GridLayout(1,2));
 			{	
 				JLabel choose_floor_count = new JLabel("Nombre d'étages");
-				choose_floor_count.setFont(new Font(POLICE, Font.BOLD, 15));
+				choose_floor_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_floor_count.add(choose_floor_count);
 
+				JPanel panel = new JPanel();
+				
 				JLabel jlabel_floor_count = new JLabel(Integer.toString((int)MAX_FLOOR_COUNT/2));
 				jlabel_floor_count.setFont(new Font(POLICE, Font.BOLD, 15));
 
 				jslider_floor_count = new JSlider(MIN_FLOOR_COUNT, MAX_FLOOR_COUNT);
 				jslider_floor_count.setValue((int)MAX_FLOOR_COUNT/2);
 				jslider_floor_count.addChangeListener(new SliderUpdateObserver(jlabel_floor_count));
-				jpanel_floor_count.add(jslider_floor_count);
-				jpanel_floor_count.add(jlabel_floor_count);
+				
+				panel.add(jslider_floor_count);
+				panel.add(jlabel_floor_count);
+				jpanel_floor_count.add(panel);
 			}
 			this.jpanel_principal.add(jpanel_floor_count);
 
 			// Cadre du choix du nombre d'ascenseur
-			this.jpanel_elevator_count = new JPanel(new GridLayout(1,3));
+			this.jpanel_elevator_count = new JPanel(new GridLayout(1,2));
 			{	
-				JLabel choose_elevator_count = new JLabel("Nombre d'ascenseur");
-				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
+				JLabel choose_elevator_count = new JLabel("Nombre d'ascenseurs");
+				choose_elevator_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_elevator_count.add(choose_elevator_count);
 
+				JPanel panel = new JPanel();
+				
 				JLabel jlabel_elevator_count = new JLabel(Integer.toString((int)MAX_ELEVATOR_COUNT/2));
 				jlabel_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
 
 				jslider_elevator_count = new JSlider(MIN_ELEVATOR_COUNT, MAX_ELEVATOR_COUNT);
 				jslider_elevator_count.setValue((int)MAX_ELEVATOR_COUNT/2);
 				jslider_elevator_count.addChangeListener(new SliderUpdateObserver(jlabel_elevator_count));
-				jpanel_elevator_count.add(jslider_elevator_count);
-				jpanel_elevator_count.add(jlabel_elevator_count);
+				
+				panel.add(jslider_elevator_count);
+				panel.add(jlabel_elevator_count);
+				jpanel_elevator_count.add(panel);
 			}
 			this.jpanel_principal.add(jpanel_elevator_count);
 
 			// Cadre du choix du nombre d'ascenseur
-			this.jpanel_person_per_elevator_count = new JPanel(new GridLayout(1,3));
+			this.jpanel_person_per_elevator_count = new JPanel(new GridLayout(1,2));
 			{	
 				JLabel choose_person_per_elevator_count = new JLabel("Personnes max par ascenseur");
-				choose_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 12));
+				choose_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_person_per_elevator_count.add(choose_person_per_elevator_count);
 
+				JPanel panel = new JPanel();
+				
 				JLabel jlabel_person_per_elevator_count = new JLabel(Integer.toString((int)MAX_PERSON_PER_ELEVATOR_COUNT/2));
 				jlabel_person_per_elevator_count.setFont(new Font(POLICE, Font.BOLD, 15));
 
 				jslider_person_per_elevator_count = new JSlider(MIN_PERSON_PER_ELEVATOR_COUNT, MAX_PERSON_PER_ELEVATOR_COUNT);
 				jslider_person_per_elevator_count.setValue((int)MAX_ELEVATOR_COUNT/2);
 				jslider_person_per_elevator_count.addChangeListener(new SliderUpdateObserver(jlabel_person_per_elevator_count));
-				jpanel_person_per_elevator_count.add(jslider_person_per_elevator_count);
-				jpanel_person_per_elevator_count.add(jlabel_person_per_elevator_count);
+				
+				panel.add(jslider_person_per_elevator_count);
+				panel.add(jlabel_person_per_elevator_count);
+				jpanel_person_per_elevator_count.add(panel);
 			}
 			this.jpanel_principal.add(jpanel_person_per_elevator_count);
 
 			// Cadre du choix du nombre d'individu
-			this.jpanel_person_count = new JPanel(new GridLayout(1,3));
+			this.jpanel_person_count = new JPanel(new GridLayout(1,2));
 			{	
-				JLabel choose_person_count = new JLabel("Nombre d'individus");
-				choose_person_count.setFont(new Font(POLICE, Font.BOLD,15));
+				JLabel choose_person_count = new JLabel("Nombre de personne (total)");
+				choose_person_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_person_count.add(choose_person_count);
 
+				JPanel panel = new JPanel();
+				
 				JLabel jlabel_person_count = new JLabel(Integer.toString((int)MAX_PERSON_COUNT/2));
 				jlabel_person_count.setFont(new Font(POLICE, Font.BOLD, 15));
 
 				jslider_person_count = new JSlider(MIN_PERSON_COUNT, MAX_PERSON_COUNT);
 				jslider_person_count.setValue((int)MAX_PERSON_COUNT/2);
 				jslider_person_count.addChangeListener(new SliderUpdateObserver(jlabel_person_count));
-				jpanel_person_count.add(jslider_person_count);
-				jpanel_person_count.add(jlabel_person_count);
+				
+				panel.add(jslider_person_count);
+				panel.add(jlabel_person_count);
+				jpanel_person_count.add(panel);
 			}
 			this.jpanel_principal.add(jpanel_person_count);
 
 			// Cadre du choix du nombre de groupes
-			this.jpanel_group_count = new JPanel(new GridLayout(1,3));
+			this.jpanel_group_count = new JPanel(new GridLayout(1,2));
 			{	
-				JLabel choose_group_count = new JLabel("Nombre de groupes");
-				choose_group_count.setFont(new Font(POLICE, Font.BOLD,15));
+				JLabel choose_group_count = new JLabel("Nombre de groupes (2 ou 3 personnes)");
+				choose_group_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_group_count.add(choose_group_count);
 
+				JPanel panel = new JPanel();
+				
 				JLabel jlabel_group_count = new JLabel(Integer.toString((int)MAX_GROUP_COUNT/2));
 				jlabel_group_count.setFont(new Font(POLICE, Font.BOLD, 15));
-
+				
 				jslider_group_count = new JSlider(MIN_GROUP_COUNT, MAX_GROUP_COUNT);
 				jslider_group_count.setValue((int)MAX_GROUP_COUNT/2);
 				jslider_group_count.addChangeListener(new SliderUpdateObserver(jlabel_group_count));
-				jpanel_group_count.add(jslider_group_count);
-				jpanel_group_count.add(jlabel_group_count);
+				
+				panel.add(jslider_group_count);
+				panel.add(jlabel_group_count);
+				jpanel_group_count.add(panel);
 			}
 			this.jpanel_principal.add(jpanel_group_count);
 

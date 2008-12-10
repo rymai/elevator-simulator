@@ -23,7 +23,8 @@ import models.*;
  */
 public class MainController {
 
-	private static MainController INSTANCE = null;    // Le point d'acces a tous les modeles (le batiment a acces direct aux elevators et aux passagers)
+	// Le point d'acces a tous les modeles (le batiment a acces direct aux elevators et aux passagers)
+	private static MainController INSTANCE = null;
 	public static Building building = null;
 
 	public Building getBuilding() {
@@ -94,6 +95,7 @@ public class MainController {
 
 		// Graphics!
 		MyFrame frame = new MyFrame(elevator_count, building.getFloorCountWithGround());
+		
 		for (int i = 0; i < elevators.size(); i++) {
 			AnimatedElevator e = new AnimatedElevator(frame, elevators.get(i), FixedFloor.FLOOR_WIDTH + (AnimatedElevator.ELEVATOR_WIDTH * i), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT*(elevators.get(i).getCurrentFloor()+1)));
 			frame.addAnimatedObject(e);

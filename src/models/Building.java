@@ -14,10 +14,6 @@ public class Building {
 	// Liste des passagers du batiment dans leur ordre d'arrivee
 	private LinkedList<Passenger> passengers = null;
 
-	private ArrayList<Integer> askedFloors;
-	// Can be used by the "intelligent strategies" !
-	private ArrayList<Integer> intelligentAskedFloors;
-
 	// Nombre d'etage du batiment
 	private int floorCount;
 
@@ -49,12 +45,6 @@ public class Building {
 		this.floorCount = floor_count;
 		this.elevators = elevators_list;
 		this.passengers = passengers_list;
-		this.askedFloors = new ArrayList<Integer>(getFloorCountWithGround());
-		this.intelligentAskedFloors = new ArrayList<Integer>(getFloorCountWithGround());
-		for (int i = 0; i <= floorCount; i++) {
-			askedFloors.add(i, 0);
-			intelligentAskedFloors.add(i, 0);
-		}
 	}
 
 	public ArrayList<Elevator> getElevators() {
