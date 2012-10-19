@@ -27,8 +27,8 @@ public class AnimatedPerson extends AnimatedObject {
 	public static final int PERSON_WIDTH = arm_width*2 + 2;
 	public static final int PERSON_HEIGHT = head_height + body_width + leg_height - 1;
 	
-	public AnimatedPerson(MyFrame frame, Person person, int x, int y) {
-		super(frame, x, y);
+	public AnimatedPerson(Person person, int x, int y) {
+		super(x, y);
 		this.person = person;
 		Random rand = new Random();
 		head_color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));

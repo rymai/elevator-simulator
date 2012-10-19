@@ -18,13 +18,12 @@ public class AnimatedElevator extends AnimatedObject {
 
     /**
      * Constructeur 
-     * @param fenetre
      * @param e     Elevator
      * @param x     placement en x
      * @param y     placement en y
      */
-    public AnimatedElevator(MyFrame fenetre, Elevator e, int x, int y) {
-        super(fenetre, x, y);
+    public AnimatedElevator(Elevator e, int x, int y) {
+        super(x, y);
         elevator = e;
         speedX = 0;
         speedY = ELEVATOR_HEIGHT / BETWEEN_2_FLOORS_DURATION;

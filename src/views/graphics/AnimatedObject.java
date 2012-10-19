@@ -3,11 +3,9 @@ package views.graphics;
 abstract public class AnimatedObject extends GraphicObject {
     
     protected int speedX, speedY;
-    protected MyFrame frame;
 
-    public AnimatedObject(MyFrame frame, int x, int y) {
+    public AnimatedObject(int x, int y) {
     	super(x, y);
-    	this.frame = frame;
     }
     
     public int getSpeedX() {

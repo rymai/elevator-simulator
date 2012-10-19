@@ -13,8 +13,8 @@ public class AnimatedGroup extends AnimatedObject {
 
     private Group group;
     
-    public AnimatedGroup(MyFrame frame, Group group, int x, int y) {
-        super(frame, x, y);
+    public AnimatedGroup(Group group, int x, int y) {
+        super(x, y);
         this.group = group;
     }
 

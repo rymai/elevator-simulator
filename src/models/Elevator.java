@@ -15,14 +15,11 @@ import views.graphics.AnimatedElevator;
  */
 public class Elevator {
 
-    private static final int TO_TOP = 1;
-    private static final int TO_BOTTOM = -1;    // Pointer to his controller
-    private MainController controller;
-    private Building building;
-
-    
+	private static final int TO_TOP = 1;
+	private static final int TO_BOTTOM = -1;    // Pointer to his controller
+	private MainController controller;
+	private Building building;
 	private ElevatorStrategy strategy;
-	
 	private Times waitingTime;
 
 	// C'est mieux si l'identifier est unique.
@@ -69,10 +66,10 @@ public class Elevator {
 
 	// Booleen indiquant si l'ascenseur se dirige vers le haut
 	private boolean goingToTop;
-	
+
 	private int stopTime = 0;
 	private int stoppedTime = 0;
-	
+
 	private int targetFloor;
 
 	/**
@@ -88,12 +85,13 @@ public class Elevator {
 		this.maxPersons = max_persons;
 		constructor(max_persons*80, (max_persons*80)-100, strategy);
 	}
-/**
- * Méthode constructor utilisé par les Constructeurs de la classe
- * @param max_weight Masse Maximale de l' Elevator
- * @param alert_weight Masse d'alerte de l' Elevator
- * @param strategy Stratégie de l'Elevator
- */
+
+	/**
+	 * Méthode constructor utilisé par les Constructeurs de la classe
+	 * @param max_weight Masse Maximale de l' Elevator
+	 * @param alert_weight Masse d'alerte de l' Elevator
+	 * @param strategy Stratégie de l'Elevator
+	 */
 	private void constructor(int max_weight, int alert_weight, ElevatorStrategy strategy) {
 		this.controller = MainController.getInstance();
 		this.building = controller.getBuilding();
@@ -111,318 +109,319 @@ public class Elevator {
 
 	// All is done here
 	public void acts() {
+		strategy.acts();
+	}
 
-//		Console.debug("Eleva "+identifier+" : Floor => "+currentFloor+", prochain deplacement : "+getStep());
-        strategy.acts();
-    }
+	/**
+	 * Fonction renvoyant un booleen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
+	 * true si le poids d'alerte est depasse
+	 * false si le poids d'alerte n'est pas depasse
+	 * @return
+	 */
+	public boolean isInAlert() {
+		return currentWeight > alertWeight;
+	}
 
-    /**
-     * Fonction renvoyant un booleen pour savoir si l'ascenseur a atteint le seuil d'alerte du poids
-     * true si le poids d'alerte est depasse
-     * false si le poids d'alerte n'est pas depasse
-     * @return
-     */
-    public boolean isInAlert() {
-        return currentWeight > alertWeight;
-    }
+	/**
+	 * Fonction synchronisé qui renvoie un booléean qui prend un passager si l'ascenseur le permet qui retourne
+	 * true si le passager est bien rentrée
+	 * false si le passager n'a pas pu rentré
+	 * @param passenger
+	 * @return
+	 */
+	public boolean takePassenger(Passenger passenger) {
 
-    /**
-     * Fonction synchronisé qui renvoie un booléean qui prend un passager si l'ascenseur le permet qui retourne
-     * true si le passager est bien rentrée
-     * false si le passager n'a pas pu rentré
-     * @param passenger
-     * @return
-     */
-    public boolean takePassenger(Passenger passenger) {
+		if (willBeBlockedWithThisMass(passenger.getTotalMass())) {
+			return false;
+		} else {
+			passengers.add(passenger);
+			addToCurrentWeight(passenger.getTotalMass());
+			passenger.setElevator(this);
+			waitingTime.addWaitingTime(passenger.getTime());
+			passenger.resetTime();
+			strategy.takePassenger(passenger);
+			Console.debug("Un passager monte. " + passenger.getCurrentFloor() + " -> " + passenger.getWantedFloor());
+			return true;
+		}
+	}
 
-        if (willBeBlockedWithThisMass(passenger.getTotalMass())) {
-            return false;
-        } else {
-            passengers.add(passenger);
-            addToCurrentWeight(passenger.getTotalMass());
-            passenger.setElevator(this);
-            waitingTime.addWaitingTime(passenger.getTime());
-            passenger.resetTime();
-            strategy.takePassenger(passenger);
-            Console.debug("Un passager monte. " + passenger.getCurrentFloor() + " -> " + passenger.getWantedFloor());
-            return true;
-        }
-    }
+	public Times getWaitingTime() {
+		return waitingTime;
+	}
 
-    public Times getWaitingTime() {
-        return waitingTime;
-    }
-
-    /**
-     * Méthode qui fait sortir le passager passé en paramètre de l'ascenseur
-     * @param passenger
-     */
-    public void releasePassenger(Passenger passenger) {
-        if (passengers.contains(passenger)) {
-            passengers.remove(passenger);
-            removeOfCurrentWeight(passenger.getTotalMass());
-            passenger.setElevator(null);
-            waitingTime.addTripTime(passenger.getTime());
-            strategy.releasePassenger(passenger);
-        }
-    }
-
-    //	public boolean isAtAFloor() {
-    //		if(currentPosition == 0) return true;
-    //		else return currentPosition%(currentPosition.intValue()) <= 0.1f;
-    //	}
-    
-    /**
-     * Fonction renvoyant un booléen 
-     * true si l'ascenseur est au sommet
-     * false si l'ascenseur ne l'est pas
-     * @return
-     */
-    public boolean atTop() {
-        return currentFloor >= controller.getBuilding().getFloorCount();
-    }
-    /**
-     * Fonction renvoyant un booléen 
-     * true si l'ascenseur est au RDC
-     * false si l'ascenseur n'est pas au RDC
-     * @return
-     */
-    public boolean atBottom() {
-        return currentFloor <= 0;
-    }
-
-    /**
-     * Return the step (-1 or +1, for going to bottom or to top), regarding the variable goingToTop 
-     * @return -1 or +1
-     */
-    public int getStep() {
-        return goingToTop ? TO_TOP : TO_BOTTOM;
-    }
-
-//	public boolean noCallAtAll() {
-////		for (int i = 0; i < building.getFloorCount(); i++) {
-////			if(building.getAskedFloors().get(i) > 0) return false;
-////		}
-////		return true;
-//		return building.allPassengersAreArrived();
-//	}
-    /**
-     * Fonction renvoyant un booléen pour savoir si l'ascenseur n'a pas été appelé dans la même direction
-     * @return
-     */
-    public boolean noCallOnTheWay() {
-        if (goingToTop) {
-            for (int i = currentFloor; i <= building.getFloorCountWithGround(); i++) {
-                if (building.getWaitingPersonsCountAtFloor(i) > 0) {
-                    return false;
-                }
-                for (Passenger p : passengers) {
-                    if (p.getWantedFloor() == i) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } else {
-            for (int i = currentFloor; i >= 0; i--) {
-                if (building.getWaitingPersonsCountAtFloor(i) > 0) {
-                    return false;
-                }
-                for (Passenger p : passengers) {
-                    if (p.getWantedFloor() == i) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-    }
-
-    /**
-     * Fonction renvoyant un booléen 
-     * true si l'ascenseur est plein
-     * false si l'ascenseur n'est pas plein
-     * @return
-     */
-    public boolean isFull() {
-        return getPassengerCount() >= maxPersons;
-    }
-    
-    /**
-     * Fonction renvoyant un booléen 
-     * true si l'ascenseur a dépassé le poids maximum
-     * false si l'ascenseur n'a pas dépassé le poids maximum
-     * @return
-     */
-    public boolean isBlocked() {
-        return currentWeight >= maxWeight;
-    }
-
-    /**
-     * Fonction renvoyant le nombre de passager de l'ascenseur
-     * @return
-     */
-    public int getPassengerCount() {
-        return passengers.size();
-    }
-
-    /**
-     * Méthode modifiant la variable goingToTop
-     * @param goingToTop
-     */    
-    public void setGoingToTop(boolean goingToTop) {
-        this.goingToTop = goingToTop;
-    }
-    
-    /**
-     * Fonction retournant une liste chaine des passagers de l'ascenseur
-     * @return
-     */
-    public LinkedList<Passenger> getPassengers() {
-        return passengers;
-    }
-
-    public int getCurrentWeight() {
-        return currentWeight;
-    }
-
-    public void changeDirection() {
-        goingToTop = !goingToTop;
-    }
-
-    public boolean isGoingToTop() {
-        return goingToTop;
-    }
-
-    public Passenger getLastPassenger() {
-        return passengers.get(passengers.size() - 1);
-    }
-
-    public int getCurrentFloor() {
-        return currentFloor;
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setToNextFloor() {
-        currentFloor += getStep();
-        for (Passenger p : passengers) {
-            p.setCurrentFloor(currentFloor);
-        }
-    }
-
-    public void setCurrentFloor(int oneFloor){
-        currentFloor = oneFloor;
-    }
-    public int getMaxPersons() {
-        return maxPersons;
-    }
-
-    public void addToCurrentWeight(int mass) {
-        currentWeight += mass;
-    }
-
-    public void removeOfCurrentWeight(int mass) {
-        currentWeight -= mass;
-    }
-
-    public ElevatorStrategy getStrategy() {
-        return strategy;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean move) {
-        moving = move;
-    }
-
-    public boolean getMoving() {
-        return moving;
-    }
-
-    public int getPassengerIndex(Passenger passenger) {
-        return passengers.indexOf(passenger);
-    }
-
-    public AnimatedElevator getAnimatedElevator() {
-        return animatedElevator;
-    }
-
-    public void setAnimatedElevator(AnimatedElevator e) {
-        animatedElevator = e;
-    }
-
-    /**
-     * Fonction retournant un booléen
-     * true si l'asceseur avec le poids supplémentaire passé en paramètre est supérieur au poids maximum
-     * false si l'asceseur avec le poids supplémentaire passé en paramètre n'est pas supérieur au poids maximum
-     * @param mass
-     * @return
-     */
-    public boolean willBeBlockedWithThisMass(int mass) {
-        return currentWeight + mass >= maxWeight;
-    }
-
-    public int getStopTime() {
-        return stopTime;
-    }
-
-    public void setStopTime(int stopTime) {
-        this.stopTime = stopTime;
-    }
-
-    public int getStoppedTime() {
-        return stoppedTime;
-    }
-
-    public void setStoppedTime(int stoppedTime) {
-        this.stoppedTime = stoppedTime;
-    }
-
-    public void incrementStopTime(int increment_amount) {
-        this.stopTime += increment_amount;
-    }
-
-    public void incrementStoppedTime(int increment_amount) {
-        this.stoppedTime += increment_amount;
-    }
-
-    public void leaveThisFloor() {
-        setStopTime(0);
-        setStoppedTime(0);
-        // The elevator moves
-        setMoving(true);
-        strategy.leaveThisFloor();
-    }
-    
-    /**
-     * fonction renvoyant un arrayList des indices des étages dans lesquels les passagers veulent aller
-     * @return
-     */
-    public ArrayList<Integer> getFloorsWanted() {
-        ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
-        for (Passenger p : passengers) {
-            if (!numberWaiting.contains(p.getWantedFloor())) {
-                numberWaiting.add(p.getWantedFloor());
-            }
-        }
-        return numberWaiting;
-    }
+	/**
+	 * Méthode qui fait sortir le passager passé en paramètre de l'ascenseur
+	 * @param passenger
+	 */
+	public void releasePassenger(Passenger passenger) {
+		if (passengers.contains(passenger)) {
+			passengers.remove(passenger);
+			removeOfCurrentWeight(passenger.getTotalMass());
+			passenger.setElevator(null);
+			waitingTime.addTripTime(passenger.getTime());
+			strategy.releasePassenger(passenger);
+		}
+	}
 	
-    public int getTargetFloor() {
+	public void releaseAllArrivedPassengers() {
+		for (int i = 0; i < getPassengerCount(); i++) {
+			if(passengers.get(i).getWantedFloor() == getCurrentFloor()) {
+				releasePassenger(passengers.get(i));
+			}
+		}
+	}
+
+	/**
+	 * Fonction renvoyant un booléen 
+	 * true si l'ascenseur est au sommet
+	 * false si l'ascenseur ne l'est pas
+	 * @return
+	 */
+	public boolean atTop() {
+		return currentFloor >= controller.getBuilding().getFloorCount();
+	}
+	/**
+	 * Fonction renvoyant un booléen 
+	 * true si l'ascenseur est au RDC
+	 * false si l'ascenseur n'est pas au RDC
+	 * @return
+	 */
+	public boolean atBottom() {
+		return currentFloor <= 0;
+	}
+
+	/**
+	 * Return the step (-1 or +1, for going to bottom or to top), regarding the variable goingToTop 
+	 * @return -1 or +1
+	 */
+	public int getStep() {
+		return goingToTop ? TO_TOP : TO_BOTTOM;
+	}
+
+	//	public boolean noCallAtAll() {
+	////		for (int i = 0; i < building.getFloorCount(); i++) {
+	////			if(building.getAskedFloors().get(i) > 0) return false;
+	////		}
+	////		return true;
+	//		return building.allPassengersAreArrived();
+	//	}
+	/**
+	 * Fonction renvoyant un booléen pour savoir si l'ascenseur n'a pas été appelé dans la même direction
+	 * @return
+	 */
+	public boolean noCallOnTheWay() {
+		if (goingToTop) {
+			for (int i = currentFloor; i <= building.getFloorCountWithGround(); i++) {
+				if (building.getWaitingPersonsCountAtFloor(i) > 0) {
+					return false;
+				}
+				for (Passenger p : passengers) {
+					if (p.getWantedFloor() == i) {
+						return false;
+					}
+				}
+			}
+			return true;
+		} else {
+			for (int i = currentFloor; i >= 0; i--) {
+				if (building.getWaitingPersonsCountAtFloor(i) > 0) {
+					return false;
+				}
+				for (Passenger p : passengers) {
+					if (p.getWantedFloor() == i) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * Fonction renvoyant un booléen 
+	 * true si l'ascenseur est plein
+	 * false si l'ascenseur n'est pas plein
+	 * @return
+	 */
+	public boolean isFull() {
+		return getPassengerCount() >= maxPersons;
+	}
+
+	/**
+	 * Fonction renvoyant un booléen 
+	 * true si l'ascenseur a dépassé le poids maximum
+	 * false si l'ascenseur n'a pas dépassé le poids maximum
+	 * @return
+	 */
+	public boolean isBlocked() {
+		return currentWeight >= maxWeight;
+	}
+
+	/**
+	 * Fonction renvoyant le nombre de passager de l'ascenseur
+	 * @return
+	 */
+	public int getPassengerCount() {
+		return passengers.size();
+	}
+
+	/**
+	 * Méthode modifiant la variable goingToTop
+	 * @param goingToTop
+	 */    
+	public void setGoingToTop(boolean goingToTop) {
+		this.goingToTop = goingToTop;
+	}
+
+	/**
+	 * Fonction retournant une liste chaine des passagers de l'ascenseur
+	 * @return
+	 */
+	public LinkedList<Passenger> getPassengers() {
+		return passengers;
+	}
+
+	public int getCurrentWeight() {
+		return currentWeight;
+	}
+
+	public void changeDirection() {
+		goingToTop = !goingToTop;
+	}
+
+	public boolean isGoingToTop() {
+		return goingToTop;
+	}
+
+	public Passenger getLastPassenger() {
+		return passengers.get(passengers.size() - 1);
+	}
+
+	public int getCurrentFloor() {
+		return currentFloor;
+	}
+
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setToNextFloor() {
+		currentFloor += getStep();
+		for (Passenger p : passengers) {
+			p.setCurrentFloor(currentFloor);
+		}
+	}
+
+	public void setCurrentFloor(int oneFloor){
+		currentFloor = oneFloor;
+	}
+	public int getMaxPersons() {
+		return maxPersons;
+	}
+
+	public void addToCurrentWeight(int mass) {
+		currentWeight += mass;
+	}
+
+	public void removeOfCurrentWeight(int mass) {
+		currentWeight -= mass;
+	}
+
+	public ElevatorStrategy getStrategy() {
+		return strategy;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean move) {
+		moving = move;
+	}
+
+	public boolean getMoving() {
+		return moving;
+	}
+
+	public int getPassengerIndex(Passenger passenger) {
+		return passengers.indexOf(passenger);
+	}
+
+	public AnimatedElevator getAnimatedElevator() {
+		return animatedElevator;
+	}
+
+	public void setAnimatedElevator(AnimatedElevator e) {
+		animatedElevator = e;
+	}
+
+	/**
+	 * Fonction retournant un booléen
+	 * true si l'asceseur avec le poids supplémentaire passé en paramètre est supérieur au poids maximum
+	 * false si l'asceseur avec le poids supplémentaire passé en paramètre n'est pas supérieur au poids maximum
+	 * @param mass
+	 * @return
+	 */
+	public boolean willBeBlockedWithThisMass(int mass) {
+		return currentWeight + mass >= maxWeight;
+	}
+
+	public int getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(int stopTime) {
+		this.stopTime = stopTime;
+	}
+
+	public int getStoppedTime() {
+		return stoppedTime;
+	}
+
+	public void setStoppedTime(int stoppedTime) {
+		this.stoppedTime = stoppedTime;
+	}
+
+	public void incrementStopTime(int increment_amount) {
+		this.stopTime += increment_amount;
+	}
+
+	public void incrementStoppedTime(int increment_amount) {
+		this.stoppedTime += increment_amount;
+	}
+
+	public void leaveThisFloor() {
+		setStopTime(0);
+		setStoppedTime(0);
+		// The elevator moves
+		setMoving(true);
+		strategy.leaveThisFloor();
+	}
+
+	/**
+	 * fonction renvoyant un arrayList des indices des étages dans lesquels les passagers veulent aller
+	 * @return
+	 */
+	public ArrayList<Integer> getFloorsWanted() {
+		ArrayList<Integer> numberWaiting = new ArrayList<Integer>();
+		for (Passenger p : passengers) {
+			if (!numberWaiting.contains(p.getWantedFloor())) {
+				numberWaiting.add(p.getWantedFloor());
+			}
+		}
+		return numberWaiting;
+	}
+
+	public int getTargetFloor() {
 		return targetFloor;
 	}
-    
-    /**
-     * Définit l'étage visé par l'ascenseur
-     * Met à jour automatiquement le sens de déplacement en fonction de l'étage visé
-     * @param floor
-     */
-    public void setTargetFloor(int floor) {
+
+	/**
+	 * Définit l'étage visé par l'ascenseur
+	 * Met à jour automatiquement le sens de déplacement en fonction de l'étage visé
+	 * @param floor
+	 */
+	public void setTargetFloor(int floor) {
 		this.targetFloor = floor;
 		if(floor < getCurrentFloor()){
 			setGoingToTop(false);
@@ -430,5 +429,5 @@ public class Elevator {
 			setGoingToTop(true);
 		}
 	}
-    
+
 }

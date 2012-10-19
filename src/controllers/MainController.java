@@ -97,7 +97,7 @@ public class MainController {
 		MyFrame frame = new MyFrame(elevator_count, building.getFloorCountWithGround());
 		
 		for (int i = 0; i < elevators.size(); i++) {
-			AnimatedElevator e = new AnimatedElevator(frame, elevators.get(i), FixedFloor.FLOOR_WIDTH + (AnimatedElevator.ELEVATOR_WIDTH * i), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT*(elevators.get(i).getCurrentFloor()+1)));
+			AnimatedElevator e = new AnimatedElevator(elevators.get(i), FixedFloor.FLOOR_WIDTH + (AnimatedElevator.ELEVATOR_WIDTH * i), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT*(elevators.get(i).getCurrentFloor()+1)));
 			frame.addAnimatedObject(e);
 			elevators.get(i).setAnimatedElevator(e);
 		}
@@ -111,9 +111,9 @@ public class MainController {
 		for (int i = 0; i < building.getPassengers().size(); i++) {
 			passenger = building.getPassengers().get(i);
 			if (passenger instanceof Person) {
-				frame.addAnimatedObject(new AnimatedPerson(frame, (Person) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
+				frame.addAnimatedObject(new AnimatedPerson((Person) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
 			} else if (passenger instanceof Group) {
-				frame.addAnimatedObject(new AnimatedGroup(frame, (Group) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
+				frame.addAnimatedObject(new AnimatedGroup((Group) passenger, FixedFloor.FLOOR_WIDTH - AnimatedPerson.PERSON_WIDTH - (AnimatedPerson.PERSON_WIDTH * building.getPassengerIndexAtHisFloor(passenger)), MyFrame.frame_height - (AnimatedElevator.ELEVATOR_HEIGHT * passenger.getCurrentFloor()) - AnimatedPerson.PERSON_HEIGHT));
 			}
 		}
 	}

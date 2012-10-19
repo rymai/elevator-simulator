@@ -18,7 +18,7 @@ public class ConfigView extends JFrame {
 
 	private static final long serialVersionUID = 8164118974463460991L;
 	private static final String POLICE = "Monaco";
-	private static final int MIN_FLOOR_COUNT = 2;
+	private static final int MIN_FLOOR_COUNT = 1;
 	public static final int MAX_FLOOR_COUNT = 10;
 	private static final int MIN_ELEVATOR_COUNT = 1;
 	public static final int MAX_ELEVATOR_COUNT = 10;
@@ -26,7 +26,7 @@ public class ConfigView extends JFrame {
 	private static final int MAX_PERSON_COUNT = 200;
 	private static final int MIN_GROUP_COUNT = 0;
 	private static final int MAX_GROUP_COUNT = 20;
-	private static final int MIN_PERSON_PER_ELEVATOR_COUNT = 1;
+	private static final int MIN_PERSON_PER_ELEVATOR_COUNT = 3;
 	public static final int MAX_PERSON_PER_ELEVATOR_COUNT = 10;
 
 	// |Nb etage: <slider>
@@ -159,7 +159,7 @@ public class ConfigView extends JFrame {
 			// Cadre du choix du nombre d'individu
 			this.jpanel_person_count = new JPanel(new GridLayout(1,2));
 			{	
-				JLabel choose_person_count = new JLabel("Nombre de personne (total)");
+				JLabel choose_person_count = new JLabel("Nombre de personnes (total)");
 				choose_person_count.setFont(new Font(POLICE, Font.BOLD, 13));
 				jpanel_person_count.add(choose_person_count);
 
@@ -255,7 +255,7 @@ public class ConfigView extends JFrame {
 		// Enleve les entrees precedentes s'il y en avait
 		menuReload.removeAll();
 
-		JMenuItem item = new JMenuItem("Reload");
+		JMenuItem item = new JMenuItem("Recharger les comportements");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pluginLoader.reloadPlugins();
@@ -268,7 +268,7 @@ public class ConfigView extends JFrame {
 		item = new JMenuItem("Surprise");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "� Si vous voulez conna�tre vos vrais amis,\nhabitez un cinqui�me �tage sans ascenseur. �\n[Charles Morellet]", "Citation", JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null, "« Si vous voulez connaître vos vrais amis,\nhabitez un cinquième étage sans ascenseur. »\n[Charles Morellet]", "Citation", JOptionPane.OK_OPTION);
 			}
 		});
 		menuReload.add(item);

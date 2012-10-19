@@ -6,7 +6,7 @@ import controllers.MainController;
 
 public class FixedFloor extends FixedObject {
 
-	public final static int FLOOR_WIDTH = (int) ((MainController.getInstance().getBuilding().getPassengers().size()/MainController.getInstance().getBuilding().getFloorCountWithGround())*(AnimatedPerson.PERSON_WIDTH*2));
+	public final static int FLOOR_WIDTH = (int) ((MainController.getInstance().getBuilding().getPassengers().size()/MainController.getInstance().getBuilding().getFloorCountWithGround())*(AnimatedPerson.PERSON_WIDTH*1.7));
 	private int id;
 	
 	public FixedFloor(int x, int y, int id) {
