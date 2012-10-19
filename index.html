@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Elevator simulator by rymai</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Elevator simulator</h1>
+          <h2>This elevator behaviour simulator is a study project in Java.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/rymai/elevator-simulator/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/rymai/elevator-simulator/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/rymai/elevator-simulator" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>This is a Java project I made in 2008 during my <em>Computer Science Applied to Business Management</em> Master at the University of Nice Sophia-Antipolis.</p>
+
+<p>The goal was to create several elevator strategies that could be hot-loaded in this Swing application and run simulation with these different behaviors.</p>
+
+<h2>Usage</h2>
+
+<p>Compile the project to <code>&lt;jar_file&gt;.jar</code> and run it with <code>java -jar &lt;jar_file&gt;.jar</code>.</p>
+
+<p>Note: Be sure to put the elevator strategies <code>.class</code> inside the <code>plugins/strategies/elevators/</code> folder (see "Elevator strategies" below).</p>
+
+<h2>Strategies</h2>
+
+<h3>Elevator strategies</h3>
+
+<p>There is a collection of elevator strategies in <code>src/strategies/elevators/</code> that can be hot-loaded as plugins.</p>
+
+<p>To have access to these plugins at runtime, compile the <code>src/strategies/elevators/*.java</code> files and move the <code>.class</code> files into <code>plugins/strategies/elevators/</code> (you can reload the plugin list with the <em>Actions / Recharger les comportements</em> menu item when the applicaiton is launched).</p>
+
+<h2>Développement de plugins</h2>
+
+<h3>Méthodes à implémenter</h3>
+
+<p>Pour réaliser de nouveaux plugins, il faut ouvrir le projet “elevator-plugins”, dupliquer un des plugins existants dans le package src/strategies/elevators, puis modifier les méthodes qui le compose.</p>
+
+<h4><code>public abstract void acts()</code></h4>
+
+<p> Cette méthode est le coeur du fonctionnement d’une stratégie d’ascenseur. C’est dans cette méthode que
+tous les tests pour savoir si l’ascenseur doit s’arrêter, repartir etc ... se font.</p>
+
+<h4><code>public boolean takePassenger(Passenger passenger)</code></h4>
+
+<p>Cette méthode est appelé seulement si le passager <code>passenger</code> vient de monter dans l’ascenseur. Vous pouvez par exemple augmentez le temps d’arrêt nécesssaire dans cette méthode grâce à <code>elevator.incrementStopTime(5*passenger.getPersonCount());</code>.</p>
+
+<h4>`public void releasePassenger(Passenger passenger)</h4>
+
+<p> Cette méthode est appelé seulement si le passager <code>passenger</code> vient de sortir de l’ascenseur. Vous pouvez par exemple augmentez le temps d’arrêt nécesssaire dans cette méthode grâce à <code>elevator.incrementStopTime(5*passenger.getPersonCount());</code>.</p>
+
+<h4><code>public void leaveThisFloor()</code></h4>
+
+<p> Cette méthode est appelé à la fin de la méthode <code>leaveThisFloor()</code> de Elevator. Cette méthode est appelé
+pour indiquer à l’ascenseur graphique de repartir.</p>
+
+<h3>Quelques conseils pour le développement</h3>
+
+<p>Il est conseiller de s’inspirer des comportements déjà implémenté pour créer de nouveaux comportements.</p>
+
+<p><strong>Quelques méthodes intéressantes de <code>Elevator</code> :</strong></p>
+
+<ul>
+<li>La méthode setMoving(false) permet de dire à l’ascenseur de rester immobile.</li>
+<li>La méthode releaseAllArrivedPassengers() permet de laisser sortir tous les passagers de l’ascenseur qui sont arrivés à leur étage de destination.</li>
+<li>La méthode leaveThisFloor() permet de notifier l’ascenseur graphique que l’ascenseur veut repartir. Programmation Avancée - </li>
+</ul><p>Il existe beaucoup d’autres méthodes, pour récupérer des listes de passagers qui attendent, qui sont arrivés, des listes d’étages avec des passagers qui attendent... Voir la Javadoc pour plus de précisions
+Importation d’un nouveau comportement
+Un fois le comportement terminé, compilez-le, puis placer le <code>.class</code> dans le dossier <code>plugins/strategies/</code> elevators du projet principal. Le comportement apparaît dans le menu “Choisir un comportement” après un clic sur le choix “Recharger les comportements” dans le menu “Actions” de la fenêtre de configuration de l’application (ou après un redémarrage de l’application bien sûr).</p>
+
+<h2>Limitations et réalisations du projet par rapport au sujet</h2>
+
+<p>Nous avons répondu à toutes les demandes obligatoires. En voici la liste :</p>
+
+<ul>
+<li>Pouvoir facilement paramétrer une simulation. - Pouvoir facilement lancer / relancer une simulation. - Pouvoir intégrer de nouveaux programmes d’ascenseurs “à la volée” (plug-in)</li>
+<li>Pouvoir connaître le temps d’attente des personnes (moyenne par ascenseur et totale)</li>
+<li>Gérer les groupes de personnes qui ne veulent pas se séparer - Gérer l’humeur des personnes - Accélérer ou ralentir la simulation (min. 1 image/seconde, max. 50 images/seconde)</li>
+</ul><p>Nous avons également développé d’autres améliorations :</p>
+
+<ul>
+<li>Pouvoir connaître le temps de voyage des personnes (moyenne par ascenseur et totale).</li>
+<li>Gestion de la charge maximale d’un ascenseur (au delà du poinds maximum, l’ascenseur est bloqué).</li>
+<li>Gestion d’un poids d’alerte (les passagers sont avertis que l’ascenseur risque d’être bloqué si il essaye de rentrer dedans).</li>
+<li>Gestion d’une contenance physique maximum pour chaque ascenseur : un ascenseur ne peut pas accepter plus de personnes que son maximum physique autorisé.</li>
+<li>Gestion du QI des personnes : possibilités d’effectuer différentes actions suivant le QI. Cet attribut pour- rait être massivement exploité par l’utilisation du design-pattern Strategy pour créer différents compor- tement de passagers.</li>
+<li>Gestion du sexe des personnes : Même remarque que pour le QI.</li>
+</ul>
+        </section>
+
+        <footer>
+          Elevator simulator is maintained by <a href="https://github.com/rymai">rymai</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
