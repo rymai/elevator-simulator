@@ -53,7 +53,7 @@ Il est conseiller de s’inspirer des comportements déjà implémenté pour cr�
 - La méthode releaseAllArrivedPassengers() permet de laisser sortir tous les passagers de l’ascenseur qui sont arrivés à leur étage de destination.
 - La méthode leaveThisFloor() permet de notifier l’ascenseur graphique que l’ascenseur veut repartir. Programmation Avancée - 
 
-Il existe beaucoup d’autres méthodes, pour récupérer des listes de passagers qui attendent, qui sont arrivés, des listes d’étages avec des passagers qui attendent... Voir la Javadoc pour plus de précisions
+Il existe beaucoup d’autres méthodes, pour récupérer des listes de passagers qui attendant, qui sont arrivés, des listes d’étages avec des passagers qui attendant... Voir la Javadoc pour plus de précisions
 Importation d’un nouveau comportement
 Un fois le comportement terminé, compilez-le, puis placer le `.class` dans le dossier `plugins/strategies/` elevators du projet principal. Le comportement apparaît dans le menu “Choisir un comportement” après un clic sur le choix “Recharger les comportements” dans le menu “Actions” de la fenêtre de configuration de l’application (ou après un redémarrage de l’application bien sûr).
 
